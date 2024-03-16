@@ -8,7 +8,8 @@
         "build": "vite build",
         "lint:staged": "lint-staged -v",
         "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "prepare": "husky"
     },
     "dependencies": {
         "eslint-config-airbnb": "^19.0.4",
@@ -28,6 +29,7 @@
         "eslint-plugin-react": "^7.34.0",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-react-refresh": "^0.4.5",
+        "husky": "^9.0.11",
         "vite": "^5.1.6",
         "vite-plugin-svgr": "^4.2.0"
     }
