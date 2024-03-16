@@ -1,0 +1,14 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.addMissingImports": "always",
+        "source.organizeImports": "always",
+        "source.formatDocument": "always",
+        "source.fixAll.eslint": "always"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false,
+    "editor.formatOnSaveMode": "file",
+    "editor.linkedEditing": true,
+    "editor.rulers": [120],
+    "files.autoSave": "onFocusChange"
+}

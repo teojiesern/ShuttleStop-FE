@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "naumovs.color-highlight",
+        "eamodio.gitlens",
+        "wix.vscode-import-cost",
+        "rohit-gohri.format-code-action",
+        "vscode-infra.image-viewer",
+        "ue.alphabetical-sorter"
+    ]
+}
