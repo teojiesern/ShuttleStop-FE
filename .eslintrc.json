@@ -25,6 +25,12 @@
     "rules": {
         "react/jsx-no-target-blank": "off",
         "react/react-in-jsx-scope": "off",
+        "import/no-unresolved": [
+            2,
+            {
+                "ignore": ["\\.(svg|png|jpeg|jpg|gif|webp)$", "\\.(scss|less|css)$"]
+            }
+        ],
         "max-len": [
             "warn",
             120,

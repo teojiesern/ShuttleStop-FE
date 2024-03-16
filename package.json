@@ -6,11 +6,14 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
+        "lint:staged": "lint-staged -v",
         "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview"
     },
     "dependencies": {
         "eslint-config-airbnb": "^19.0.4",
+        "lint-staged": "^15.2.2",
+        "prettier": "^3.2.5",
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },
@@ -20,9 +23,12 @@
         "@vitejs/plugin-react": "^4.2.1",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",
+        "eslint-import-resolver-alias": "^1.1.2",
+        "eslint-plugin-import": "^2.29.1",
         "eslint-plugin-react": "^7.34.0",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-react-refresh": "^0.4.5",
-        "vite": "^5.1.6"
+        "vite": "^5.1.6",
+        "vite-plugin-svgr": "^4.2.0"
     }
 }

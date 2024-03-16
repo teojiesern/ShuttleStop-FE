@@ -1,0 +1,4 @@
+{
+    "**/*.{js,jsx}": ["prettier --check --no-error-on-unmatched-pattern", "eslint"],
+    "**/*.{json,yml,md}": ["prettier --check --no-error-on-unmatched-pattern"]
+}
