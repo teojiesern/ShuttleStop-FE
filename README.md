@@ -7,7 +7,7 @@ Before starting off, please download `VisualStudioCode` to be used for this proj
 1. Just like any other project, first clone the project into your directory of choice
 
 ```sh
-git clone https://github.com/teojiesern/ShuttleStop.git
+git clone https://github.com/teojiesern/ShuttleStop-FE.git
 ```
 
 2. Make sure you are in the directory of the cloned project before proceeding
