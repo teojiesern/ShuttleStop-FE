@@ -29,6 +29,10 @@ chmod +x ./scripts/setup.sh
 ./scripts/setup.sh
 ```
 
+## Code Snippets
+
+https://github.com/r5n-dev/vscode-react-javascript-snippets/blob/HEAD/docs/Snippets.md
+
 ### Known Limitations
 
 -   `addMissingImports` on save does not work because we are not using .ts, however you can manually enable it by enabling type checking in js through the following comment, known limitation [here](https://github.com/microsoft/vscode/issues/97925)
