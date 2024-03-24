@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom';
-import CIAMTestScreen from '../view/CIAMTestScreen';
-import CIAMTestScreenTwo from '../view/CIAMTestScreenTwo';
+import CIAMTestScreen from '../view/Screen/CIAMTestScreen';
+import CIAMTestScreenTwo from '../view/Screen/CIAMTestScreenTwo';
 
 const CIAMScreens = (
     <>
