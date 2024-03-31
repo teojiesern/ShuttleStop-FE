@@ -1,10 +1,12 @@
-import { Outlet } from 'react-router-dom';
+import Logo from '../../../platform/icons/shuttlestopLogo.svg';
 
 export default function MainScreen() {
     return (
         <div>
-            MainScreen
-            <Outlet />
+            <img
+                src={Logo}
+                width={200}
+            />
         </div>
     );
 }

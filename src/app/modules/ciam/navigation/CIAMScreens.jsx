@@ -5,11 +5,11 @@ import CIAMTestScreenTwo from '../view/Screen/CIAMTestScreenTwo';
 const CIAMScreens = (
     <>
         <Route
-            path="authentication"
+            path="login"
             element={<CIAMTestScreen />}
         />
         <Route
-            path="authentication/login"
+            path="signup"
             element={<CIAMTestScreenTwo />}
         />
     </>
