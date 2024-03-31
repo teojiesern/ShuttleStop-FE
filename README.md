@@ -29,7 +29,7 @@ chmod +x ./scripts/setup.sh
 ./scripts/setup.sh
 ```
 
-## Run the app
+## Run the web
 
 Remember to run the following command to make sure you have the latest packages
 
@@ -42,6 +42,8 @@ To have a look at your app, simply run
 ```bash
 npm run dev
 ```
+
+After that go to `http://localhost:5173/`, and you should see the website being developed
 
 ## Code Snippets
 
