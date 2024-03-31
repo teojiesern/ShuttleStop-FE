@@ -29,6 +29,20 @@ chmod +x ./scripts/setup.sh
 ./scripts/setup.sh
 ```
 
+## Run the app
+
+Remember to run the following command to make sure you have the latest packages
+
+```bash
+npm install
+```
+
+To have a look at your app, simply run
+
+```bash
+npm run dev
+```
+
 ## Code Snippets
 
 https://github.com/r5n-dev/vscode-react-javascript-snippets/blob/HEAD/docs/Snippets.md
