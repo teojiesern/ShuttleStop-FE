@@ -14,6 +14,20 @@ const StyledNavLink = styled(NavLink)`
     text-decoration: none;
     font-weight: ${FONTWEIGHT.SEMI_BOLD};
     font-size: ${FONTSIZE.small};
+
+    /* region animation */
+    &:after {
+        transition: all ease-in-out 0.3s;
+        background: none repeat scroll 0 0 ${COLORS.green};
+        content: '';
+        display: block;
+        height: 2px;
+        width: 0;
+    }
+
+    &:hover:after {
+        width: 100%;
+    }
 `;
 
 export default function HeaderNavLink() {

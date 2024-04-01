@@ -20,9 +20,9 @@ const StyledLink = styled(Link)`
 export default function HeaderLink({ align = 'end' }) {
     return (
         <Container align={align}>
-            <StyledLink to="/">Seller Center</StyledLink>
-            <StyledLink to="/">Log In</StyledLink>
-            <StyledLink to="/">Sign Up</StyledLink>
+            <StyledLink to="/seller-center">Seller Center</StyledLink>
+            <StyledLink to="/authentication/login">Log In</StyledLink>
+            <StyledLink to="/authentication/signup">Sign Up</StyledLink>
         </Container>
     );
 }
