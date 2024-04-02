@@ -1,6 +1,6 @@
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { IconButton } from '@mui/material';
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../../icons/logo.svg';
 import HeaderLink from './HeaderLink';
@@ -11,7 +11,6 @@ import SearchField from './SearchField';
 const RootContainer = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 2rem 5rem;
     gap: 1rem;
 `;
 
@@ -28,26 +27,23 @@ const ElementContainer = styled.div`
 
 export default function Header() {
     return (
-        <>
-            <RootContainer>
-                <HeaderLink />
-                <HeaderContainer>
-                    <Link to="/">
-                        <img
-                            src={Logo}
-                            width={300}
-                        />
-                    </Link>
-                    <ElementContainer>
-                        <SearchField />
-                        <IconButton>
-                            <ShoppingCartOutlinedIcon />
-                        </IconButton>
-                    </ElementContainer>
-                </HeaderContainer>
-                <HeaderNavLink />
-            </RootContainer>
-            <Outlet />
-        </>
+        <RootContainer>
+            <HeaderLink />
+            <HeaderContainer>
+                <Link to="/">
+                    <img
+                        src={Logo}
+                        width={300}
+                    />
+                </Link>
+                <ElementContainer>
+                    <SearchField />
+                    <IconButton>
+                        <ShoppingCartOutlinedIcon />
+                    </IconButton>
+                </ElementContainer>
+            </HeaderContainer>
+            <HeaderNavLink />
+        </RootContainer>
     );
 }

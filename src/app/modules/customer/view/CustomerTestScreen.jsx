@@ -1,3 +1,7 @@
 export default function CustomerTestScreen() {
-    return <div>CustomerTestScreen</div>;
+    return (
+        <div>
+            <div>CustomerTestScreen</div>
+        </div>
+    );
 }

@@ -5,7 +5,6 @@ import CustomerScreens from '../modules/customer/navigation/CustomerScreens';
 import MainScreen from '../modules/main/view/MainScreen';
 import MarketingScreens from '../modules/marketing/navigation/MarketingScreens';
 import EquipmentScreens from '../modules/sellerCenter/navigation/EquipmentScreens';
-import Header from './components/Header/Header';
 import AuthLayout from './components/Layouts/AuthLayout';
 import MainLayout from './components/Layouts/MainLayout';
 import SellerCenterLayout from './components/Layouts/SellerCenterLayout';
@@ -13,16 +12,14 @@ import SellerCenterLayout from './components/Layouts/SellerCenterLayout';
 const router = createBrowserRouter(
     createRoutesFromElements(
         <>
-            <Route element={<Header />}>
-                <Route
-                    path="/"
-                    element={<MainScreen />}
-                />
-                <Route element={<MainLayout />}>
-                    {MarketingScreens}
-                    {CustomerScreens}
-                    {CheckoutScreens}
-                </Route>
+            <Route
+                path="/"
+                element={<MainScreen />}
+            />
+            <Route element={<MainLayout />}>
+                {MarketingScreens}
+                {CustomerScreens}
+                {CheckoutScreens}
             </Route>
             <Route
                 path="/authentication"
