@@ -5,11 +5,11 @@ import MarketingTestScreenTwo from '../view/MarketingTestScreenTwo';
 const MarketingScreens = (
     <>
         <Route
-            path="marketing"
+            path="marketing/competitions"
             element={<MarketingTestScreen />}
         />
         <Route
-            path="marketing/campaigns"
+            path="marketing/coaches"
             element={<MarketingTestScreenTwo />}
         />
     </>

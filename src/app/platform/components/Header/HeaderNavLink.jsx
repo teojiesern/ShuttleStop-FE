@@ -10,7 +10,7 @@ const NavLinkContainer = styled.div`
 `;
 
 const StyledNavLink = styled(NavLink)`
-    color: ${COLORS.black};
+    color: ${(props) => props.style({ isActive: props.isActive }).color};
     text-decoration: none;
     font-weight: ${FONTWEIGHT.SEMI_BOLD};
     font-size: ${FONTSIZE.small};
@@ -33,14 +33,70 @@ const StyledNavLink = styled(NavLink)`
 export default function HeaderNavLink() {
     return (
         <NavLinkContainer>
-            <StyledNavLink to="/">RACQUETS</StyledNavLink>
-            <StyledNavLink to="/">FOOTWEAR</StyledNavLink>
-            <StyledNavLink to="/">APPAREL</StyledNavLink>
-            <StyledNavLink to="/">BAGS</StyledNavLink>
-            <StyledNavLink to="/">SHUTTLECOCKS</StyledNavLink>
-            <StyledNavLink to="/">ACCESSORIES</StyledNavLink>
-            <StyledNavLink to="/">COMPETITIONS</StyledNavLink>
-            <StyledNavLink to="/">COACHES</StyledNavLink>
+            <StyledNavLink
+                to="/customer/racquets"
+                style={({ isActive }) => ({
+                    color: isActive ? COLORS.green : COLORS.black,
+                })}
+            >
+                RACQUETS
+            </StyledNavLink>
+            <StyledNavLink
+                to="/customer/footwear"
+                style={({ isActive }) => ({
+                    color: isActive ? COLORS.green : COLORS.black,
+                })}
+            >
+                FOOTWEAR
+            </StyledNavLink>
+            <StyledNavLink
+                to="/customer/apparel"
+                style={({ isActive }) => ({
+                    color: isActive ? COLORS.green : COLORS.black,
+                })}
+            >
+                APPAREL
+            </StyledNavLink>
+            <StyledNavLink
+                to="/customer/bags"
+                style={({ isActive }) => ({
+                    color: isActive ? COLORS.green : COLORS.black,
+                })}
+            >
+                BAGS
+            </StyledNavLink>
+            <StyledNavLink
+                to="/customer/shuttlecocks"
+                style={({ isActive }) => ({
+                    color: isActive ? COLORS.green : COLORS.black,
+                })}
+            >
+                SHUTTLECOCKS
+            </StyledNavLink>
+            <StyledNavLink
+                to="/customer/accessories"
+                style={({ isActive }) => ({
+                    color: isActive ? COLORS.green : COLORS.black,
+                })}
+            >
+                ACCESSORIES
+            </StyledNavLink>
+            <StyledNavLink
+                to="/marketing/competitions"
+                style={({ isActive }) => ({
+                    color: isActive ? COLORS.green : COLORS.black,
+                })}
+            >
+                COMPETITIONS
+            </StyledNavLink>
+            <StyledNavLink
+                to="/marketing/coaches"
+                style={({ isActive }) => ({
+                    color: isActive ? COLORS.green : COLORS.black,
+                })}
+            >
+                COACHES
+            </StyledNavLink>
         </NavLinkContainer>
     );
 }

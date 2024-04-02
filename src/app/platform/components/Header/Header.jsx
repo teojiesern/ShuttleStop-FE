@@ -1,11 +1,12 @@
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { IconButton } from '@mui/material';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../../icons/logo.svg';
 import HeaderLink from './HeaderLink';
 import HeaderNavLink from './HeaderNavLink';
 import SearchField from './SearchField';
+
 // region styles
 const RootContainer = styled.div`
     display: flex;
@@ -31,10 +32,12 @@ export default function Header() {
             <RootContainer>
                 <HeaderLink />
                 <HeaderContainer>
-                    <img
-                        src={Logo}
-                        width={300}
-                    />
+                    <Link to="/">
+                        <img
+                            src={Logo}
+                            width={300}
+                        />
+                    </Link>
                     <ElementContainer>
                         <SearchField />
                         <IconButton>
