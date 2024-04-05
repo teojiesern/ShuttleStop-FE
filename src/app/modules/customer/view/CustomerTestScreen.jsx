@@ -48,7 +48,7 @@ const StyledSelect = styled.select`
 
 export default function CustomerTestScreen() {
     const location = useLocation();
-    const pathnames = location.pathname.split('/').filter((x) => x);
+    const pathnames = location.pathname.split('/');
 
     let productId;
 
