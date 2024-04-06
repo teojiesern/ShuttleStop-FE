@@ -46,38 +46,14 @@ export default function ProductBrowsing() {
     const location = useLocation();
     const pathnames = location.pathname.split('/');
 
-    let productId;
+    const category = pathnames[pathnames.length - 1];
+
+    // use find instead filter because only one product is expected for mock, all things will change after with be
+    const productDisplay = products.filter((p) => p.category === category);
 
     let counter = 0;
 
-    switch (pathnames[pathnames.length - 1]) {
-        case 'racquets':
-            productId = 1;
-            break;
-        case 'footwear':
-            productId = 2;
-            break;
-        case 'apparel':
-            productId = 3;
-            break;
-        case 'bags':
-            productId = 4;
-            break;
-        case 'shuttlecocks':
-            productId = 5;
-            break;
-        case 'accessories':
-            productId = 6;
-            break;
-        default:
-            productId = 1;
-    }
-    const productDisplay = products.find((p) => p.id === productId);
-
-    const handleSortChange = () => {
-        // const sortOrder = event.target.value;
-        // Update your state or perform some other action based on sortOrder
-    };
+    const handleSortChange = () => {};
 
     return (
         <Wrapper>
@@ -94,7 +70,7 @@ export default function ProductBrowsing() {
                         <option value="name-desc">Name: Z to A</option>
                     </StyledSelect>
                 </Sort>
-                <ProductGrid>
+                <ProductGrid key={category}>
                     {productDisplay &&
                         Array(10)
                             .fill()
@@ -102,11 +78,11 @@ export default function ProductBrowsing() {
                                 counter += 1;
                                 return (
                                     <Product
-                                        key={`${productDisplay.id}-copy-${counter}`}
-                                        id={productDisplay.id}
-                                        imgSrc={productDisplay.imgSrc}
-                                        name={productDisplay.name}
-                                        price={productDisplay.price}
+                                        key={`${productDisplay[0].id}-copy-${counter}`} // just to get all different key
+                                        id={productDisplay[0].id}
+                                        imgSrc={productDisplay[0].imgSrc}
+                                        name={productDisplay[0].name}
+                                        price={productDisplay[0].price}
                                     />
                                 );
                             })}
