@@ -36,7 +36,7 @@ const StyledDotButtonContainer = styled.div`
 `;
 
 export default function EmblaCarousel({ banners }) {
-    const [emblaRef, emblaApi] = useEmblaCarousel({}, [Autoplay({ delay: 3000, stopOnInteraction: false })]);
+    const [emblaRef, emblaApi] = useEmblaCarousel({}, [Autoplay({ delay: 4000, stopOnInteraction: false })]);
     const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
 
     return (

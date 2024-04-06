@@ -3,6 +3,8 @@ import COLORS from '../../../platform/Colors';
 import Footer from '../../../platform/components/Footer/Footer';
 import Header from '../../../platform/components/Header/Header';
 import homeBanner from '../data/homeBanner';
+import homeBanner2 from '../data/homeBanner2';
+import homeBanner3 from '../data/homeBanner3';
 import EmblaCarousel from './component/Embla/EmblaCarousel';
 
 const Container = styled.div`
@@ -20,6 +22,8 @@ const PaddingHorizontal = styled.div`
 const ContentContainer = styled.div`
     margin: 2rem 0;
     display: flex;
+    flex-direction: column;
+    gap: 2rem;
 `;
 
 export default function MainScreen() {
@@ -31,6 +35,8 @@ export default function MainScreen() {
 
             <ContentContainer>
                 <EmblaCarousel banners={homeBanner} />
+                <EmblaCarousel banners={homeBanner2} />
+                <EmblaCarousel banners={homeBanner3} />
             </ContentContainer>
 
             <PaddingHorizontal>
