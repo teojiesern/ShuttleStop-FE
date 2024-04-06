@@ -7,11 +7,18 @@ const StyledButton = styled.button`
     width: 0.5rem;
     border: none;
     background-color: ${(props) => (props.selected ? COLORS.green : COLORS['content-light-grey'])};
-    /* box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75); */
+    cursor: pointer;
 `;
 
 export default function DotButton(props) {
-    const { children, selected } = props;
+    const { children, selected, ...otherProps } = props;
 
-    return <StyledButton selected={selected}>{children}</StyledButton>;
+    return (
+        <StyledButton
+            selected={selected}
+            {...otherProps}
+        >
+            {children}
+        </StyledButton>
+    );
 }

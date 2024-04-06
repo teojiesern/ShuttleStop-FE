@@ -6,7 +6,9 @@ const useDotButton = (emblaApi) => {
 
     const onDotButtonClick = useCallback(
         (index) => {
+            console.log('index', index);
             if (!emblaApi) return;
+            console.log('in heres');
             emblaApi.scrollTo(index);
         },
         [emblaApi],
