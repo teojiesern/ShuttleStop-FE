@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import COLORS from '../../../platform/Colors';
 import Footer from '../../../platform/components/Footer/Footer';
 import Header from '../../../platform/components/Header/Header';
 import homeBanner from '../data/homeBanner';
@@ -9,6 +10,7 @@ const Container = styled.div`
     grid-template-rows: auto 1fr auto;
     padding: 2rem 0;
     min-height: calc(100vh - 4rem);
+    background-color: ${COLORS['bg-light-grey']};
 `;
 
 const PaddingHorizontal = styled.div`
