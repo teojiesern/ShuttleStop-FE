@@ -1,31 +1,31 @@
 import { Route } from 'react-router-dom';
-import CustomerTestScreen from '../view/CustomerTestScreen';
+import ProductBrowsing from '../view/ProductBrowsing';
 
 const CustomerScreens = (
     <>
         <Route
             path="/customer/racquets"
-            element={<CustomerTestScreen />}
+            element={<ProductBrowsing />}
         />
         <Route
             path="/customer/footwear"
-            element={<CustomerTestScreen />}
+            element={<ProductBrowsing />}
         />
         <Route
             path="/customer/apparel"
-            element={<CustomerTestScreen />}
+            element={<ProductBrowsing />}
         />
         <Route
             path="/customer/bags"
-            element={<CustomerTestScreen />}
+            element={<ProductBrowsing />}
         />
         <Route
             path="/customer/shuttlecocks"
-            element={<CustomerTestScreen />}
+            element={<ProductBrowsing />}
         />
         <Route
             path="/customer/accessories"
-            element={<CustomerTestScreen />}
+            element={<ProductBrowsing />}
         />
     </>
 );

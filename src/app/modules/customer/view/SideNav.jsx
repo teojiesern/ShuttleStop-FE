@@ -37,8 +37,6 @@ const Brand = styled.div`
     gap: 10px;
 `;
 
-const BrandItem = styled.div``;
-
 const MoreLessButton = styled.button`
     display: flex;
     align-items: center;
@@ -68,10 +66,7 @@ const Input = styled.input`
     width: 80px;
     height: 35px;
     flex-shrink: 0;
-    align-items: center;
-    ::placeholder {
-        text-align: center;
-    }
+    text-align: center;
 `;
 
 const ShortHr = styled.hr`
@@ -119,7 +114,7 @@ export default function SideNav() {
                 </FilterBy>
 
                 {brands.map((brand) => (
-                    <BrandItem
+                    <div
                         key={brand}
                         style={{ display: displayedBrands.includes(brand) ? 'block' : 'none' }}
                     >
@@ -136,7 +131,7 @@ export default function SideNav() {
                                 sx={{ margin: 0 }}
                             />
                         </FormGroup>
-                    </BrandItem>
+                    </div>
                 ))}
 
                 <MoreLessButton onClick={() => setShowAllBrands(!showAllBrands)}>
@@ -160,20 +155,12 @@ export default function SideNav() {
                 </FilterBy>
                 <Range>
                     <Input
-                        type="number"
                         id="minPrice"
-                        min="0"
-                        max="1000"
-                        step="50"
                         placeholder="RM MIN"
                     />
                     <ShortHr />
                     <Input
-                        type="number"
                         id="maxPrice"
-                        min="0"
-                        max="10000"
-                        step="50"
                         placeholder="RM MAX"
                     />
                 </Range>

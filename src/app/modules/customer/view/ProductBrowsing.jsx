@@ -1,12 +1,8 @@
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
-import { capitalize } from '@mui/material/utils';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import products from '../../../platform/icons/ProductList2';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
+import products from '../assets/ProductList2';
 import Product from './Product';
 import SideNav from './SideNav';
 
@@ -46,7 +42,7 @@ const StyledSelect = styled.select`
     height: 40px;
 `;
 
-export default function CustomerTestScreen() {
+export default function ProductBrowsing() {
     const location = useLocation();
     const pathnames = location.pathname.split('/');
 
@@ -85,16 +81,6 @@ export default function CustomerTestScreen() {
 
     return (
         <Wrapper>
-            <Breadcrumbs aria-label="breadcrumb">
-                <Link
-                    underline="hover"
-                    color="inherit"
-                    href="/"
-                >
-                    Home
-                </Link>
-                <Typography color="text.primary">{capitalize(pathnames[pathnames.length - 1])}</Typography>
-            </Breadcrumbs>
             <Navbar>
                 <SideNav />
             </Navbar>
