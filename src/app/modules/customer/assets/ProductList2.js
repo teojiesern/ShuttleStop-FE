@@ -1,7 +1,7 @@
 import accessories from './accessories.png';
 import apparels from './apparels.png';
 import bag from './bag.jpeg';
-import footware from './footware.jpeg';
+import footwear from './footwear.jpeg';
 import racquet from './racquet.png';
 import shuttlecock from './shuttlecock.jpeg';
 
@@ -20,17 +20,17 @@ const productsList = [
     },
     {
         id: 2,
-        imgSrc: footware,
+        imgSrc: footwear,
         name: 'YONEX Badminton Shoes',
         price: 'RM609.00',
-        category: 'footwear',
+        category: 'footwears',
         brand: 'Yonex',
         rate: 4.9,
         options: {
             size: [25, 25, 5, 26, 26.5, 27, 27.5, 28, 28.5, 29, 29.5],
         },
         description:
-            'Category: footware \nBrand: Yonex \nDescription: lightest shoe at 270g.Superior ventilation and solid fit. \nUpper: Double Russel Mesh, Durable Skin Light \nMidsole: Hyper mslite \nPower Cushion \nPower Graphite Sheet \nOutsole: Rubber',
+            'Category: footwear \nBrand: Yonex \nDescription: lightest shoe at 270g.Superior ventilation and solid fit. \nUpper: Double Russel Mesh, Durable Skin Light \nMidsole: Hyper mslite \nPower Cushion \nPower Graphite Sheet \nOutsole: Rubber',
     },
     {
         id: 3,

@@ -42,12 +42,12 @@ export default function HeaderNavLink() {
                 RACQUETS
             </StyledNavLink>
             <StyledNavLink
-                to="/customer/footwear"
+                to="/customer/footwears"
                 style={({ isActive }) => ({
                     color: isActive ? COLORS.green : COLORS.black,
                 })}
             >
-                FOOTWEAR
+                FOOTWEARS
             </StyledNavLink>
             <StyledNavLink
                 to="/customer/apparels"
