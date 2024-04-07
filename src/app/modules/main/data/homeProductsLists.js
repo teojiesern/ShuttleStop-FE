@@ -6,11 +6,11 @@ import Racquet from '../view/assets/racquet.svg';
 import Shuttlecock from '../view/assets/shuttlecock.svg';
 
 const homeProductsLists = [
-    { name: 'RACQUET', url: Racquet },
+    { name: 'RACQUETS', url: Racquet },
     { name: 'FOOTWEARS', url: Footwears },
     { name: 'APPARELS', url: Apparels },
     { name: 'BAGS', url: Bags },
-    { name: 'SHUTTLECOCK', url: Shuttlecock },
+    { name: 'SHUTTLECOCKS', url: Shuttlecock },
     { name: 'ACCESSORIES', url: Accessories },
 ];
 

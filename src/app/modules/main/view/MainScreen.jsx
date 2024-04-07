@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import Footer from '../../../platform/components/Footer/Footer';
@@ -69,6 +70,7 @@ const DisplayCard = styled.div`
     background-color: ${COLORS.white};
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 `;
 
 const CoachAvatar = styled.img`
@@ -134,6 +136,8 @@ const CoachDetailContainer = styled.div`
 `;
 
 export default function MainScreen() {
+    const navigate = useNavigate();
+
     const mockData = [];
     for (let i = 0; i < 6; i++) {
         mockData.push(
@@ -177,7 +181,10 @@ export default function MainScreen() {
                     <DisplayHeader>Browse by Product</DisplayHeader>
                     <DisplayList>
                         {homeProductsLists.map((product) => (
-                            <DisplayCard key={product.name}>
+                            <DisplayCard
+                                key={product.name}
+                                onClick={() => navigate(`customer/${product.name.toLowerCase()}`)}
+                            >
                                 <img src={product.url} />
                                 <TextMdSemiBold>{product.name}</TextMdSemiBold>
                             </DisplayCard>
