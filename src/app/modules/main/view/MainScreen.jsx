@@ -24,7 +24,7 @@ const PaddingHorizontal = styled.div`
 `;
 
 const ContentContainer = styled.div`
-    margin: 2rem 0;
+    margin: 1rem 0 3rem 0;
     display: flex;
     flex-direction: column;
     gap: 2rem;
