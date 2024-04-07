@@ -12,7 +12,7 @@ const CustomerScreens = (
             element={<ProductBrowsing />}
         />
         <Route
-            path="/customer/apparel"
+            path="/customer/apparels"
             element={<ProductBrowsing />}
         />
         <Route

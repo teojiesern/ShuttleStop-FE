@@ -1,5 +1,5 @@
 import accessories from './accessories.png';
-import apparel from './apparel.png';
+import apparels from './apparels.png';
 import bag from './bag.jpeg';
 import footware from './footware.jpeg';
 import racquet from './racquet.png';
@@ -34,10 +34,10 @@ const productsList = [
     },
     {
         id: 3,
-        imgSrc: apparel,
+        imgSrc: apparels,
         name: 'Yonex Malaysia Round Neck Shirt 2453',
         price: 'RM59.90',
-        category: 'apparel',
+        category: 'apparels',
         brand: 'Yonex',
         rate: 4.9,
         options: {
@@ -45,7 +45,7 @@ const productsList = [
             color: ['Botanical Garden', 'Jet Black', 'Red', 'White'],
         },
         description:
-            'Category: apparel \nBrand: Yonex \nMaterial: Polyester \nSize available: Adult: XS - XXL \nDry and Comfortable \nThe high performance fibers in TruBreeze fabrics \nKeep wearers cool, dry, and comfortable',
+            'Category: apparels \nBrand: Yonex \nMaterial: Polyester \nSize available: Adult: XS - XXL \nDry and Comfortable \nThe high performance fibers in TruBreeze fabrics \nKeep wearers cool, dry, and comfortable',
     },
     {
         id: 4,

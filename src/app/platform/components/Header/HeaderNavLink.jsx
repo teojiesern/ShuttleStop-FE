@@ -50,12 +50,12 @@ export default function HeaderNavLink() {
                 FOOTWEAR
             </StyledNavLink>
             <StyledNavLink
-                to="/customer/apparel"
+                to="/customer/apparels"
                 style={({ isActive }) => ({
                     color: isActive ? COLORS.green : COLORS.black,
                 })}
             >
-                APPAREL
+                APPARELS
             </StyledNavLink>
             <StyledNavLink
                 to="/customer/bags"
