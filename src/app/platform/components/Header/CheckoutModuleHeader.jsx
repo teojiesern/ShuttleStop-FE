@@ -2,12 +2,13 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { IconButton } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import COLORS from '../../Colors';
 import Logo from '../../icons/logo.svg';
+import FONTSIZE from '../../style/FontSize';
+import FONTWEIGHT from '../../style/FontWeight';
 import HeaderLink from './HeaderLink';
-import HeaderNavLink from './HeaderNavLink';
 import SearchField from './SearchField';
 
-// region styles
 const RootContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -25,8 +26,19 @@ const ElementContainer = styled.div`
     gap: 1rem;
 `;
 
-// any updates here should be reflected in `CheckoutModuleHeader.jsx`
-export default function Header() {
+const HeaderTitle = styled.h1`
+    font-size: ${FONTSIZE.large};
+    font-weight: ${FONTWEIGHT.SEMI_BOLD};
+    color: ${COLORS.green};
+`;
+
+/**
+ *
+ * exact copy of `Header.jsx`, just without navLinks
+ * any updates here should be reflected in `Header.jsx`
+ *
+ * */
+export default function CheckoutModuleHeader() {
     const navigate = useNavigate();
 
     return (
@@ -46,7 +58,7 @@ export default function Header() {
                     </IconButton>
                 </ElementContainer>
             </HeaderContainer>
-            <HeaderNavLink />
+            <HeaderTitle>Shoppping Cart</HeaderTitle>
         </RootContainer>
     );
 }

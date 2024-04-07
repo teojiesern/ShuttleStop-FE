@@ -7,6 +7,7 @@ import MarketingScreens from '../modules/marketing/navigation/MarketingScreens';
 import EquipmentScreens from '../modules/sellerCenter/navigation/EquipmentScreens';
 import ErrorBoundary from './components/ErrorBoundary';
 import AuthLayout from './components/Layouts/AuthLayout';
+import CheckoutLayout from './components/Layouts/CheckoutLayout';
 import MainLayout from './components/Layouts/MainLayout';
 import SellerCenterLayout from './components/Layouts/SellerCenterLayout';
 
@@ -20,6 +21,11 @@ const router = createBrowserRouter(
             <Route element={<MainLayout />}>
                 {MarketingScreens}
                 {CustomerScreens}
+            </Route>
+            <Route
+                element={<CheckoutLayout />}
+                path="/checkout"
+            >
                 {CheckoutScreens}
             </Route>
             <Route

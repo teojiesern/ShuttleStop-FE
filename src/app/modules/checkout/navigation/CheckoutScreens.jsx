@@ -4,11 +4,11 @@ import CheckoutTestScreen from '../view/CheckoutTestScreen';
 const CheckoutScreens = (
     <>
         <Route
-            path="checkout"
+            path=""
             element={<CheckoutTestScreen />}
         />
         <Route
-            path="checkout/j"
+            path="test1"
             element={<CheckoutTestScreen />}
         />
     </>
