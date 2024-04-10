@@ -8,8 +8,8 @@ import FONTWEIGHT from '../../../../platform/style/FontWeight';
 
 const Container = styled.div`
     display: flex;
-    padding: 0.5rem 2rem 0.5rem 2rem;
-    border: 1px solid ${COLORS['border-grey']};
+    padding: 0.5rem 2rem;
+    border: 1px solid ${COLORS.darkGrey};
 `;
 const LabelContainer = styled.div`
     display: flex;
