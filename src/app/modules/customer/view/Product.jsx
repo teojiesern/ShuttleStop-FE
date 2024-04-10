@@ -51,7 +51,7 @@ export default function Product({ id, imgSrc, name, price }) {
                 </ProductImg>
                 <ProductInfo>
                     <ProductName>{name}</ProductName>
-                    <ProductPrice>{price}</ProductPrice>
+                    <ProductPrice>RM {price.toFixed(2)}</ProductPrice>
                 </ProductInfo>
             </ProductView>
         </Link>
