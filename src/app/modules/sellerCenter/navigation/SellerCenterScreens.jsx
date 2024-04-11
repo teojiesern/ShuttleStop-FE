@@ -1,4 +1,4 @@
-import { Route } from 'react-router-dom';
+import { Navigate, Route } from 'react-router-dom';
 import SellerCenterLayout from '../../../platform/components/Layouts/SellerCenterLayout';
 import SellerCenterAuthenticatedRoute from '../../../platform/components/navigation/SellerCenterAuthenticatedRoute';
 import SellerCenterInternalLayout from '../view/components/SellerCenterInternalLayout';
@@ -18,7 +18,16 @@ const SellerCenterScreens = (
         >
             <Route element={<SellerCenterInternalLayout />}>
                 <Route
-                    path=""
+                    index
+                    element={
+                        <Navigate
+                            to="my-orders"
+                            replace
+                        />
+                    }
+                />
+                <Route
+                    path="my-orders"
                     element={<SCMyOrdersScreen />}
                 />
                 <Route
