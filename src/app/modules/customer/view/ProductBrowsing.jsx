@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import products from '../assets/ProductList2';
-import FilterContext from './FilterContext'; // replace './FilterContext' with the actual path to your FilterContext file
+import FilterContext from './FilterContext';
 import Product from './Product';
 
 const ProductGrid = styled.div`
@@ -56,15 +56,9 @@ export default function ProductBrowsing() {
         setMaxPrice(0);
         setTempMinPrice('');
         setTempMaxPrice('');
-    }, [category]);
+    }, [category, setSelectedRate, setSelectedBrands, setMinPrice, setMaxPrice, setTempMinPrice, setTempMaxPrice]);
 
     const [sort, setSort] = React.useState('');
-
-    const [sortedProducts, setSortedProducts] = React.useState([]);
-
-    useEffect(() => {
-        setSortedProducts(filteredProducts);
-    }, [filteredProducts]);
 
     useEffect(() => {
         // Apply filters to product list
@@ -126,10 +120,10 @@ export default function ProductBrowsing() {
                 </Select>
             </Sort>
             <ProductGrid key={category}>
-                {sortedProducts.length === 0 ? (
+                {filteredProducts.length === 0 ? (
                     <p>No product available</p>
                 ) : (
-                    sortedProducts.map((product) =>
+                    filteredProducts.map((product) =>
                         Array(30)
                             .fill()
                             .map(() => {
