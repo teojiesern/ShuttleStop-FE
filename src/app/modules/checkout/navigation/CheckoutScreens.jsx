@@ -1,15 +1,16 @@
 import { Route } from 'react-router-dom';
-import CheckoutTestScreen from '../view/CheckoutTestScreen';
+import CheckoutScreen from '../view/CheckoutScreen';
+import ShoppingCartScreen from '../view/ShoppingCartScreen';
 
 const CheckoutScreens = (
     <>
         <Route
             path=""
-            element={<CheckoutTestScreen />}
+            element={<ShoppingCartScreen />}
         />
         <Route
-            path="test1"
-            element={<CheckoutTestScreen />}
+            path="checkoutScreen"
+            element={<CheckoutScreen />}
         />
     </>
 );
