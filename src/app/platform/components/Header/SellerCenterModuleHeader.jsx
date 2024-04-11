@@ -1,18 +1,15 @@
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { IconButton } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../Colors';
 import Logo from '../../icons/logo.svg';
 import FONTSIZE from '../../style/FontSize';
 import FONTWEIGHT from '../../style/FontWeight';
-import HeaderLink from './HeaderLink';
-import SearchField from './SearchField';
 
 const RootContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin-bottom: 3rem;
 `;
 
 const HeaderContainer = styled.div`
@@ -21,9 +18,11 @@ const HeaderContainer = styled.div`
     align-items: center;
 `;
 
-const ElementContainer = styled.div`
-    display: flex;
-    gap: 1rem;
+const ReturnToShoppingText = styled(Link)`
+    font-size: ${FONTSIZE['x-small']};
+    color: ${COLORS.darkGrey};
+    font-weight: ${FONTWEIGHT.REGULAR};
+    text-decoration: none;
 `;
 
 const HeaderTitle = styled.h1`
@@ -39,11 +38,8 @@ const HeaderTitle = styled.h1`
  *
  * */
 export default function SellerCenterModuleHeader() {
-    const navigate = useNavigate();
-
     return (
         <RootContainer>
-            <HeaderLink />
             <HeaderContainer>
                 <Link to="/">
                     <img
@@ -51,14 +47,9 @@ export default function SellerCenterModuleHeader() {
                         width={400}
                     />
                 </Link>
-                <ElementContainer>
-                    <SearchField />
-                    <IconButton onClick={() => navigate('/checkout')}>
-                        <ShoppingCartOutlinedIcon />
-                    </IconButton>
-                </ElementContainer>
+                <ReturnToShoppingText to="/">Return to shopping</ReturnToShoppingText>
             </HeaderContainer>
-            <HeaderTitle>Shoppping Cart</HeaderTitle>
+            <HeaderTitle>Seller Center</HeaderTitle>
         </RootContainer>
     );
 }
