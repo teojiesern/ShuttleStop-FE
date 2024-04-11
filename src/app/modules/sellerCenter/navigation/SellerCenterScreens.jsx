@@ -5,7 +5,9 @@ import SCMyOrdersLayout from '../view/Layout/SCMyOrdersLayout';
 import SellerCenterInternalLayout from '../view/Layout/SellerCenterInternalLayout';
 import SCAddNewProductsScreen from '../view/screens/SCAddNewProductsScreen';
 import SCMyIncomeScreen from '../view/screens/SCMyIncomeScreen';
-import SCMyOrdersScreen from '../view/screens/SCMyOrdersScreen';
+import SCMyOrdersCompletedScreen from '../view/screens/SCMyOrdersCompletedScreen';
+import SCMyOrdersShippingScreen from '../view/screens/SCMyOrdersShippingScreen';
+import SCMyOrdersToShipScreen from '../view/screens/SCMyOrdersToShipScreen';
 import SCMyProductsScreen from '../view/screens/SCMyProductsScreen';
 import SCShippingSettingsScreen from '../view/screens/SCShippingSettingsScreen';
 import SCShopProfileScreen from '../view/screens/SCShopProfileScreen';
@@ -33,15 +35,15 @@ const SellerCenterScreens = (
                 >
                     <Route
                         index
-                        element={<SCMyOrdersScreen />}
+                        element={<SCMyOrdersToShipScreen />}
                     />
                     <Route
                         path="shipping"
-                        element={<SCMyOrdersScreen />}
+                        element={<SCMyOrdersShippingScreen />}
                     />
                     <Route
                         path="completed"
-                        element={<SCMyOrdersScreen />}
+                        element={<SCMyOrdersCompletedScreen />}
                     />
                 </Route>
                 <Route
