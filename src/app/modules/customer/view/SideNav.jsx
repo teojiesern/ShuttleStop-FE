@@ -8,7 +8,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Rating from '@mui/material/Rating';
 import TextField from '@mui/material/TextField';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import FONTSIZE from '../../../platform/style/FontSize';
@@ -87,24 +87,11 @@ const Rate = styled.div`
 `;
 
 export default function SideNav() {
-    const brands = ['Yonex', 'Felet', 'Apecs', 'Li-Ning', 'Victor', 'Maxx', 'Alpsport'];
+    const brands = ['Yonex', 'Felet', 'Apacs', 'Li-Ning', 'Victor', 'Maxx', 'Alpsport'];
 
-    const {
-        showAllBrands,
-        setShowAllBrands,
-        selectedRate,
-        setSelectedRate,
-        selectedBrands,
-        setSelectedBrands,
-        setMinPrice,
-        setMaxPrice,
-        tempMinPrice,
-        setTempMinPrice,
-        tempMaxPrice,
-        setTempMaxPrice,
-    } = useContext(FilterContext);
-
+    const [showAllBrands, setShowAllBrands] = useState(true);
     const displayedBrands = showAllBrands ? brands : brands.slice(0, 5);
+    const { filter, setFilter } = useContext(FilterContext);
 
     return (
         <NavBar>
@@ -130,16 +117,22 @@ export default function SideNav() {
                                         sx={{ padding: 0 }}
                                     />
                                 }
-                                // unchecked the checkbox when selectedBrands reset
-                                checked={selectedBrands.includes(brand)}
+                                checked={filter.selectedBrands.includes(brand)}
                                 label={brand}
                                 sx={{ margin: 0 }}
                                 onChange={(event) => {
-                                    if (event.target.checked) {
-                                        setSelectedBrands((prevBrands) => [...prevBrands, brand]);
-                                    } else {
-                                        setSelectedBrands((prevBrands) => prevBrands.filter((b) => b !== brand));
-                                    }
+                                    setFilter((prevFilter) => {
+                                        if (event.target.checked) {
+                                            return {
+                                                ...prevFilter,
+                                                selectedBrands: [...prevFilter.selectedBrands, brand],
+                                            };
+                                        }
+                                        return {
+                                            ...prevFilter,
+                                            selectedBrands: prevFilter.selectedBrands.filter((b) => b !== brand),
+                                        };
+                                    });
                                 }}
                             />
                         </FormGroup>
@@ -178,8 +171,10 @@ export default function SideNav() {
                         variant="outlined"
                         size="small"
                         style={{ width: '100px' }}
-                        value={tempMinPrice !== '' ? tempMinPrice : ''}
-                        onChange={(event) => setTempMinPrice(event.target.value)}
+                        value={filter.tempMinPrice !== '' ? filter.tempMinPrice : ''}
+                        onChange={(event) =>
+                            setFilter((prevFilter) => ({ ...prevFilter, tempMinPrice: event.target.value }))
+                        }
                         onKeyPress={(event) => {
                             if (!/[0-9]/.test(event.key)) {
                                 event.preventDefault();
@@ -194,8 +189,10 @@ export default function SideNav() {
                         variant="outlined"
                         size="small"
                         style={{ width: '100px' }}
-                        value={tempMaxPrice !== '' ? tempMaxPrice : ''}
-                        onChange={(event) => setTempMaxPrice(event.target.value)}
+                        value={filter.tempMaxPrice !== '' ? filter.tempMaxPrice : ''}
+                        onChange={(event) =>
+                            setFilter((prevFilter) => ({ ...prevFilter, tempMaxPrice: event.target.value }))
+                        }
                         onKeyPress={(event) => {
                             if (!/[0-9]/.test(event.key)) {
                                 event.preventDefault();
@@ -205,12 +202,18 @@ export default function SideNav() {
                 </Box>
                 <BtnApply
                     onClick={() => {
-                        if (tempMinPrice === '' || tempMaxPrice === '') {
-                            setMinPrice(0);
-                            setMaxPrice(0);
+                        if (filter.tempMinPrice === '' || filter.tempMaxPrice === '') {
+                            setFilter((prevFilter) => ({
+                                ...prevFilter,
+                                minPrice: 0,
+                                maxPrice: Infinity,
+                            }));
                         } else {
-                            setMinPrice(tempMinPrice);
-                            setMaxPrice(tempMaxPrice);
+                            setFilter((prevFilter) => ({
+                                ...prevFilter,
+                                minPrice: filter.tempMinPrice,
+                                maxPrice: filter.tempMaxPrice,
+                            }));
                         }
                     }}
                 >
@@ -225,8 +228,10 @@ export default function SideNav() {
                 <RadioGroup
                     aria-label="rating"
                     name="rating"
-                    value={selectedRate}
-                    onChange={(event) => setSelectedRate(Number(event.target.value))}
+                    value={filter.selectedRate}
+                    onChange={(event) =>
+                        setFilter((prevFilter) => ({ ...prevFilter, selectedRate: event.target.value }))
+                    }
                 >
                     {Array.from({ length: 5 }, (_, i) => 5 - i).map((rating) => (
                         <FormControlLabel

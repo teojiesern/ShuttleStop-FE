@@ -1,6 +1,6 @@
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import React, { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import FONTSIZE from '../../../platform/style/FontSize';
@@ -30,48 +30,27 @@ export default function ProductBrowsing() {
 
     const category = pathnames[pathnames.length - 1];
 
-    const productDisplay = useMemo(() => products.filter((p) => p.category === category), [products, category]);
-    let counter = 0;
-
-    const {
-        selectedRate,
-        setSelectedRate,
-        selectedBrands,
-        setSelectedBrands,
-        maxPrice,
-        setMaxPrice,
-        minPrice,
-        setMinPrice,
-        setTempMinPrice,
-        setTempMaxPrice,
-    } = useContext(FilterContext);
-
-    const [filteredProducts, setFilteredProducts] = React.useState(productDisplay);
-
+    const [productDisplay, setProductDisplay] = useState(products); // This is where you store your products
     useEffect(() => {
-        // Reset filters when category changes
-        setSelectedRate(0);
-        setSelectedBrands([]);
-        setMinPrice(0);
-        setMaxPrice(0);
-        setTempMinPrice('');
-        setTempMaxPrice('');
-    }, [category, setSelectedRate, setSelectedBrands, setMinPrice, setMaxPrice, setTempMinPrice, setTempMaxPrice]);
+        const newProductsDisplay = products.filter((p) => p.category === category);
+        setProductDisplay(newProductsDisplay);
+    }, [category]);
 
-    const [sort, setSort] = React.useState('');
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const { filter, setFilter } = useContext(FilterContext);
 
     useEffect(() => {
         // Apply filters to product list
         const newFilteredProducts = productDisplay.filter(
             (product) =>
-                (selectedBrands.length === 0 || selectedBrands.includes(product.brand)) &&
-                product.rate >= selectedRate &&
-                (minPrice === 0 || product.price >= minPrice) &&
-                (maxPrice === 0 || product.price <= maxPrice),
+                (filter.selectedBrands.length === 0 || filter.selectedBrands.includes(product.brand)) &&
+                product.rate >= filter.selectedRate &&
+                (filter.minPrice === 0 || product.price >= filter.minPrice) &&
+                (filter.maxPrice === 0 || product.price <= filter.maxPrice),
         );
 
         // Apply sort to filtered product list
-        switch (sort) {
+        switch (filter.sort) {
             case 'price-asc':
                 newFilteredProducts.sort((a, b) => a.price - b.price);
                 break;
@@ -84,16 +63,19 @@ export default function ProductBrowsing() {
             case 'name-desc':
                 newFilteredProducts.sort((a, b) => b.name.localeCompare(a.name));
                 break;
+            case '':
+                // no need to sort
+                break;
             default:
                 break;
         }
 
         setFilteredProducts(newFilteredProducts);
-    }, [productDisplay, selectedRate, selectedBrands, minPrice, maxPrice, sort]);
+    }, [filter, productDisplay]);
 
     const handleSortChange = (event) => {
         const sortOption = event.target.value;
-        setSort(sortOption);
+        setFilter((prevFilter) => ({ ...prevFilter, sort: sortOption }));
     };
 
     return (
@@ -102,7 +84,7 @@ export default function ProductBrowsing() {
                 <p>Sort by:</p>
                 <Select
                     id="select-sort"
-                    value={sort}
+                    value={filter.sort}
                     onChange={handleSortChange}
                     sx={{ width: '200px' }}
                     displayEmpty
@@ -123,22 +105,15 @@ export default function ProductBrowsing() {
                 {filteredProducts.length === 0 ? (
                     <p>No product available</p>
                 ) : (
-                    filteredProducts.map((product) =>
-                        Array(30)
-                            .fill()
-                            .map(() => {
-                                counter += 1;
-                                return (
-                                    <Product
-                                        key={`${product.id}-copy-${counter}`} // just to get all different key
-                                        id={product.id}
-                                        imgSrc={product.imgSrc}
-                                        name={product.name}
-                                        price={product.price}
-                                    />
-                                );
-                            }),
-                    )
+                    filteredProducts.map((product) => (
+                        <Product
+                            key={product.id}
+                            id={product.id}
+                            imgSrc={product.imgSrc}
+                            name={product.name}
+                            price={product.price}
+                        />
+                    ))
                 )}
             </ProductGrid>
         </div>

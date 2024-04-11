@@ -21,34 +21,18 @@ const Navbar = styled.div`
 `;
 
 export default function ProductMainScreen() {
-    const [selectedBrands, setSelectedBrands] = useState([]);
-    const [selectedRate, setSelectedRate] = useState(0);
-    const [showAllBrands, setShowAllBrands] = useState(true);
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(0);
+    const [filter, setFilter] = useState({
+        selectedBrands: [],
+        selectedRate: 0,
+        showAllBrands: true,
+        minPrice: 0,
+        maxPrice: 0,
+        tempMinPrice: '',
+        tempMaxPrice: '',
+        sort: '',
+    });
 
-    const [tempMinPrice, setTempMinPrice] = useState('');
-    const [tempMaxPrice, setTempMaxPrice] = useState('');
-
-    const value = useMemo(
-        () => ({
-            showAllBrands,
-            setShowAllBrands,
-            selectedRate,
-            setSelectedRate,
-            selectedBrands,
-            setSelectedBrands,
-            maxPrice,
-            setMaxPrice,
-            minPrice,
-            setMinPrice,
-            tempMinPrice,
-            setTempMinPrice,
-            tempMaxPrice,
-            setTempMaxPrice,
-        }),
-        [showAllBrands, selectedRate, selectedBrands, minPrice, maxPrice, tempMinPrice, tempMaxPrice],
-    );
+    const value = useMemo(() => ({ filter, setFilter }), [filter]);
 
     return (
         <Wrapper>
