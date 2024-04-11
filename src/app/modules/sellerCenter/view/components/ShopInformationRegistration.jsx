@@ -113,6 +113,7 @@ export default function ShopInformationRegistration({ registrationData }) {
                     onChange={handlePhoneNumberChange}
                 />
             </ContentContainer>
+            {/* TODO: Shop Logo */}
         </Container>
     );
 }
