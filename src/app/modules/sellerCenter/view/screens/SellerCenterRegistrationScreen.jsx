@@ -18,7 +18,7 @@ const Container = styled.div`
 
 const FormContainer = styled.div`
     border: 1px solid ${COLORS.grey};
-    padding: 2rem 5rem;
+    padding: 3rem 5rem;
 `;
 
 const LineSeparator = styled.div`
