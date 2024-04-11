@@ -19,7 +19,6 @@ const Navbar = styled.div`
     float: left;
     width: 250px;
 `;
-
 export default function ProductMainScreen() {
     const [filter, setFilter] = useState({
         selectedBrands: [],
