@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
+import router from './app/platform/components/navigation/router';
 import ModalManager from './app/platform/modal/internal/ModalManager';
 import ModalView from './app/platform/modal/internal/ModalView';
-import router from './app/platform/router';
 import GlobalStyle from './app/platform/style/GlobalStyle';
 import './fonts.css';
 import './reset.css';

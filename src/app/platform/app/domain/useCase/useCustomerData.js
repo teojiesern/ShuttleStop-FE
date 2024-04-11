@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function useCustomerData() {
-    // TODO: set initial to true
+    // TODO: set initial loading to true
     const [loading, setLoading] = useState(false);
-    const isLogin = useRef(false);
-    const registeredSeller = useRef(false);
+    const [isLogin, setIsLogin] = useState(false);
+    const [registeredSeller, setRegisteredSeller] = useState(false);
 
     useEffect(() => {
         // TODO: Implement cold start fetch data, and set customer data through CustomerManager
@@ -17,7 +17,9 @@ export default function useCustomerData() {
 
     return {
         loading,
-        isLogin: isLogin.current,
-        registeredSeller: registeredSeller.current,
+        isLogin,
+        setIsLogin,
+        registeredSeller,
+        setRegisteredSeller,
     };
 }

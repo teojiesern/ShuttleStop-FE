@@ -4,14 +4,16 @@ import useCustomerData from '../domain/useCase/useCustomerData';
 import ColdStartPendingScreen from './ColdStartPendingScreen';
 
 function ColdStartProvider({ children }) {
-    const { loading, isLogin, registeredSeller } = useCustomerData();
+    const { loading, isLogin, registeredSeller, setIsLogin, setRegisteredSeller } = useCustomerData();
 
     const value = useMemo(
         () => ({
             isLogin,
             registeredSeller,
+            setIsLogin,
+            setRegisteredSeller,
         }),
-        [isLogin, registeredSeller],
+        [isLogin, registeredSeller, setIsLogin, setRegisteredSeller],
     );
 
     if (loading) {
