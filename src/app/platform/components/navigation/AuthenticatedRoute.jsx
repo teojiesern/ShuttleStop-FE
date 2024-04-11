@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import AppColdStartContext from '../../app/data/AppColdStartContext';
 
-export default function AuthenticatedRoute({ children }) {
+export default function AuthenticatedRoute() {
     const { isLogin } = useContext(AppColdStartContext);
     const navigate = useNavigate();
 
@@ -12,5 +12,5 @@ export default function AuthenticatedRoute({ children }) {
         }
     }, [isLogin, navigate]);
 
-    return children;
+    return <Outlet />;
 }

@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import Steps from '../../constants/SellerCenterConstants';
@@ -32,6 +32,16 @@ export default function SellerCenterRegistrationScreen() {
     const [activeStep, setActiveStep] = useState(0);
     const steps = Object.values(Steps);
 
+    // cache
+    const registrationData = useRef({
+        sellerName: '',
+        sellerIC: '',
+        shopName: '',
+        pickupAddress: '',
+        email: '',
+        phoneNumber: '',
+    });
+
     return (
         <Container>
             <FormContainer>
@@ -41,11 +51,11 @@ export default function SellerCenterRegistrationScreen() {
                 />
                 <LineSeparator />
                 {steps[activeStep] === Steps.SELLER_INFORMATION ? (
-                    <SellerInformationRegistration />
+                    <SellerInformationRegistration registrationData={registrationData} />
                 ) : steps[activeStep] === Steps.SHOP_INFORMATION ? (
-                    <ShopInformationRegistration />
+                    <ShopInformationRegistration registrationData={registrationData} />
                 ) : (
-                    <SellerCenterRegisteredSuccessfully />
+                    <SellerCenterRegisteredSuccessfully registrationData={registrationData} />
                 )}
                 {activeStep !== steps.length - 1 && (
                     <>

@@ -1,4 +1,6 @@
+/* eslint-disable no-param-reassign */
 import { TextField } from '@mui/material';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
@@ -29,7 +31,26 @@ const FormLabel = styled.label`
     width: 300px;
 `;
 
-export default function SellerInformationRegistration() {
+export default function SellerInformationRegistration({ registrationData }) {
+    const [sellerName, setSellerName] = useState(registrationData.current.sellerName);
+    const [sellerIC, setSellerIC] = useState(registrationData.current.sellerIC);
+
+    const handleNameChange = useCallback(
+        (event) => {
+            setSellerName(event.target.value);
+            registrationData.current.sellerName = event.target.value;
+        },
+        [registrationData],
+    );
+
+    const handleICChange = useCallback(
+        (event) => {
+            setSellerIC(event.target.value);
+            registrationData.current.sellerIC = event.target.value;
+        },
+        [registrationData],
+    );
+
     return (
         <Container>
             <ContentContainer>
@@ -38,6 +59,8 @@ export default function SellerInformationRegistration() {
                     label="Enter your name..."
                     size="small"
                     style={{ minWidth: '50%' }}
+                    value={sellerName}
+                    onChange={handleNameChange}
                 />
             </ContentContainer>
             <ContentContainer>
@@ -47,6 +70,8 @@ export default function SellerInformationRegistration() {
                     size="small"
                     type="tel"
                     style={{ minWidth: '50%' }}
+                    value={sellerIC}
+                    onChange={handleICChange}
                 />
             </ContentContainer>
         </Container>

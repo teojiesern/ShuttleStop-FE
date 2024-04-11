@@ -1,4 +1,6 @@
+/* eslint-disable no-param-reassign */
 import { TextField } from '@mui/material';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
@@ -29,7 +31,44 @@ const FormLabel = styled.label`
     width: 200px;
 `;
 
-export default function ShopInformationRegistration() {
+export default function ShopInformationRegistration({ registrationData }) {
+    const [shopName, setShopName] = useState(registrationData.current.shopName);
+    const [pickupAddress, setPickupAddress] = useState(registrationData.current.pickupAddress);
+    const [email, setEmail] = useState(registrationData.current.email);
+    const [phoneNumber, setPhoneNumber] = useState(registrationData.current.phoneNumber);
+
+    const handleShopNameChange = useCallback(
+        (event) => {
+            setShopName(event.target.value);
+            registrationData.current.shopName = event.target.value;
+        },
+        [registrationData],
+    );
+
+    const handlePickupAddressChange = useCallback(
+        (event) => {
+            setPickupAddress(event.target.value);
+            registrationData.current.pickupAddress = event.target.value;
+        },
+        [registrationData],
+    );
+
+    const handleEmailChange = useCallback(
+        (event) => {
+            setEmail(event.target.value);
+            registrationData.current.email = event.target.value;
+        },
+        [registrationData],
+    );
+
+    const handlePhoneNumberChange = useCallback(
+        (event) => {
+            setPhoneNumber(event.target.value);
+            registrationData.current.phoneNumber = event.target.value;
+        },
+        [registrationData],
+    );
+
     return (
         <Container>
             <ContentContainer>
@@ -38,6 +77,8 @@ export default function ShopInformationRegistration() {
                     label="Shop Name..."
                     size="small"
                     style={{ minWidth: '50%' }}
+                    value={shopName}
+                    onChange={handleShopNameChange}
                 />
             </ContentContainer>
             <ContentContainer>
@@ -46,6 +87,8 @@ export default function ShopInformationRegistration() {
                     label="Enter your Pickup address..."
                     size="small"
                     style={{ minWidth: '50%' }}
+                    value={pickupAddress}
+                    onChange={handlePickupAddressChange}
                 />
             </ContentContainer>
             <ContentContainer>
@@ -55,6 +98,8 @@ export default function ShopInformationRegistration() {
                     size="small"
                     type="email"
                     style={{ minWidth: '50%' }}
+                    value={email}
+                    onChange={handleEmailChange}
                 />
             </ContentContainer>
             <ContentContainer>
@@ -64,6 +109,8 @@ export default function ShopInformationRegistration() {
                     size="small"
                     type="tel"
                     style={{ minWidth: '50%' }}
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
                 />
             </ContentContainer>
         </Container>

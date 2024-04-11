@@ -11,7 +11,7 @@ const SellerCenterScreens = (
             element={<SellerCenterAuthenticatedRoute />}
         >
             <Route
-                path="equipment-test"
+                path=""
                 element={<EquipmentTestScreen />}
             />
         </Route>
