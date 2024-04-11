@@ -141,7 +141,7 @@ export default function MainScreen() {
     const mockData = [];
     for (let i = 0; i < 6; i++) {
         mockData.push(
-            <DisplayCard>
+            <DisplayCard key={i}>
                 <CoachProfile>
                     <CoachAvatar src={homeCoachesLists.image} />
                     <TextMdSemiBold>{homeCoachesLists.name}</TextMdSemiBold>

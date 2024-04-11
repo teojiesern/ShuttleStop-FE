@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import COLORS from '../../Colors';
 import FONTSIZE from '../../style/FontSize';
 import FONTWEIGHT from '../../style/FontWeight';
+import NavLinkStylesUtil from '../../utils/NavLinkStylesUtil';
 
 const NavLinkContainer = styled.div`
     display: flex;
@@ -35,65 +36,49 @@ export default function HeaderNavLink() {
         <NavLinkContainer>
             <StyledNavLink
                 to="/customer/racquets"
-                style={({ isActive }) => ({
-                    color: isActive ? COLORS.green : COLORS.black,
-                })}
+                style={NavLinkStylesUtil.activeStyle}
             >
                 RACQUETS
             </StyledNavLink>
             <StyledNavLink
                 to="/customer/footwears"
-                style={({ isActive }) => ({
-                    color: isActive ? COLORS.green : COLORS.black,
-                })}
+                style={NavLinkStylesUtil.activeStyle}
             >
                 FOOTWEARS
             </StyledNavLink>
             <StyledNavLink
                 to="/customer/apparels"
-                style={({ isActive }) => ({
-                    color: isActive ? COLORS.green : COLORS.black,
-                })}
+                style={NavLinkStylesUtil.activeStyle}
             >
                 APPARELS
             </StyledNavLink>
             <StyledNavLink
                 to="/customer/bags"
-                style={({ isActive }) => ({
-                    color: isActive ? COLORS.green : COLORS.black,
-                })}
+                style={NavLinkStylesUtil.activeStyle}
             >
                 BAGS
             </StyledNavLink>
             <StyledNavLink
                 to="/customer/shuttlecocks"
-                style={({ isActive }) => ({
-                    color: isActive ? COLORS.green : COLORS.black,
-                })}
+                style={NavLinkStylesUtil.activeStyle}
             >
                 SHUTTLECOCKS
             </StyledNavLink>
             <StyledNavLink
                 to="/customer/accessories"
-                style={({ isActive }) => ({
-                    color: isActive ? COLORS.green : COLORS.black,
-                })}
+                style={NavLinkStylesUtil.activeStyle}
             >
                 ACCESSORIES
             </StyledNavLink>
             <StyledNavLink
                 to="/marketing/competitions"
-                style={({ isActive }) => ({
-                    color: isActive ? COLORS.green : COLORS.black,
-                })}
+                style={NavLinkStylesUtil.activeStyle}
             >
                 COMPETITIONS
             </StyledNavLink>
             <StyledNavLink
                 to="/marketing/coaches"
-                style={({ isActive }) => ({
-                    color: isActive ? COLORS.green : COLORS.black,
-                })}
+                style={NavLinkStylesUtil.activeStyle}
             >
                 COACHES
             </StyledNavLink>
