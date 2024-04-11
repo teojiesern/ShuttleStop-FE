@@ -48,7 +48,7 @@ export default function SellerCenterInternalLayout() {
                     <SideNavHeader>Orders</SideNavHeader>
                     <SideNavLink
                         style={activeStyle}
-                        to=""
+                        to="my-orders"
                         end
                     >
                         My Orders
