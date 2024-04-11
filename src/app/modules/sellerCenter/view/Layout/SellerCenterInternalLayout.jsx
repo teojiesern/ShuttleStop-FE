@@ -37,7 +37,7 @@ const formatPathName = (pathName) =>
 
 export default function SellerCenterInternalLayout() {
     const location = useLocation();
-    const pathName = location.pathname.split('/')[2];
+    const pathName = location.pathname.split('/')[2] ?? '';
 
     return (
         <Container>

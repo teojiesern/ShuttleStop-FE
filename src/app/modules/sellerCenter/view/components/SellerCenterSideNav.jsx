@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import NavLinkStylesUtil from '../../../../platform/utils/NavLinkStylesUtil';
 
 const SideNavContainer = styled.div`
     display: flex;
@@ -31,24 +32,19 @@ const SideNavLink = styled(NavLink)`
     margin-left: 2rem;
 `;
 
-const activeStyle = ({ isActive }) => ({
-    color: isActive ? COLORS.green : COLORS.black,
-    fontWeight: isActive ? FONTWEIGHT.SEMI_BOLD : FONTWEIGHT.REGULAR,
-});
-
 export default function SellerCenterSideNav() {
     return (
         <SideNavContainer>
             <SectionGroup>
                 <SideNavHeader>Orders</SideNavHeader>
                 <SideNavLink
-                    style={activeStyle}
+                    style={NavLinkStylesUtil.activeStyleWithFontWeight}
                     to="my-orders"
                 >
                     My Orders
                 </SideNavLink>
                 <SideNavLink
-                    style={activeStyle}
+                    style={NavLinkStylesUtil.activeStyleWithFontWeight}
                     to="shipping-settings"
                 >
                     Shipping Settings
@@ -57,13 +53,13 @@ export default function SellerCenterSideNav() {
             <SectionGroup>
                 <SideNavHeader>Products</SideNavHeader>
                 <SideNavLink
-                    style={activeStyle}
+                    style={NavLinkStylesUtil.activeStyleWithFontWeight}
                     to="my-products"
                 >
                     My Products
                 </SideNavLink>
                 <SideNavLink
-                    style={activeStyle}
+                    style={NavLinkStylesUtil.activeStyleWithFontWeight}
                     to="add-new-products"
                 >
                     Add New Products
@@ -72,7 +68,7 @@ export default function SellerCenterSideNav() {
             <SectionGroup>
                 <SideNavHeader>Finance</SideNavHeader>
                 <SideNavLink
-                    style={activeStyle}
+                    style={NavLinkStylesUtil.activeStyleWithFontWeight}
                     to="my-income"
                 >
                     My Income
@@ -81,7 +77,7 @@ export default function SellerCenterSideNav() {
             <SectionGroup>
                 <SideNavHeader>Shop</SideNavHeader>
                 <SideNavLink
-                    style={activeStyle}
+                    style={NavLinkStylesUtil.activeStyleWithFontWeight}
                     to="shop-profile"
                 >
                     Shop Profile

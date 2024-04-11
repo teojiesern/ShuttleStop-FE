@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import NavLinkStylesUtil from '../../../../platform/utils/NavLinkStylesUtil';
 
 const ContentContainer = styled.div`
     display: flex;
@@ -29,29 +30,25 @@ const StyledNavLink = styled(NavLink)`
     text-decoration: none;
 `;
 
-const activeStyle = ({ isActive }) => ({
-    color: isActive ? COLORS.green : COLORS.black,
-});
-
 export default function SCMyOrdersLayout() {
     return (
         <ContentContainer>
             <NavLinkContainer>
                 <StyledNavLink
-                    style={activeStyle}
+                    style={NavLinkStylesUtil.activeStyle}
                     to=""
                     end
                 >
                     To Ship
                 </StyledNavLink>
                 <StyledNavLink
-                    style={activeStyle}
+                    style={NavLinkStylesUtil.activeStyle}
                     to="shipping"
                 >
                     Shipping
                 </StyledNavLink>
                 <StyledNavLink
-                    style={activeStyle}
+                    style={NavLinkStylesUtil.activeStyle}
                     to="completed"
                 >
                     Completed
