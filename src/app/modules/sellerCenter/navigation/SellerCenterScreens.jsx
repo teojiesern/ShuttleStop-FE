@@ -1,7 +1,8 @@
 import { Navigate, Route } from 'react-router-dom';
 import SellerCenterLayout from '../../../platform/components/Layouts/SellerCenterLayout';
 import SellerCenterAuthenticatedRoute from '../../../platform/components/navigation/SellerCenterAuthenticatedRoute';
-import SellerCenterInternalLayout from '../view/components/SellerCenterInternalLayout';
+import SCMyOrdersLayout from '../view/Layout/SCMyOrdersLayout';
+import SellerCenterInternalLayout from '../view/Layout/SellerCenterInternalLayout';
 import SCAddNewProductsScreen from '../view/screens/SCAddNewProductsScreen';
 import SCMyIncomeScreen from '../view/screens/SCMyIncomeScreen';
 import SCMyOrdersScreen from '../view/screens/SCMyOrdersScreen';
@@ -28,8 +29,21 @@ const SellerCenterScreens = (
                 />
                 <Route
                     path="my-orders"
-                    element={<SCMyOrdersScreen />}
-                />
+                    element={<SCMyOrdersLayout />}
+                >
+                    <Route
+                        index
+                        element={<SCMyOrdersScreen />}
+                    />
+                    <Route
+                        path="shipping"
+                        element={<SCMyOrdersScreen />}
+                    />
+                    <Route
+                        path="completed"
+                        element={<SCMyOrdersScreen />}
+                    />
+                </Route>
                 <Route
                     path="shipping-settings"
                     element={<SCShippingSettingsScreen />}
