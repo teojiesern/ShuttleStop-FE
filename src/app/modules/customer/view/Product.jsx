@@ -13,7 +13,7 @@ const ProductView = styled.div`
 `;
 
 const ProductImg = styled.div`
-    height: auto;
+    height: 300px;
     margin: 0;
     padding: 0;
 `;
@@ -22,10 +22,12 @@ const ProductInfo = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     border-top: 1px solid ${COLORS.black};
     color: ${COLORS.black};
     padding: 15px;
     text-align: center;
+    height: 60px;
 `;
 const ProductName = styled.div`
     font-weight: ${FONTWEIGHT.REGULAR};
@@ -51,7 +53,7 @@ export default function Product({ id, imgSrc, name, price }) {
                 </ProductImg>
                 <ProductInfo>
                     <ProductName>{name}</ProductName>
-                    <ProductPrice>{price}</ProductPrice>
+                    <ProductPrice>RM {price.toFixed(2)}</ProductPrice>
                 </ProductInfo>
             </ProductView>
         </Link>

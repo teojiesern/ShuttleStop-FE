@@ -1,31 +1,31 @@
 import { Route } from 'react-router-dom';
-import ProductBrowsing from '../view/ProductBrowsing';
+import ProductMainScreen from '../view/ProductMainScreen';
 
 const CustomerScreens = (
     <>
         <Route
             path="/customer/racquets"
-            element={<ProductBrowsing />}
+            element={<ProductMainScreen />}
         />
         <Route
             path="/customer/footwears"
-            element={<ProductBrowsing />}
+            element={<ProductMainScreen />}
         />
         <Route
             path="/customer/apparels"
-            element={<ProductBrowsing />}
+            element={<ProductMainScreen />}
         />
         <Route
             path="/customer/bags"
-            element={<ProductBrowsing />}
+            element={<ProductMainScreen />}
         />
         <Route
             path="/customer/shuttlecocks"
-            element={<ProductBrowsing />}
+            element={<ProductMainScreen />}
         />
         <Route
             path="/customer/accessories"
-            element={<ProductBrowsing />}
+            element={<ProductMainScreen />}
         />
     </>
 );

@@ -1,16 +1,19 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 import Rating from '@mui/material/Rating';
-import { useState } from 'react';
+import TextField from '@mui/material/TextField';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
-
-const brands = ['Yonex', 'Felet', 'Apecs', 'Li-Ning', 'Victor', 'Maxx', 'Alpsport'];
+import FilterContext from './FilterContext';
 
 const NavBar = styled.div`
     float: left;
@@ -56,23 +59,10 @@ const Price = styled.div`
     gap: 10px;
 `;
 
-const Range = styled.div`
-    display: flex;
-    gap: 5px;
-    align-items: center;
-`;
-
-const Input = styled.input`
-    width: 80px;
-    height: 35px;
-    flex-shrink: 0;
-    text-align: center;
-`;
-
 const ShortHr = styled.hr`
     border: none;
     border-top: 1px solid ${COLORS.darkGrey};
-    width: 100%;
+    width: 20px;
 `;
 
 const StyledHr = styled.hr`
@@ -96,12 +86,12 @@ const Rate = styled.div`
     gap: 10px;
 `;
 
-function handleClick() {}
-
 export default function SideNav() {
-    const [showAllBrands, setShowAllBrands] = useState(false);
+    const brands = ['Yonex', 'Felet', 'Apacs', 'Li-Ning', 'Victor', 'Maxx', 'Alpsport'];
 
+    const [showAllBrands, setShowAllBrands] = useState(true);
     const displayedBrands = showAllBrands ? brands : brands.slice(0, 5);
+    const { filter, setFilter } = useContext(FilterContext);
 
     return (
         <NavBar>
@@ -127,8 +117,23 @@ export default function SideNav() {
                                         sx={{ padding: 0 }}
                                     />
                                 }
+                                checked={filter.selectedBrands.includes(brand)}
                                 label={brand}
                                 sx={{ margin: 0 }}
+                                onChange={(event) => {
+                                    setFilter((prevFilter) => {
+                                        if (event.target.checked) {
+                                            return {
+                                                ...prevFilter,
+                                                selectedBrands: [...prevFilter.selectedBrands, brand],
+                                            };
+                                        }
+                                        return {
+                                            ...prevFilter,
+                                            selectedBrands: prevFilter.selectedBrands.filter((b) => b !== brand),
+                                        };
+                                    });
+                                }}
                             />
                         </FormGroup>
                     </div>
@@ -153,37 +158,97 @@ export default function SideNav() {
                 <FilterBy>
                     <p>Price Range</p>
                 </FilterBy>
-                <Range>
-                    <Input
-                        id="minPrice"
-                        placeholder="RM MIN"
+                <Box
+                    component="form"
+                    noValidate
+                    autoComplete="off"
+                    display={{ xs: 'none', sm: 'flex' }}
+                    alignItems="center"
+                >
+                    <TextField
+                        id="outlined-basic"
+                        label="RM MIN"
+                        variant="outlined"
+                        size="small"
+                        style={{ width: '100px' }}
+                        value={filter.tempMinPrice !== '' ? filter.tempMinPrice : ''}
+                        onChange={(event) =>
+                            setFilter((prevFilter) => ({ ...prevFilter, tempMinPrice: event.target.value }))
+                        }
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault();
+                            }
+                        }}
                     />
+
                     <ShortHr />
-                    <Input
-                        id="maxPrice"
-                        placeholder="RM MAX"
+                    <TextField
+                        id="outlined-basic"
+                        label="RM MAX"
+                        variant="outlined"
+                        size="small"
+                        style={{ width: '100px' }}
+                        value={filter.tempMaxPrice !== '' ? filter.tempMaxPrice : ''}
+                        onChange={(event) =>
+                            setFilter((prevFilter) => ({ ...prevFilter, tempMaxPrice: event.target.value }))
+                        }
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault();
+                            }
+                        }}
                     />
-                </Range>
-                <BtnApply onClick={handleClick}>APPLY NOW</BtnApply>
+                </Box>
+                <BtnApply
+                    onClick={() => {
+                        if (filter.tempMinPrice === '' || filter.tempMaxPrice === '') {
+                            setFilter((prevFilter) => ({
+                                ...prevFilter,
+                                minPrice: 0,
+                                maxPrice: Infinity,
+                            }));
+                        } else {
+                            setFilter((prevFilter) => ({
+                                ...prevFilter,
+                                minPrice: filter.tempMinPrice,
+                                maxPrice: filter.tempMaxPrice,
+                            }));
+                        }
+                    }}
+                >
+                    APPLY NOW
+                </BtnApply>
             </Price>
             <StyledHr />
             <Rate>
                 <FilterBy>
                     <p>Rating</p>
                 </FilterBy>
-                {Array.from({ length: 5 }, (_, i) => 5 - i).map((rating) => (
-                    <div
-                        key={rating}
-                        style={{ display: 'flex', alignItems: 'center' }}
-                    >
-                        <Checkbox sx={{ padding: 0 }} />
-                        <Rating
-                            name={`read-only-${rating}`}
+                <RadioGroup
+                    aria-label="rating"
+                    name="rating"
+                    value={filter.selectedRate}
+                    onChange={(event) =>
+                        setFilter((prevFilter) => ({ ...prevFilter, selectedRate: event.target.value }))
+                    }
+                >
+                    {Array.from({ length: 5 }, (_, i) => 5 - i).map((rating) => (
+                        <FormControlLabel
+                            key={rating}
                             value={rating}
-                            readOnly
+                            control={<Radio sx={{ padding: 0 }} />}
+                            label={
+                                <Rating
+                                    name={`read-only-${rating}`}
+                                    value={rating}
+                                    readOnly
+                                />
+                            }
+                            sx={{ margin: 0 }}
                         />
-                    </div>
-                ))}
+                    ))}
+                </RadioGroup>
             </Rate>
         </NavBar>
     );
