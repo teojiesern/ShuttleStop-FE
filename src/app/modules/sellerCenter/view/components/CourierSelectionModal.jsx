@@ -105,7 +105,7 @@ export default function CourierSelectionModal({ hideModal, shipOrders, activeCou
                 <Description>The courier will collect your item soon</Description>
             </CenteredDiv>
         );
-    }, [hideModal, onConfirm, selectedCourier, shipped]);
+    }, [activeCourierOptions, hideModal, onConfirm, selectedCourier, shipped]);
 
     return getContent();
 }
