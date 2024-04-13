@@ -1,21 +1,18 @@
 import { useMemo, useRef } from 'react';
 import SellerCenterMyOrdersFakeRepositoryImpl from '../../data/SellerCenterMyOrdersFakeRepositoryImpl';
 
-export default function useSCMyOrdersToShip() {
+export default function useSCMyOrdersShipping() {
     const repostitoryRef = useRef(new SellerCenterMyOrdersFakeRepositoryImpl());
 
-    const getToShipOrders = async () => {
-        const response = await repostitoryRef.current.getToShipOrders();
+    const getShippingOrders = async () => {
+        const response = await repostitoryRef.current.getShippingOrders();
 
         return response.data;
     };
 
-    const shipOrders = () => {};
-
     return useMemo(
         () => ({
-            getToShipOrders,
-            shipOrders,
+            getShippingOrders,
         }),
         [],
     );

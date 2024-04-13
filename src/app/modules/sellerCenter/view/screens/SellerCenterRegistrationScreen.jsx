@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
-import Steps from '../../constants/SellerCenterConstants';
+import { Steps } from '../../constants/SellerCenterConstants';
 import RegistrationStepper from '../components/RegistrationStepper';
 import SellerCenterRegisteredSuccessfully from '../components/SellerCenterRegisteredSuccessfully';
 import SellerInformationRegistration from '../components/SellerInformationRegistration';
