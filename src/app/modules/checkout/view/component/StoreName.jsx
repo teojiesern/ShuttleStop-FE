@@ -26,7 +26,7 @@ export default function StoreHeader() {
     return (
         <Container>
             <FormControlLabel
-                control={<Checkbox sx={{ color: COLORS.darkGrey, '&.Mui-checked': { color: COLORS.green } }} />}
+                control={<Checkbox />}
                 label={
                     <LabelContainer>
                         <Storefront style={{ fontSize: FONTSIZE.medium, marginRight: '1rem' }} />

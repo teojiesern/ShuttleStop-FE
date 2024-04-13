@@ -87,7 +87,7 @@ export default function CheckoutProduct() {
     return (
         <Container>
             <StyledFormControlLabel
-                control={<Checkbox sx={{ color: COLORS.darkGrey, '&.Mui-checked': { color: COLORS.green } }} />}
+                control={<Checkbox />}
                 label={
                     <LabelContainer>
                         <img

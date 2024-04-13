@@ -59,7 +59,7 @@ export default function CheckoutBar() {
     return (
         <Container>
             <StyledFormControlLabel
-                control={<Checkbox sx={{ color: COLORS.darkGrey, '&.Mui-checked': { color: COLORS.green } }} />}
+                control={<Checkbox />}
                 label={<LabelContainer style={{ color: COLORS.black }}>Select All</LabelContainer>}
             />
             <QuantityContainer>Total Item: 1 item</QuantityContainer>

@@ -47,7 +47,7 @@ export default function CheckoutHead() {
     return (
         <Container>
             <StyledFormControlLabel
-                control={<Checkbox sx={{ color: COLORS.darkGrey, '&.Mui-checked': { color: COLORS.green } }} />}
+                control={<Checkbox />}
                 label={<LabelContainer style={{ color: COLORS.darkGrey }}>Product</LabelContainer>}
             />
             <PriceContainer>Unit Price</PriceContainer>
