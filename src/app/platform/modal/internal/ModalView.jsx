@@ -53,6 +53,14 @@ const ModalView = forwardRef((_, ref) => {
             open={open}
             onClose={handleClose}
             TransitionComponent={Transition}
+            fullWidth
+            maxWidth="md"
+            classes={{
+                paper: {
+                    minHeight: '50vh',
+                    maxHeight: '80vh',
+                },
+            }}
         >
             {children.current}
         </Dialog>
