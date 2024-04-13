@@ -17,3 +17,8 @@ export const Courier = Object.freeze({
     NINJAVAN: 'NinjaVan',
     SKYNET: 'SKYNET',
 });
+
+export const ShippingMethods = Object.freeze({
+    SELF_PICKUP: 'Self Pickup',
+    CASH_ON_DELIVERY: 'Cash on Delivery',
+});
