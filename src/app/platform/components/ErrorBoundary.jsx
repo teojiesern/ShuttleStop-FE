@@ -6,6 +6,7 @@ import Logo from '../icons/logo.svg';
 import RootError from '../icons/rootError.svg';
 import FONTSIZE from '../style/FontSize';
 import FONTWEIGHT from '../style/FontWeight';
+import PlatformReusableStyles from '../style/PlatformReusableStyles';
 
 const LayoutContainer = styled.div`
     display: grid;
@@ -76,14 +77,7 @@ export default function ErrorBoundary() {
                         to="/"
                         style={{ textDecoration: 'none', width: 'fit-content' }}
                     >
-                        <Button
-                            style={{
-                                padding: '1rem',
-                                backgroundColor: COLORS.green,
-                                color: COLORS.white,
-                                fontWeight: FONTWEIGHT.REGULAR,
-                            }}
-                        >
+                        <Button style={{ ...PlatformReusableStyles.PrimaryButtonStyles, padding: '1rem' }}>
                             Back to home
                         </Button>
                     </Link>

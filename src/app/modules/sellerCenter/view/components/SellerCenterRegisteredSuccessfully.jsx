@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
 import useSellerCenterRegistration from '../hooks/useSellerCenterRegistration';
 
 const Container = styled.div`
@@ -56,7 +57,7 @@ export default function SellerCenterRegisteredSuccessfully({ registrationData })
                 <ContentDescription>You can now proceed to add your first product</ContentDescription>
             </ContentContainer>
             <Button
-                style={{ backgroundColor: COLORS.green, color: COLORS.white, padding: '1rem' }}
+                style={{ ...PlatformReusableStyles.PrimaryButtonStyles, padding: '1rem' }}
                 onClick={() => {
                     registerSeller();
                     navigate('/seller-center', { replace: true });

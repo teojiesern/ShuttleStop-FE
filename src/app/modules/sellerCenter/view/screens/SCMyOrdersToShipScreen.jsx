@@ -2,9 +2,10 @@ import { Button } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import COLORS from '../../../../platform/Colors';
+import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
-import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
+import CourierSelectionModal from '../components/CourierSelectionModal';
 import useSCMyOrdersToShip from '../hooks/useSCMyOrdersToShip';
 import SCReusableStyles from '../styles/SCReusableStyles';
 
@@ -42,6 +43,7 @@ export default function SCMyOrdersToShipScreen() {
     const [orders, setOrders] = useState(null);
     const [checkedOrders, setCheckedOrders] = useState([]);
     const { getToShipOrders, shipOrders } = useSCMyOrdersToShip();
+    const { showModal, hideModal } = useModal();
 
     const handleOrderClick = useCallback((orderId) => {
         setCheckedOrders((prevCheckedOrders) => {
@@ -64,6 +66,11 @@ export default function SCMyOrdersToShipScreen() {
         },
         [orders],
     );
+
+    const onMassShip = useCallback(() => {
+        showModal({ modal: <CourierSelectionModal hideModal={hideModal} /> });
+        shipOrders(checkedOrders);
+    }, [checkedOrders, hideModal, shipOrders, showModal]);
 
     useEffect(() => {
         getToShipOrders().then((data) => {
@@ -118,13 +125,10 @@ export default function SCMyOrdersToShipScreen() {
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Button
                     style={{
-                        backgroundColor: COLORS.green,
-                        color: COLORS.white,
-                        fontWeight: FONTWEIGHT.REGULAR,
+                        ...PlatformReusableStyles.PrimaryButtonStyles,
                         fontSize: FONTSIZE.small,
-                        padding: '0.8rem',
                     }}
-                    onClick={shipOrders}
+                    onClick={onMassShip}
                 >
                     Mass Ship
                 </Button>
