@@ -68,9 +68,15 @@ export default function SCMyOrdersToShipScreen() {
     );
 
     const onMassShip = useCallback(() => {
-        showModal({ modal: <CourierSelectionModal hideModal={hideModal} /> });
-        shipOrders(checkedOrders);
-    }, [checkedOrders, hideModal, shipOrders, showModal]);
+        showModal({
+            modal: (
+                <CourierSelectionModal
+                    hideModal={hideModal}
+                    shipOrders={shipOrders}
+                />
+            ),
+        });
+    }, [hideModal, shipOrders, showModal]);
 
     useEffect(() => {
         getToShipOrders().then((data) => {
