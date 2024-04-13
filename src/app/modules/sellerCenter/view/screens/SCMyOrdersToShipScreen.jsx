@@ -6,9 +6,9 @@ import ShopSettingsContext from '../../../../platform/app/data/ShopSettingsConte
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
-import CourierSelectionModal from '../components/CourierSelectionModal';
-import SCMyOrdersToShipErrorModal from '../components/SCMyOrdersToShipErrorModal';
 import useSCMyOrdersToShip from '../hooks/useSCMyOrdersToShip';
+import CourierSelectionModal from '../modal/CourierSelectionModal';
+import SCMyOrdersToShipErrorModal from '../modal/SCMyOrdersToShipErrorModal';
 import SCReusableStyles from '../styles/SCReusableStyles';
 
 const Container = styled.div`

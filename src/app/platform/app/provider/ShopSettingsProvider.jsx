@@ -28,16 +28,16 @@ function ShopSettingsProvider({ children }) {
                 shopDescription,
                 shopLogo,
             }) => {
-                setShippingSettings(() => ({
+                setShippingSettings({
                     activeCourierOptions,
                     activePaymentOptions,
                     activeShippingOptions,
-                }));
-                setShopProfile(() => ({
+                });
+                setShopProfile({
                     shopName,
                     shopDescription,
                     shopLogo,
-                }));
+                });
                 // setIsLoading(false);
             },
         );
