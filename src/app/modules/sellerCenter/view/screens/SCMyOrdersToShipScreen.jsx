@@ -1,3 +1,134 @@
+import { Button } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import { useCallback, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import COLORS from '../../../../platform/Colors';
+import FONTSIZE from '../../../../platform/style/FontSize';
+import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import useSCMyOrdersToShip from '../hooks/useSCMyOrdersToShip';
+import SCReusableStyles from '../styles/SCReusableStyles';
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+`;
+
+const Layout = styled.div`
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 6fr 2fr 2fr 2fr;
+    gap: 3rem;
+    align-items: center;
+`;
+
+const OrdersContainer = styled.div`
+    display: flex;
+    gap: 1rem;
+`;
+
+const OrderDescriptionContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+`;
+
+const OrderImage = styled.img`
+    max-width: 5rem;
+`;
+
 export default function SCMyOrdersToShipScreen() {
-    return <div>SCMyOrdersToShipScreen</div>;
+    const [orders, setOrders] = useState(null);
+    const [checkedOrders, setCheckedOrders] = useState([]);
+    const { getToShipOrders, shipOrders } = useSCMyOrdersToShip();
+
+    const handleOrderClick = useCallback((orderId) => {
+        setCheckedOrders((prevCheckedOrders) => {
+            if (prevCheckedOrders.includes(orderId)) {
+                // uncheck logic
+                return prevCheckedOrders.filter((id) => id !== orderId);
+            }
+            return [...prevCheckedOrders, orderId];
+        });
+    }, []);
+
+    const handleAllCheckChange = useCallback(
+        (event) => {
+            setCheckedOrders(() => {
+                if (event.target.checked) {
+                    return orders.map((order) => order.orderID);
+                }
+                return [];
+            });
+        },
+        [orders],
+    );
+
+    useEffect(() => {
+        getToShipOrders().then((data) => {
+            setOrders(data.orders);
+        });
+    }, [getToShipOrders]);
+
+    if (orders === null) {
+        // TODO: Implement loading state
+        return <p>loading...</p>;
+    }
+
+    return (
+        <Container>
+            <SCReusableStyles.BorderContainer>
+                <Layout>
+                    <Checkbox onChange={handleAllCheckChange} />
+                    <SCReusableStyles.Text>Product(s)</SCReusableStyles.Text>
+                    <SCReusableStyles.Text>Order ID</SCReusableStyles.Text>
+                    <SCReusableStyles.Text>Buyer</SCReusableStyles.Text>
+                    <SCReusableStyles.Text>Shipping Option</SCReusableStyles.Text>
+                </Layout>
+            </SCReusableStyles.BorderContainer>
+
+            <SCReusableStyles.BorderContainer>
+                {orders.map((order, index) => (
+                    <div
+                        key={order.orderID}
+                        style={{ cursor: 'pointer' }}
+                    >
+                        <Layout onClick={() => handleOrderClick(order.orderID)}>
+                            <Checkbox checked={checkedOrders.includes(order.orderID)} />
+                            <OrdersContainer>
+                                <OrderImage src={orders[index].productImage} />
+                                <OrderDescriptionContainer>
+                                    <SCReusableStyles.Text>{orders[index].productName}</SCReusableStyles.Text>
+                                    <SCReusableStyles.TextDescription>
+                                        {orders[index].productDescription}
+                                    </SCReusableStyles.TextDescription>
+                                    <SCReusableStyles.Text>{orders[index].quantity}</SCReusableStyles.Text>
+                                </OrderDescriptionContainer>
+                            </OrdersContainer>
+                            <SCReusableStyles.Text>{orders[index].orderID}</SCReusableStyles.Text>
+                            <SCReusableStyles.Text>{orders[index].buyer}</SCReusableStyles.Text>
+                            <SCReusableStyles.Text>{orders[index].shippingOption}</SCReusableStyles.Text>
+                        </Layout>
+                        {index !== orders.length - 1 && <SCReusableStyles.Divider />}
+                    </div>
+                ))}
+            </SCReusableStyles.BorderContainer>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button
+                    style={{
+                        backgroundColor: COLORS.green,
+                        color: COLORS.white,
+                        fontWeight: FONTWEIGHT.REGULAR,
+                        fontSize: FONTSIZE.small,
+                        padding: '0.8rem',
+                    }}
+                    onClick={shipOrders}
+                >
+                    Mass Ship
+                </Button>
+            </div>
+        </Container>
+    );
 }

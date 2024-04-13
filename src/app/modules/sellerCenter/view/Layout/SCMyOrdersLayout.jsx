@@ -9,14 +9,8 @@ const ContentContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    width: 100%;
 `;
-
-// const BorderContainer = styled.div`
-//     display: flex;
-//     flex-direction: column;
-//     border: 1px solid ${COLORS.grey};
-//     padding: 1rem;
-// `;
 
 const NavLinkContainer = styled.div`
     display: flex;

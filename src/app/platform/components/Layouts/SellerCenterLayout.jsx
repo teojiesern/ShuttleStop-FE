@@ -6,6 +6,7 @@ import SellerCenterModuleHeader from '../Header/SellerCenterModuleHeader';
 const LayoutContainer = styled.div`
     display: grid;
     grid-template-rows: auto 1fr auto;
+    gap: 3rem;
     padding: 2rem 5rem;
     min-height: calc(100vh - 4rem);
 `;
