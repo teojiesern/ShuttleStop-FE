@@ -10,7 +10,7 @@ export const ShippingStatus = Object.freeze({
     DELIVERED: 'Delivered',
 });
 
-export const Courier = Object.freeze({
+export const CourierOptions = Object.freeze({
     POSLAJU: 'PosLaju',
     JNT_EXPRESS: 'J&T Express',
     DHL: 'DHL',
@@ -18,7 +18,12 @@ export const Courier = Object.freeze({
     SKYNET: 'SKYNET',
 });
 
-export const ShippingMethods = Object.freeze({
-    SELF_PICKUP: 'Self Pickup',
+export const PaymentOptions = Object.freeze({
+    ONLINE_BANKING: 'Online Banking',
     CASH_ON_DELIVERY: 'Cash on Delivery',
+});
+
+export const ShippingOptions = Object.freeze({
+    STANDARD_DELIVERY: 'Standard Delivery',
+    SELF_PICKUP: 'Self Pickup',
 });

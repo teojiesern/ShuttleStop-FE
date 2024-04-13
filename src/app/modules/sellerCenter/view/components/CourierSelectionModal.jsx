@@ -7,7 +7,7 @@ import lottieTicked from '../../../../platform/animation/lottieTicked.json';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
-import { Courier } from '../../constants/SellerCenterConstants';
+import { CourierOptions } from '../../constants/SellerCenterConstants';
 import SCReusableStyles from '../styles/SCReusableStyles';
 
 const Container = styled.div`
@@ -45,7 +45,7 @@ const CenteredDiv = styled.div`
 `;
 
 export default function CourierSelectionModal({ hideModal, shipOrders }) {
-    const [selectedCourier, setSelectedCourier] = useState(Courier.POSLAJU);
+    const [selectedCourier, setSelectedCourier] = useState(CourierOptions.POSLAJU);
     const [shipped, setShipped] = useState(false);
 
     const onConfirm = useCallback(() => {
@@ -61,7 +61,7 @@ export default function CourierSelectionModal({ hideModal, shipOrders }) {
             return (
                 <Container>
                     <Title>Courier Selection</Title>
-                    {Object.values(Courier).map((courier) => (
+                    {Object.values(CourierOptions).map((courier) => (
                         <SCReusableStyles.BorderContainer
                             key={courier}
                             style={{

@@ -1,9 +1,13 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import ShopSettingsContext from '../../../../platform/app/data/ShopSettingsContext';
 import CustomSwitch from '../../../../platform/components/control/CustomSwitch';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
-import { Courier, ShippingMethods } from '../../constants/SellerCenterConstants';
+import { CourierOptions, PaymentOptions, ShippingOptions } from '../../constants/SellerCenterConstants';
 import SCReusableStyles from '../styles/SCReusableStyles';
 
 const Container = styled.div`
@@ -39,39 +43,97 @@ const Divider = styled.div`
 `;
 
 export default function SCShippingSettingsScreen() {
+    const {
+        shippingSettings: { activeCourierOptions, activePaymentOptions, activeShippingOptions },
+    } = useContext(ShopSettingsContext);
+    const [courierOptions, setCourierOptions] = useState(activeCourierOptions);
+    const [shippingOptions, setShippingOptions] = useState(activeShippingOptions);
+    const [paymentOptions, setPaymentOptions] = useState(activePaymentOptions);
+
+    const handleCourierOptionsClick = useCallback((courierOption) => {
+        setCourierOptions((prevCourierOptions) => {
+            if (prevCourierOptions.includes(courierOption)) {
+                // uncheck logic
+                return prevCourierOptions.filter((prevCourierOption) => prevCourierOption !== courierOption);
+            }
+            return [...prevCourierOptions, courierOption];
+        });
+    }, []);
+
+    const handleShippingOptionsClick = useCallback((shippingOption) => {
+        setShippingOptions((prevShippingOptions) => {
+            if (prevShippingOptions.includes(shippingOption)) {
+                // uncheck logic
+                return prevShippingOptions.filter((prevShippingOption) => prevShippingOption !== shippingOption);
+            }
+            return [...prevShippingOptions, shippingOption];
+        });
+    }, []);
+
+    const handlePaymentOptionsClick = useCallback((paymentOption) => {
+        setPaymentOptions((prevPaymentOptions) => {
+            if (prevPaymentOptions.includes(paymentOption)) {
+                // uncheck logic
+                return prevPaymentOptions.filter((prevPaymentOption) => prevPaymentOption !== paymentOption);
+            }
+            return [...prevPaymentOptions, paymentOption];
+        });
+    }, []);
+
     return (
         <Container>
             <ContentContainer>
-                <Title>Standard Delivery</Title>
+                <Title>Courier Options</Title>
                 <SCReusableStyles.BorderContainer>
-                    {Object.values(Courier).map((courier, index) => (
+                    {Object.values(CourierOptions).map((courier, index) => (
                         <div
                             key={courier}
                             style={{ cursor: 'pointer', width: '100%' }}
+                            onClick={() => handleCourierOptionsClick(courier)}
                         >
                             <Layout>
                                 <SCReusableStyles.Text>{courier}</SCReusableStyles.Text>
-                                <CustomSwitch />
+                                <CustomSwitch checked={courierOptions.includes(courier)} />
                             </Layout>
-                            {index !== Object.keys(Courier).length - 1 && <SCReusableStyles.Divider />}
+                            {index !== Object.keys(CourierOptions).length - 1 && <SCReusableStyles.Divider />}
                         </div>
                     ))}
                 </SCReusableStyles.BorderContainer>
             </ContentContainer>
             <Divider />
             <ContentContainer>
-                <Title>Other Shipping Methods</Title>
+                <Title>Shipping Options</Title>
                 <SCReusableStyles.BorderContainer>
-                    {Object.values(ShippingMethods).map((method, index) => (
+                    {Object.values(ShippingOptions).map((shippingOption, index) => (
                         <div
-                            key={method}
+                            key={shippingOption}
                             style={{ cursor: 'pointer', width: '100%' }}
+                            onClick={() => handleShippingOptionsClick(shippingOption)}
                         >
                             <Layout>
-                                <SCReusableStyles.Text>{method}</SCReusableStyles.Text>
-                                <CustomSwitch />
+                                <SCReusableStyles.Text>{shippingOption}</SCReusableStyles.Text>
+                                <CustomSwitch checked={shippingOptions.includes(shippingOption)} />
                             </Layout>
-                            {index !== Object.keys(ShippingMethods).length - 1 && <SCReusableStyles.Divider />}
+                            {index !== Object.keys(ShippingOptions).length - 1 && <SCReusableStyles.Divider />}
+                        </div>
+                    ))}
+                </SCReusableStyles.BorderContainer>
+            </ContentContainer>
+            <Divider />
+            <ContentContainer>
+                <Title>Payment Options</Title>
+                <SCReusableStyles.BorderContainer>
+                    {Object.values(PaymentOptions).map((paymentOption, index) => (
+                        <div
+                            key={paymentOption}
+                            style={{ cursor: 'pointer', width: '100%' }}
+                            onClick={() => handlePaymentOptionsClick(paymentOption)}
+                        >
+                            <Layout>
+                                <SCReusableStyles.Text>{paymentOption}</SCReusableStyles.Text>
+                                <CustomSwitch checked={paymentOptions.includes(paymentOption)} />
+                            </Layout>
+                            {index !== Object.keys(ShippingOptions).length - 1 && <SCReusableStyles.Divider />}
                         </div>
                     ))}
                 </SCReusableStyles.BorderContainer>

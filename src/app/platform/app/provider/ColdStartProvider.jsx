@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import AppColdStartContext from '../data/AppColdStartContext';
 import useCustomerData from '../domain/useCase/useCustomerData';
-import ColdStartPendingScreen from './ColdStartPendingScreen';
+import ColdStartPendingScreen from '../screen/ColdStartPendingScreen';
 
 function ColdStartProvider({ children }) {
     const { loading, isLogin, registeredSeller, setIsLogin, setRegisteredSeller } = useCustomerData();
