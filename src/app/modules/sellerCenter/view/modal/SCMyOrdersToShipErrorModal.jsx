@@ -36,6 +36,7 @@ export default function SCMyOrdersToShipErrorModal({ hideModal }) {
                     options={{ animationData: lottieCrossed, autoplay: true, loop: false }}
                     width={200}
                     height={200}
+                    isClickToPauseDisabled
                 />
                 <Title>Please select at least one order to be shipped</Title>
             </CenteredDiv>

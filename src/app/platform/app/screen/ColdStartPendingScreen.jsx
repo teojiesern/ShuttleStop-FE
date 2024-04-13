@@ -14,7 +14,10 @@ const CenteredDiv = styled.div`
 export default function ColdStartPendingScreen() {
     return (
         <CenteredDiv>
-            <Lottie options={{ animationData: lottieBadmintonLoading }} />
+            <Lottie
+                options={{ animationData: lottieBadmintonLoading }}
+                isClickToPauseDisabled
+            />
         </CenteredDiv>
     );
 }
