@@ -6,6 +6,7 @@ import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
 import CourierSelectionModal from '../components/CourierSelectionModal';
+import SCMyOrdersToShipErrorModal from '../components/SCMyOrdersToShipErrorModal';
 import useSCMyOrdersToShip from '../hooks/useSCMyOrdersToShip';
 import SCReusableStyles from '../styles/SCReusableStyles';
 
@@ -68,6 +69,12 @@ export default function SCMyOrdersToShipScreen() {
     );
 
     const onMassShip = useCallback(() => {
+        if (checkedOrders.length === 0) {
+            showModal({
+                modal: <SCMyOrdersToShipErrorModal hideModal={hideModal} />,
+            });
+            return;
+        }
         showModal({
             modal: (
                 <CourierSelectionModal
@@ -76,7 +83,7 @@ export default function SCMyOrdersToShipScreen() {
                 />
             ),
         });
-    }, [hideModal, shipOrders, showModal]);
+    }, [checkedOrders.length, hideModal, shipOrders, showModal]);
 
     useEffect(() => {
         getToShipOrders().then((data) => {
