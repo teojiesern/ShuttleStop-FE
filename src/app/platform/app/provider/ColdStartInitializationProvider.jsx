@@ -13,14 +13,14 @@ export default function ColdStartInitializationProvider({ children }) {
     const { getShopSettings } = useShopSettings();
 
     useEffect(() => {
-        async function fakeEndpointCallDelay() {
-            return new Promise((resolve) => {
-                setTimeout(resolve, 3000);
-            });
-        }
+        // async function fakeEndpointCallDelay() {
+        //     return new Promise((resolve) => {
+        //         setTimeout(resolve, 3000);
+        //     });
+        // }
 
         async function fetchData() {
-            await fakeEndpointCallDelay();
+            // await fakeEndpointCallDelay();
             // Pass in customerId to fetch all these things
             const newCustomerStatus = await getCustomerStatus();
             setCustomerStatus({ ...newCustomerStatus, setCustomerStatus });
