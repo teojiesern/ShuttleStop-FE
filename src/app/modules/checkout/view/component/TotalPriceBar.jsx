@@ -4,7 +4,6 @@ import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import ShippingOptionModal from '../../modal/ShippingOptionModal';
-import useShipping from '../hooks/useShipping';
 
 const Container2 = styled.div`
     display: block;
@@ -66,13 +65,18 @@ const TotalPrice = styled.span`
     text-align: right;
 `;
 
-export default function TotalPriceBar() {
+export default function TotalPriceBar({ shippingOption, updateShippingOption }) {
     const { showModal, hideModal } = useModal();
-    const { shippingOption } = useShipping();
 
     const handleChangeClick = () => {
         showModal({
-            modal: <ShippingOptionModal hideModal={hideModal} />,
+            modal: (
+                <ShippingOptionModal
+                    hideModal={hideModal}
+                    shippingOption={shippingOption}
+                    updateShippingOption={updateShippingOption}
+                />
+            ),
             disableBackdropDismiss: true,
         });
     };

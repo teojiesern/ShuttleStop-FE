@@ -10,6 +10,7 @@ import ProductOrderedHead from './component/ProductOrderedHead';
 import SelectPaymentMethod from './component/SelectPaymentMethod';
 import ShippingDetailsBar from './component/ShippingDetailsBar';
 import TotalPriceBar from './component/TotalPriceBar';
+import useShipping from './hooks/useShipping';
 
 const Wrapper = styled.div`
     margin-left: auto;
@@ -38,6 +39,7 @@ const PlaceOrderButton = styled.button`
 
 export default function CheckoutScreen() {
     const { showModal } = useModal();
+    const { shippingOption, updateShippingOption } = useShipping();
 
     const handlePlaceOrderClick = () => {
         showModal({ modal: <OrderPlacedModal /> });
@@ -51,7 +53,10 @@ export default function CheckoutScreen() {
             <Container>
                 <ProductOrderedHead />
                 <CheckoutProduct />
-                <TotalPriceBar />
+                <TotalPriceBar
+                    shippingOption={shippingOption}
+                    updateShippingOption={updateShippingOption}
+                />
             </Container>
             <Container>
                 <SelectPaymentMethod />

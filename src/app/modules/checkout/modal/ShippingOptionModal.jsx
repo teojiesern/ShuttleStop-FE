@@ -2,14 +2,13 @@ import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import collectionPointsList from '../data/collectionPointsList';
-import useShipping from '../view/hooks/useShipping';
 
 const Container = styled.div`
     display: flex;
@@ -67,24 +66,21 @@ const ButtonContainer = styled.div`
     gap: 0.5rem;
 `;
 
-export default function ShippingOptionModal({ hideModal }) {
-    const { shippingOption, updateShippingOption } = useShipping();
+export default function ShippingOptionModal({ hideModal, shippingOption, updateShippingOption }) {
+    const [selectedOption, setSelectedOption] = useState(shippingOption);
 
-    const handleStandardDeliveryClick = useCallback(() => {
-        updateShippingOption('standardDelivery');
-    }, [updateShippingOption]);
+    const handleStandardDeliveryClick = () => {
+        setSelectedOption('standardDelivery');
+    };
 
-    const handleRadioChange = useCallback(
-        (event) => {
-            updateShippingOption(event.target.value);
-        },
-        [updateShippingOption],
-    );
+    const handleRadioChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
 
     const handleSaveClick = useCallback(() => {
-        updateShippingOption(shippingOption);
+        updateShippingOption(selectedOption);
         hideModal();
-    }, [hideModal, updateShippingOption, shippingOption]);
+    }, [hideModal, updateShippingOption, selectedOption]);
 
     const mockData = [];
     for (let i = 0; i < 2; i++) {
@@ -107,7 +103,7 @@ export default function ShippingOptionModal({ hideModal }) {
         <Container>
             <Title>Shipping Option</Title>
             <StandardDeliveryButton
-                isActive={shippingOption === 'standardDelivery'}
+                isActive={selectedOption === 'standardDelivery'}
                 onClick={handleStandardDeliveryClick}
             >
                 <p>Standard Delivery</p>
@@ -119,7 +115,7 @@ export default function ShippingOptionModal({ hideModal }) {
                     <p style={{ textAlign: 'right' }}>RM5.90</p>
                 </SelfCollectionTitle>
                 <StyledRadioGroup
-                    value={shippingOption}
+                    value={selectedOption}
                     onChange={handleRadioChange}
                 >
                     {mockData}
