@@ -19,6 +19,11 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     borderRadius: 0,
+                    '&.Mui-disabled': {
+                        background: '#f3f3f3',
+                        color: '#000000',
+                    },
+                    padding: '0.8rem',
                 },
             },
         },

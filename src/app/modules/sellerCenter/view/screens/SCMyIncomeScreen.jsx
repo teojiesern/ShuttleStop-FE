@@ -1,11 +1,13 @@
 import { Button } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
 import useSCMyIncome from '../hooks/useSCMyIncome';
+import SCWithdrawMoneyModal from '../modal/SCWithdrawMoneyModal';
 import SCReusableStyles from '../styles/SCReusableStyles';
 
 const Container = styled.div`
@@ -64,7 +66,20 @@ const OrderImage = styled.img`
 
 export default function SCMyIncomeScreen() {
     const [orders, setOrders] = useState(null);
-    const { bankInformation, getPreviousOrders } = useSCMyIncome();
+    const { bankInformation, getPreviousOrders, totalAmount } = useSCMyIncome();
+    const { showModal, hideModal } = useModal();
+
+    const handleWithdraw = useCallback(() => {
+        showModal({
+            modal: (
+                <SCWithdrawMoneyModal
+                    totalAmount={totalAmount}
+                    bankInformation={bankInformation}
+                    hideModal={hideModal}
+                />
+            ),
+        });
+    }, [bankInformation, hideModal, showModal, totalAmount]);
 
     useEffect(() => {
         getPreviousOrders().then((data) => {
@@ -84,8 +99,13 @@ export default function SCMyIncomeScreen() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <Title>Total Amount</Title>
                         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                            <TotalAmount>RM1000.00</TotalAmount>
-                            <Button style={PlatformReusableStyles.PrimaryButtonStyles}>Withdraw</Button>
+                            <TotalAmount>RM{totalAmount ?? 0.0}</TotalAmount>
+                            <Button
+                                style={PlatformReusableStyles.PrimaryButtonStyles}
+                                onClick={handleWithdraw}
+                            >
+                                Withdraw
+                            </Button>
                         </div>
                     </div>
                     <VerticalDivider />
@@ -105,9 +125,11 @@ export default function SCMyIncomeScreen() {
                                     />
                                     <SCReusableStyles.Text>{bankInformation.bankName}</SCReusableStyles.Text>
                                 </div>
-                                <SCReusableStyles.Text>123456677</SCReusableStyles.Text>
+                                <SCReusableStyles.Text>{bankInformation.accountNumber}</SCReusableStyles.Text>
                             </div>
-                        ) : null}
+                        ) : (
+                            <SCReusableStyles.Text>No Bank Information, fill in one now</SCReusableStyles.Text>
+                        )}
                     </div>
                 </HeaderLayout>
             </SCReusableStyles.BorderContainer>
