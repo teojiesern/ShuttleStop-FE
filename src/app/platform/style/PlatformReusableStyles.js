@@ -9,11 +9,13 @@ export default class PlatformReusableStyles {
     };
 
     static SecondaryButtonStyles = {
+        backgroundColor: COLORS.white,
         color: COLORS.black,
         fontWeight: FONTWEIGHT.REGULAR,
     };
 
     static OutlineButtonStyles = {
+        backgroundColor: COLORS.white,
         color: COLORS.green,
         border: `1px solid ${COLORS.green}`,
         fontWeight: FONTWEIGHT.REGULAR,
