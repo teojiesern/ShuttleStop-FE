@@ -4,10 +4,12 @@ const COLORS = {
     'light-green': '#E1F0EB',
     'light-grey': '#EBEBEB',
     'neutral-green': '#E1F0EB',
+    'semantic-blue': '#007CE0',
     black: '#252525',
     darkGrey: '#999999',
     green: '#02995F',
     grey: '#DADADA',
+    red: '#CC0E0E',
     white: '#FFFFFF',
 };
 
