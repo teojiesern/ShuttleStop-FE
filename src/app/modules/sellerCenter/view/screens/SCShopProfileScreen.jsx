@@ -1,6 +1,8 @@
 import { Button, TextField } from '@mui/material';
+import { useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import DropBox from '../../../../platform/components/dropbox/DropBox';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
@@ -28,6 +30,8 @@ const FormLabel = styled.label`
 `;
 
 export default function SCShopProfileScreen() {
+    const [files, setFiles] = useState([]);
+
     return (
         <Container>
             <ContentContainer>
@@ -40,12 +44,9 @@ export default function SCShopProfileScreen() {
             </ContentContainer>
             <ContentContainer>
                 <FormLabel>Shop Logo</FormLabel>
-                {/* TODO: Replace with dropbox */}
-                <TextField
-                    size="small"
-                    style={{ minWidth: '50%' }}
-                    multiline
-                    rows={4}
+                <DropBox
+                    files={files}
+                    setFiles={setFiles}
                 />
             </ContentContainer>
             <ContentContainer>
