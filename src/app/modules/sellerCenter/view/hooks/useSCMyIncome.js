@@ -23,11 +23,18 @@ export default function useSCMyIncome() {
         return response.data;
     };
 
+    const updateBankInformation = async (newBankInformation) => {
+        // const response = await repostitoryRef.current.updateBankInformation(newBankInformation);
+
+        setBankInformation(newBankInformation);
+    };
+
     return useMemo(
         () => ({
             bankInformation,
             totalAmount,
             getPreviousOrders,
+            updateBankInformation,
         }),
         [bankInformation, totalAmount],
     );
