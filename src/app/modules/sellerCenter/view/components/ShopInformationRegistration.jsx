@@ -3,6 +3,7 @@ import { TextField } from '@mui/material';
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import DropBox from '../../../../platform/components/dropbox/DropBox';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 
@@ -36,6 +37,7 @@ export default function ShopInformationRegistration({ registrationData }) {
     const [pickupAddress, setPickupAddress] = useState(registrationData.current.pickupAddress);
     const [email, setEmail] = useState(registrationData.current.email);
     const [phoneNumber, setPhoneNumber] = useState(registrationData.current.phoneNumber);
+    const [files, setFiles] = useState([]);
 
     const handleShopNameChange = useCallback(
         (event) => {
@@ -113,7 +115,15 @@ export default function ShopInformationRegistration({ registrationData }) {
                     onChange={handlePhoneNumberChange}
                 />
             </ContentContainer>
-            {/* TODO: Shop Logo */}
+            <ContentContainer style={{ alignItems: 'start' }}>
+                <FormLabel>Shop Logo</FormLabel>
+                <div style={{ width: '50%' }}>
+                    <DropBox
+                        files={files}
+                        setFiles={setFiles}
+                    />
+                </div>
+            </ContentContainer>
         </Container>
     );
 }

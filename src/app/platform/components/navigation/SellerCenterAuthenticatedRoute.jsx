@@ -12,9 +12,9 @@ export default function SellerCenterAuthenticatedRoute() {
         //     navigate('/authentication/login', { replace: true });
         //     return;
         // }
-        // if (!registeredSeller) {
-        //     navigate('/seller-center/registration', { replace: true });
-        // }
+        if (!registeredSeller) {
+            navigate('/seller-center/registration', { replace: true });
+        }
     }, [isLogin, navigate, registeredSeller]);
 
     return <Outlet />;

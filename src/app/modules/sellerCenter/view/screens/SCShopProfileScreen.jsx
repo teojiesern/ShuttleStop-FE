@@ -44,10 +44,12 @@ export default function SCShopProfileScreen() {
             </ContentContainer>
             <ContentContainer>
                 <FormLabel>Shop Logo</FormLabel>
-                <DropBox
-                    files={files}
-                    setFiles={setFiles}
-                />
+                <div style={{ width: '50%' }}>
+                    <DropBox
+                        files={files}
+                        setFiles={setFiles}
+                    />
+                </div>
             </ContentContainer>
             <ContentContainer>
                 <FormLabel>Shop Description</FormLabel>

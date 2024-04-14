@@ -10,7 +10,8 @@ import FONTSIZE from '../../style/FontSize';
 import FONTWEIGHT from '../../style/FontWeight';
 
 const Container = styled.div`
-    min-width: '50%';
+    width: 100%;
+    height: 100%;
 `;
 
 const DropZone = styled.div`
