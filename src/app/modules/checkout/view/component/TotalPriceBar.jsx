@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import ShippingOptionModal from '../../modal/ShippingOptionModal';
+import useShipping from '../hooks/useShipping';
 
 const Container2 = styled.div`
     display: block;
@@ -63,15 +66,28 @@ const TotalPrice = styled.span`
     text-align: right;
 `;
 
-function change() {}
-
 export default function TotalPriceBar() {
+    const { showModal, hideModal } = useModal();
+    const { shippingOption } = useShipping();
+
+    const handleChangeClick = () => {
+        showModal({
+            modal: <ShippingOptionModal hideModal={hideModal} />,
+            disableBackdropDismiss: true,
+        });
+    };
+
     return (
         <Container2>
             <ShippingContainer>
                 <ShippingMethodHead>Shipping Method:</ShippingMethodHead>
-                <ShippingMethod>Standard Delivery</ShippingMethod>
-                <ChangeShippingMethod onClick={change}>
+                {shippingOption === 'standardDelivery' ? (
+                    <ShippingMethod>Standard Delivery</ShippingMethod>
+                ) : (
+                    <ShippingMethod>Self Collection</ShippingMethod>
+                )}
+
+                <ChangeShippingMethod onClick={handleChangeClick}>
                     <p>Change</p>
                 </ChangeShippingMethod>
                 <ShippingPrice>RM5.90</ShippingPrice>
