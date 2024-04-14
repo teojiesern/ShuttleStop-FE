@@ -1,13 +1,19 @@
+/* eslint-disable no-new-wrappers */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import SCMyIncomeFakeRepositoryImpl from '../../data/SCMyIncomeFakeRepositoryImpl';
 
 export default function useSCMyIncome() {
     const [bankInformation, setBankInformation] = useState(null);
+    const [totalAmount, setTotalAmount] = useState(null);
     const repostitoryRef = useRef(new SCMyIncomeFakeRepositoryImpl());
 
     useEffect(() => {
         repostitoryRef.current.getBankInformation().then(({ data }) => {
             setBankInformation(data);
+        });
+
+        repostitoryRef.current.getTotalAmount().then(({ data }) => {
+            setTotalAmount(data.totalAmount.toFixed(2));
         });
     }, []);
 
@@ -20,8 +26,9 @@ export default function useSCMyIncome() {
     return useMemo(
         () => ({
             bankInformation,
+            totalAmount,
             getPreviousOrders,
         }),
-        [bankInformation],
+        [bankInformation, totalAmount],
     );
 }

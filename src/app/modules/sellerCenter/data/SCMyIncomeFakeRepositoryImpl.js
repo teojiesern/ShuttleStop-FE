@@ -77,4 +77,11 @@ export default class SCMyIncomeFakeRepositoryImpl {
             ],
         },
     });
+
+    getTotalAmount = async () => ({
+        status: 200,
+        data: {
+            totalAmount: 2500.0,
+        },
+    });
 }
