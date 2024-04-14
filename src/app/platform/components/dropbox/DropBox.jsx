@@ -59,16 +59,19 @@ const PreviewImageContainer = styled.div`
 export default function DropBox({ style, files, setFiles }) {
     const [rejected, setRejected] = useState([]);
 
-    const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
-        if (acceptedFiles?.length) {
-            setFiles([...acceptedFiles.map((file) => Object.assign(file, { preview: URL.createObjectURL(file) }))]);
-            setRejected([]);
-        }
+    const onDrop = useCallback(
+        (acceptedFiles, rejectedFiles) => {
+            if (acceptedFiles?.length) {
+                setFiles([...acceptedFiles.map((file) => Object.assign(file, { preview: URL.createObjectURL(file) }))]);
+                setRejected([]);
+            }
 
-        if (rejectedFiles?.length) {
-            setRejected([...rejectedFiles]);
-        }
-    }, []);
+            if (rejectedFiles?.length) {
+                setRejected([...rejectedFiles]);
+            }
+        },
+        [setFiles],
+    );
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
@@ -87,9 +90,12 @@ export default function DropBox({ style, files, setFiles }) {
         [files],
     );
 
-    const removeFile = (name) => {
-        setFiles((files) => files.filter((file) => file.name !== name));
-    };
+    const removeFile = useCallback(
+        (name) => {
+            setFiles((files) => files.filter((file) => file.name !== name));
+        },
+        [setFiles],
+    );
 
     return (
         <Container>
