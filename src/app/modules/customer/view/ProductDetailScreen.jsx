@@ -297,7 +297,7 @@ export default function ProductDetailScreen() {
                         </PrevButton>
                         {product.imgAll.slice(imageListStart, imageListStart + 4).map((image, index) => (
                             <button
-                                key={image}
+                                key={Math.random()}
                                 onClick={() => handleImageClick(image)}
                                 style={{
                                     ...(image === selectedImage
