@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
+import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
+import OrderPlacedModal from '../modal/OrderPlacedModal';
 import CheckoutProduct from './component/CheckoutProduct';
 import PaymentDetails from './component/PaymentDetails';
 import ProductOrderedHead from './component/ProductOrderedHead';
@@ -34,9 +36,13 @@ const PlaceOrderButton = styled.button`
     cursor: pointer;
 `;
 
-function handleClick() {}
-
 export default function CheckoutScreen() {
+    const { showModal } = useModal();
+
+    const handlePlaceOrderClick = () => {
+        showModal({ modal: <OrderPlacedModal /> });
+    };
+
     return (
         <Wrapper>
             <Container>
@@ -51,7 +57,7 @@ export default function CheckoutScreen() {
                 <SelectPaymentMethod />
                 <PaymentDetails />
                 <ButtonContainer>
-                    <PlaceOrderButton onClick={handleClick}>
+                    <PlaceOrderButton onClick={handlePlaceOrderClick}>
                         <p>PLACE ORDER</p>
                     </PlaceOrderButton>
                 </ButtonContainer>
