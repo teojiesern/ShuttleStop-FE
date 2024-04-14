@@ -83,7 +83,7 @@ const QuantityAction = styled.button`
 function decreaseByOne() {}
 function increaseByOne() {}
 
-export default function CheckoutProduct() {
+export default function CartProduct() {
     return (
         <Container>
             <StyledFormControlLabel
