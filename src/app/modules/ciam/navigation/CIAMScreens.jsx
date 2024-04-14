@@ -1,16 +1,33 @@
 import { Route } from 'react-router-dom';
-import CIAMTestScreen from '../view/Screen/CIAMTestScreen';
-import CIAMTestScreenTwo from '../view/Screen/CIAMTestScreenTwo';
+import ForgotPassword from '../view/Screen/ForgotPassword';
+import Login from '../view/Screen/Login';
+import ResetPassword from '../view/Screen/ResetPassword';
+import Signup from '../view/Screen/Signup';
+import Verification from '../view/Screen/Verification';
 
 const CIAMScreens = (
     <>
         <Route
-            path="login"
-            element={<CIAMTestScreen />}
+            path="/authentication/login"
+            element={<Login />}
         />
         <Route
-            path="signup"
-            element={<CIAMTestScreenTwo />}
+            path="/authentication/signup"
+            element={<Signup />}
+        />
+        <Route
+            path="login/forgot-password"
+            element={<ForgotPassword />}
+        />
+
+        <Route
+            path="login/forgot-password/verification"
+            element={<Verification />}
+        />
+
+        <Route
+            path="login/forgot-password/verification/reset-password"
+            element={<ResetPassword />}
         />
     </>
 );
