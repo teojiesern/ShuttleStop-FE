@@ -48,7 +48,7 @@ export default function CheckoutScreen() {
     return (
         <Wrapper>
             <Container>
-                <ShippingDetailsBar />
+                <ShippingDetailsBar shippingOption={shippingOption} />
             </Container>
             <Container>
                 <ProductOrderedHead />
