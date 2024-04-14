@@ -29,12 +29,19 @@ export default function useSCMyIncome() {
         setBankInformation(newBankInformation);
     };
 
+    const withdrawMoney = async (withdrawalAmount) => {
+        // const response = await repostitoryRef.current.withdrawMoney(withdrawalAmount);
+
+        setTotalAmount((prev) => (prev - withdrawalAmount).toFixed(2));
+    };
+
     return useMemo(
         () => ({
             bankInformation,
             totalAmount,
             getPreviousOrders,
             updateBankInformation,
+            withdrawMoney,
         }),
         [bankInformation, totalAmount],
     );

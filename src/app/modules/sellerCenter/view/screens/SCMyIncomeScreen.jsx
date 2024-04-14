@@ -67,7 +67,7 @@ const OrderImage = styled.img`
 
 export default function SCMyIncomeScreen() {
     const [orders, setOrders] = useState(null);
-    const { bankInformation, getPreviousOrders, totalAmount, updateBankInformation } = useSCMyIncome();
+    const { bankInformation, getPreviousOrders, totalAmount, updateBankInformation, withdrawMoney } = useSCMyIncome();
     const { showModal, hideModal } = useModal();
 
     const handleWithdraw = useCallback(() => {
@@ -77,6 +77,7 @@ export default function SCMyIncomeScreen() {
                     totalAmount={totalAmount}
                     bankInformation={bankInformation}
                     hideModal={hideModal}
+                    withdrawMoney={withdrawMoney}
                 />
             ) : (
                 <SCBankAccountDetailsModal
@@ -86,7 +87,7 @@ export default function SCMyIncomeScreen() {
                 />
             ),
         });
-    }, [bankInformation, hideModal, showModal, totalAmount, updateBankInformation]);
+    }, [bankInformation, hideModal, showModal, totalAmount, updateBankInformation, withdrawMoney]);
 
     const handleChangeBankInformation = useCallback(() => {
         showModal({

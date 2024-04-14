@@ -44,10 +44,17 @@ const ButtonContainer = styled.div`
     gap: 1rem;
 `;
 
-export default function SCWithdrawMoneyModal({ totalAmount, bankInformation, hideModal }) {
+export default function SCWithdrawMoneyModal({ totalAmount, bankInformation, hideModal, withdrawMoney }) {
     const [withdrawalAmount, setWithdrawalAmount] = useState(0);
 
     const hasEnoughMoney = parseFloat(withdrawalAmount) <= parseFloat(totalAmount);
+
+    const handleWithdrawMoney = () => {
+        if (hasEnoughMoney) {
+            withdrawMoney(parseFloat(withdrawalAmount));
+            hideModal();
+        }
+    };
 
     return (
         <CenteredDiv>
@@ -90,6 +97,7 @@ export default function SCWithdrawMoneyModal({ totalAmount, bankInformation, hid
                 <Button
                     style={hasEnoughMoney ? PlatformReusableStyles.PrimaryButtonStyles : {}}
                     disabled={!hasEnoughMoney}
+                    onClick={handleWithdrawMoney}
                 >
                     Confirm
                 </Button>
