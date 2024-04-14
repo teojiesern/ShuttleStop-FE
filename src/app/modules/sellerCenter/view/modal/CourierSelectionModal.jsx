@@ -100,6 +100,7 @@ export default function CourierSelectionModal({ hideModal, shipOrders, activeCou
                     options={{ animationData: lottieTicked, autoplay: true, loop: true }}
                     width={200}
                     height={200}
+                    isClickToPauseDisabled
                 />
                 <Title>Your mass shipment is confirmed to be shipped</Title>
                 <Description>The courier will collect your item soon</Description>

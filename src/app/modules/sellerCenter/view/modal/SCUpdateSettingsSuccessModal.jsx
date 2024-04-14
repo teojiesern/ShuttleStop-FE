@@ -27,6 +27,7 @@ export default function SCUpdateSettingsSuccessModal() {
                 options={{ animationData: lottieTicked, autoplay: true, loop: true }}
                 width={200}
                 height={200}
+                isClickToPauseDisabled
             />
             <Title>Shop Settings updated successfully!</Title>
         </CenteredDiv>

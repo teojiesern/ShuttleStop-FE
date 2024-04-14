@@ -48,9 +48,7 @@ const Divider = styled.div`
 `;
 
 export default function SCShippingSettingsScreen() {
-    const {
-        shippingSettings: { activeCourierOptions, activePaymentOptions, activeShippingOptions },
-    } = useContext(ShopSettingsContext);
+    const { activeCourierOptions, activePaymentOptions, activeShippingOptions } = useContext(ShopSettingsContext);
     const [courierOptions, setCourierOptions] = useState(activeCourierOptions);
     const [shippingOptions, setShippingOptions] = useState(activeShippingOptions);
     const [paymentOptions, setPaymentOptions] = useState(activePaymentOptions);

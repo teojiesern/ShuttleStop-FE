@@ -45,9 +45,7 @@ export default function SCMyOrdersToShipScreen() {
     const [checkedOrders, setCheckedOrders] = useState([]);
     const { getToShipOrders, shipOrders } = useSCMyOrdersToShip();
     const { showModal, hideModal } = useModal();
-    const {
-        shippingSettings: { activeCourierOptions },
-    } = useContext(ShopSettingsContext);
+    const { activeCourierOptions } = useContext(ShopSettingsContext);
 
     const handleOrderClick = useCallback((orderId) => {
         setCheckedOrders((prevCheckedOrders) => {

@@ -3,16 +3,17 @@ import ShopSettingsContext from '../../../../platform/app/data/ShopSettingsConte
 
 // eslint-disable-next-line no-unused-vars
 export default function useSCShippingSettings({ courierOptions, paymentOptions, shippingOptions }) {
-    const { setShippingSettings } = useContext(ShopSettingsContext);
+    const { setShopSettings } = useContext(ShopSettingsContext);
 
     const updateShippingSettings = useCallback(() => {
         // TODO: Call BE for registration
-        setShippingSettings({
+        setShopSettings((prev) => ({
+            ...prev,
             activeCourierOptions: courierOptions,
             activeShippingOptions: shippingOptions,
             activePaymentOptions: paymentOptions,
-        });
-    }, [courierOptions, paymentOptions, setShippingSettings, shippingOptions]);
+        }));
+    }, [courierOptions, paymentOptions, setShopSettings, shippingOptions]);
 
     return useMemo(
         () => ({
