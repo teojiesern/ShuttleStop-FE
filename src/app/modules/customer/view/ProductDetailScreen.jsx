@@ -2,6 +2,7 @@ import { ArrowBackIosOutlined, ArrowForwardIosOutlined } from '@mui/icons-materi
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { Button } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import React, { useContext, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -343,7 +344,7 @@ export default function ProductDetailScreen() {
                                         <OptionsType>{optionType}</OptionsType>
                                         <AllOptionBtns>
                                             {optionValues.map((optionValue) => (
-                                                <button
+                                                <Button
                                                     style={
                                                         optionValue === selectedOptions[optionType]
                                                             ? {
@@ -352,7 +353,7 @@ export default function ProductDetailScreen() {
                                                                   height: '50px',
                                                               }
                                                             : {
-                                                                  ...PlatformReusableStyles.SecondaryButtonStyles,
+                                                                  ...PlatformReusableStyles.BlackOutlineButtonStyles,
                                                                   width: '80px',
                                                                   height: '50px',
                                                               }
@@ -362,7 +363,7 @@ export default function ProductDetailScreen() {
                                                     onClick={() => handleOptionClick(optionType, optionValue)}
                                                 >
                                                     {optionValue}
-                                                </button>
+                                                </Button>
                                             ))}
                                         </AllOptionBtns>
                                     </WholeOption>
@@ -371,10 +372,10 @@ export default function ProductDetailScreen() {
                         <WholeOption>
                             <OptionsType>quantity </OptionsType>
                             <AllOptionBtns>
-                                <button
+                                <Button
                                     aria-label="Add"
                                     style={{
-                                        ...PlatformReusableStyles.SecondaryButtonStyles,
+                                        ...PlatformReusableStyles.BlackOutlineButtonStyles,
                                         width: '50px',
                                         height: '45px',
                                         display: 'flex',
@@ -388,7 +389,7 @@ export default function ProductDetailScreen() {
                                     }}
                                 >
                                     <RemoveIcon />
-                                </button>
+                                </Button>
                                 <StyledInput
                                     id="quantity"
                                     value={inputQuantity}
@@ -408,10 +409,10 @@ export default function ProductDetailScreen() {
                                     }}
                                 />
 
-                                <button
+                                <Button
                                     aria-label="Add"
                                     style={{
-                                        ...PlatformReusableStyles.SecondaryButtonStyles,
+                                        ...PlatformReusableStyles.BlackOutlineButtonStyles,
                                         width: '50px',
                                         height: '45px',
                                         display: 'flex',
@@ -425,12 +426,12 @@ export default function ProductDetailScreen() {
                                     }}
                                 >
                                     <AddIcon />
-                                </button>
+                                </Button>
                             </AllOptionBtns>
                         </WholeOption>
                         <WholeOption>
                             <AllOptionBtns>
-                                <button
+                                <Button
                                     style={{
                                         ...PlatformReusableStyles.OutlineButtonStyles,
                                         display: 'flex',
@@ -445,10 +446,10 @@ export default function ProductDetailScreen() {
                                 >
                                     <ShoppingCartOutlinedIcon />
                                     ADD TO CART
-                                </button>
+                                </Button>
 
                                 <Link to="/customer/fakeCheckout">
-                                    <button
+                                    <Button
                                         style={{
                                             ...PlatformReusableStyles.PrimaryButtonStyles,
                                             width: '130px',
@@ -458,7 +459,7 @@ export default function ProductDetailScreen() {
                                         onClick={handleBuyNow}
                                     >
                                         BUY NOW
-                                    </button>
+                                    </Button>
                                 </Link>
                             </AllOptionBtns>
                         </WholeOption>
@@ -481,7 +482,7 @@ export default function ProductDetailScreen() {
             </ProductDescription>
             <br />
             <Link to="/customer/fakeCart">
-                <button style={PlatformReusableStyles.OutlineButtonStyles}>Go to Fake Cart</button>
+                <Button style={PlatformReusableStyles.OutlineButtonStyles}>Go to Fake Cart</Button>
             </Link>
         </div>
     );
