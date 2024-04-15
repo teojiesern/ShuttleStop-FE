@@ -222,11 +222,11 @@ export default function ProductDetailScreen() {
         </React.Fragment>
     ));
 
-    const [selectedImage, setSelectedImage] = useState(product.imgAll[0]);
     const [imageListStart, setImageListStart] = useState(0);
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-    const handleImageClick = (image) => {
-        setSelectedImage(image);
+    const handleImageClick = (index) => {
+        setSelectedImageIndex(index);
     };
 
     const handleNextClick = () => {
@@ -242,22 +242,18 @@ export default function ProductDetailScreen() {
     };
 
     const handleNextClickBigImage = () => {
-        const currentIndex = product.imgAll.indexOf(selectedImage);
-        if (currentIndex < product.imgAll.length - 1) {
-            const nextImage = product.imgAll[currentIndex + 1];
-            setSelectedImage(nextImage);
-            if (currentIndex === imageListStart + 2 && imageListStart < product.imgAll.length - 4) {
+        if (selectedImageIndex < product.imgAll.length - 1) {
+            setSelectedImageIndex(selectedImageIndex + 1);
+            if (selectedImageIndex === imageListStart + 2 && imageListStart < product.imgAll.length - 4) {
                 setImageListStart(imageListStart + 1);
             }
         }
     };
 
     const handlePrevClickBigImage = () => {
-        const currentIndex = product.imgAll.indexOf(selectedImage);
-        if (currentIndex > 0) {
-            const nextImage = product.imgAll[currentIndex - 1];
-            setSelectedImage(nextImage);
-            if (currentIndex === imageListStart + 1 && imageListStart > 0) {
+        if (selectedImageIndex > 0) {
+            setSelectedImageIndex(selectedImageIndex - 1);
+            if (selectedImageIndex === imageListStart + 1 && imageListStart > 0) {
                 setImageListStart(imageListStart - 1);
             }
         }
@@ -279,7 +275,7 @@ export default function ProductDetailScreen() {
                             <ArrowBackIosOutlined style={{ fontSize: '22px' }} />
                         </PrevButton>
                         <img
-                            src={selectedImage}
+                            src={product.imgAll[selectedImageIndex]}
                             alt={product.name}
                             width={400}
                             height={400}
@@ -298,9 +294,9 @@ export default function ProductDetailScreen() {
                         {product.imgAll.slice(imageListStart, imageListStart + 4).map((image, index) => (
                             <button
                                 key={Math.random()}
-                                onClick={() => handleImageClick(image)}
+                                onClick={() => handleImageClick(imageListStart + index)}
                                 style={{
-                                    ...(image === selectedImage
+                                    ...(imageListStart + index === selectedImageIndex
                                         ? PlatformReusableStyles.OutlineButtonStyles
                                         : PlatformReusableStyles.SecondaryButtonStyles),
                                     padding: '5px',
