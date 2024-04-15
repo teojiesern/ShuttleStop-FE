@@ -7,6 +7,7 @@ import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
 import useSCMyIncome from '../hooks/useSCMyIncome';
+import SCBankAccountDetailsModal from '../modal/SCBankAccountDetailsModal';
 import SCWithdrawMoneyModal from '../modal/SCWithdrawMoneyModal';
 import SCReusableStyles from '../styles/SCReusableStyles';
 
@@ -66,20 +67,39 @@ const OrderImage = styled.img`
 
 export default function SCMyIncomeScreen() {
     const [orders, setOrders] = useState(null);
-    const { bankInformation, getPreviousOrders, totalAmount } = useSCMyIncome();
+    const { bankInformation, getPreviousOrders, totalAmount, updateBankInformation, withdrawMoney } = useSCMyIncome();
     const { showModal, hideModal } = useModal();
 
     const handleWithdraw = useCallback(() => {
         showModal({
-            modal: (
+            modal: bankInformation ? (
                 <SCWithdrawMoneyModal
                     totalAmount={totalAmount}
                     bankInformation={bankInformation}
                     hideModal={hideModal}
+                    withdrawMoney={withdrawMoney}
+                />
+            ) : (
+                <SCBankAccountDetailsModal
+                    bankInformation={bankInformation}
+                    hideModal={hideModal}
+                    updateBankInformation={updateBankInformation}
                 />
             ),
         });
-    }, [bankInformation, hideModal, showModal, totalAmount]);
+    }, [bankInformation, hideModal, showModal, totalAmount, updateBankInformation, withdrawMoney]);
+
+    const handleChangeBankInformation = useCallback(() => {
+        showModal({
+            modal: (
+                <SCBankAccountDetailsModal
+                    bankInformation={bankInformation}
+                    hideModal={hideModal}
+                    updateBankInformation={updateBankInformation}
+                />
+            ),
+        });
+    }, [bankInformation, hideModal, showModal, updateBankInformation]);
 
     useEffect(() => {
         getPreviousOrders().then((data) => {
@@ -112,8 +132,11 @@ export default function SCMyIncomeScreen() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Title>My Bank Account</Title>
-                            <SCReusableStyles.Text style={{ color: COLORS['semantic-blue'], cursor: 'pointer' }}>
-                                Total Amount
+                            <SCReusableStyles.Text
+                                style={{ color: COLORS['semantic-blue'], cursor: 'pointer' }}
+                                onClick={handleChangeBankInformation}
+                            >
+                                Change
                             </SCReusableStyles.Text>
                         </div>
                         {bankInformation ? (
