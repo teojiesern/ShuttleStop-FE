@@ -18,4 +18,10 @@ export default class PlatformReusableStyles {
         border: `1px solid ${COLORS.green}`,
         fontWeight: FONTWEIGHT.REGULAR,
     };
+
+    static BlackOutlineButtonStyles = {
+        color: COLORS.black,
+        border: `1px solid ${COLORS.black}`,
+        fontWeight: FONTWEIGHT.REGULAR,
+    };
 }

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import products from '../assets/ProductList2';
-import FilterContext from './FilterContext';
+import FilterContext from '../context/FilterContext';
 import Product from './Product';
 
 const ProductGrid = styled.div`
@@ -30,7 +30,7 @@ export default function ProductBrowsing() {
 
     const category = pathnames[pathnames.length - 1];
 
-    const [productDisplay, setProductDisplay] = useState(products); // This is where you store your products
+    const [productDisplay, setProductDisplay] = useState(products);
     useEffect(() => {
         const newProductsDisplay = products.filter((p) => p.category === category);
         setProductDisplay(newProductsDisplay);
@@ -112,6 +112,7 @@ export default function ProductBrowsing() {
                             imgSrc={product.imgSrc}
                             name={product.name}
                             price={product.price}
+                            category={product.category}
                         />
                     ))
                 )}

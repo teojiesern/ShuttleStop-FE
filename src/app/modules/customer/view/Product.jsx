@@ -40,9 +40,9 @@ const ProductPrice = styled.div`
     font-size: ${FONTSIZE.medium};
 `;
 
-export default function Product({ id, imgSrc, name, price }) {
+export default function Product({ id, imgSrc, name, price, category }) {
     return (
-        <Link to={`/customer/racquets/details/${id}`}>
+        <Link to={`/customer/${category}/${id}`}>
             <ProductView>
                 <ProductImg>
                     <img
