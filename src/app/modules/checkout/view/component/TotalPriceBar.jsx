@@ -37,6 +37,7 @@ const ChangeShippingMethod = styled.button`
     border: none;
     font-size: ${FONTSIZE.small};
     font-weight: ${FONTWEIGHT.REGULAR};
+    cursor: pointer;
 `;
 const ShippingPrice = styled.span`
     flex: 1 1 10%;

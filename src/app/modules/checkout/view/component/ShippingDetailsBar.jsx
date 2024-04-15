@@ -48,6 +48,7 @@ const EditAddressButton = styled.button`
     border: none;
     background: none;
     color: #007ce0;
+    cursor: pointer;
 `;
 
 function showModel() {}
