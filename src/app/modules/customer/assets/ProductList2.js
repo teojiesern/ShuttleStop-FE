@@ -1556,7 +1556,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Yonex \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nItem No. : AS-40 \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Yonex \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nItem No. : AS-40 \nQuantity：12Pcs',
     },
     {
         id: 502,
@@ -1580,7 +1580,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Felet \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Felet \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuantity：12Pcs',
     },
     {
         id: 503,
@@ -1604,7 +1604,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Apacs \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Apacs \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuantity：12Pcs',
     },
     {
         id: 504,
@@ -1628,7 +1628,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Victor \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Victor \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuantity：12Pcs',
     },
     {
         id: 505,
@@ -1652,7 +1652,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Alpsport \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Alpsport \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuantity：12Pcs',
     },
     {
         id: 506,
@@ -1669,7 +1669,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Maxx \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Maxx \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuantity：12Pcs',
     },
     {
         id: 507,
@@ -1693,7 +1693,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Li-Ning \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Li-Ning \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuantity：12Pcs',
     },
     {
         id: 508,
@@ -1710,7 +1710,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Yonex \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nItem No. : AS-40 \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Yonex \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nItem No. : AS-40 \nQuantity：12Pcs',
     },
     {
         id: 509,
@@ -1734,7 +1734,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Felet \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Felet \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade)  \nQuantity：12Pcs',
     },
     {
         id: 510,
@@ -1758,7 +1758,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Apacs \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Apacs \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuantity：12Pcs',
     },
     {
         id: 511,
@@ -1782,7 +1782,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Victor \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Victor \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuantity：12Pcs',
     },
     {
         id: 512,
@@ -1806,7 +1806,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Alpsport \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Alpsport \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuantity：12Pcs',
     },
     {
         id: 513,
@@ -1823,7 +1823,7 @@ const productsList = [
         seller: ' TITAN BADMINTON STORE',
         sellerLogo: logoTitan,
         description:
-            'Category: shuttlecock \nBrand : Maxx \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuality：12Pcs',
+            'Category: shuttlecock \nBrand : Maxx \nBall Classification : Goose feather ball \nBadminton ball Classification : As a whole Cork (high-grade) \nQuantity：12Pcs',
     },
     {
         id: 514,
