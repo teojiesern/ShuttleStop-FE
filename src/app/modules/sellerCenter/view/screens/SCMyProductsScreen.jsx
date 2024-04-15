@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
@@ -73,17 +74,29 @@ export default function SCMyProductsScreen() {
                 {products.map((product, index) => (
                     <div key={product.productID}>
                         <Layout>
-                            <ProductContainer>
-                                <ProductImage src={product.thumbnailImage} />
-                                <SCReusableStyles.Text>{product.productName}</SCReusableStyles.Text>
-                            </ProductContainer>
-                            <SCReusableStyles.Text>{product.color}</SCReusableStyles.Text>
-                            <SCReusableStyles.Text>{product.price}</SCReusableStyles.Text>
-                            <SCReusableStyles.Text>{product.stock}</SCReusableStyles.Text>
-                            <SCReusableStyles.Text>{product.sales}</SCReusableStyles.Text>
-                            <SCReusableStyles.Text style={{ color: COLORS['semantic-blue'], cursor: 'pointer' }}>
-                                Edit
-                            </SCReusableStyles.Text>
+                            {product.variants.flatMap((variant, index) => [
+                                index === 0 ? (
+                                    <ProductContainer>
+                                        <ProductImage src={product.thumbnailImage} />
+                                        <SCReusableStyles.Text>{product.productName}</SCReusableStyles.Text>
+                                    </ProductContainer>
+                                ) : (
+                                    <div key={variant.color} />
+                                ),
+                                <SCReusableStyles.Text key={variant.color}>{variant.color}</SCReusableStyles.Text>,
+                                <SCReusableStyles.Text key={variant.color}>{variant.price}</SCReusableStyles.Text>,
+                                <SCReusableStyles.Text key={variant.color}>{variant.totalStock}</SCReusableStyles.Text>,
+                                <SCReusableStyles.Text key={variant.color}>{variant.totalSales}</SCReusableStyles.Text>,
+                                index === 0 ? (
+                                    <SCReusableStyles.Text
+                                        style={{ color: COLORS['semantic-blue'], cursor: 'pointer' }}
+                                    >
+                                        Edit
+                                    </SCReusableStyles.Text>
+                                ) : (
+                                    <div key={variant.color} />
+                                ),
+                            ])}
                         </Layout>
                         {index !== products.length - 1 && <SCReusableStyles.Divider />}
                     </div>
