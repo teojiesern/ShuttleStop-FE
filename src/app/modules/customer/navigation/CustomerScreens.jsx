@@ -1,4 +1,7 @@
 import { Route } from 'react-router-dom';
+import FakeCart from '../view/FakeCart';
+import FakeCheckout from '../view/FakeCheckout';
+import ProductDetailScreen from '../view/ProductDetailScreen';
 import ProductMainScreen from '../view/ProductMainScreen';
 
 const CustomerScreens = (
@@ -26,6 +29,18 @@ const CustomerScreens = (
         <Route
             path="/customer/accessories"
             element={<ProductMainScreen />}
+        />
+        <Route
+            path="/customer/:category/:id"
+            element={<ProductDetailScreen />}
+        />
+        <Route
+            path="/customer/fakeCart"
+            element={<FakeCart />}
+        />
+        <Route
+            path="/customer/fakeCheckout"
+            element={<FakeCheckout />}
         />
     </>
 );

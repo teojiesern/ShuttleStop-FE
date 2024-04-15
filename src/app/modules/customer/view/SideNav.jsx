@@ -13,7 +13,8 @@ import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
-import FilterContext from './FilterContext';
+import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
+import FilterContext from '../context/FilterContext';
 
 const NavBar = styled.div`
     float: left;
@@ -69,15 +70,6 @@ const StyledHr = styled.hr`
     border: none;
     border-top: 1px solid ${COLORS.darkGrey};
     width: 100%;
-`;
-
-const BtnApply = styled.button`
-    background-color: ${COLORS.green};
-    border: none;
-    color: ${COLORS.white};
-    height: 40px;
-    width: 100%;
-    cursor: pointer;
 `;
 
 const Rate = styled.div`
@@ -166,7 +158,7 @@ export default function SideNav() {
                     alignItems="center"
                 >
                     <TextField
-                        id="outlined-basic"
+                        id="RM-MIN"
                         label="RM MIN"
                         variant="outlined"
                         size="small"
@@ -184,7 +176,7 @@ export default function SideNav() {
 
                     <ShortHr />
                     <TextField
-                        id="outlined-basic"
+                        id="RM_MAX"
                         label="RM MAX"
                         variant="outlined"
                         size="small"
@@ -200,7 +192,8 @@ export default function SideNav() {
                         }}
                     />
                 </Box>
-                <BtnApply
+                <button
+                    style={PlatformReusableStyles.PrimaryButtonStyles}
                     onClick={() => {
                         if (filter.tempMinPrice === '' || filter.tempMaxPrice === '') {
                             setFilter((prevFilter) => ({
@@ -218,7 +211,7 @@ export default function SideNav() {
                     }}
                 >
                     APPLY NOW
-                </BtnApply>
+                </button>
             </Price>
             <StyledHr />
             <Rate>
