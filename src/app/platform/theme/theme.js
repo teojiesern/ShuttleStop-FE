@@ -27,6 +27,16 @@ const theme = createTheme({
                 },
             },
         },
+        MuiRadio: {
+            styleOverrides: {
+                root: {
+                    color: COLORS.grey,
+                    '&.Mui-checked': {
+                        color: COLORS.green,
+                    },
+                },
+            },
+        },
     },
 });
 

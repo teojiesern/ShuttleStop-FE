@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import ShippingOptionModal from '../../modal/ShippingOptionModal';
 
 const Container2 = styled.div`
     display: block;
@@ -35,6 +37,7 @@ const ChangeShippingMethod = styled.button`
     border: none;
     font-size: ${FONTSIZE.small};
     font-weight: ${FONTWEIGHT.REGULAR};
+    cursor: pointer;
 `;
 const ShippingPrice = styled.span`
     flex: 1 1 10%;
@@ -63,15 +66,33 @@ const TotalPrice = styled.span`
     text-align: right;
 `;
 
-function change() {}
+export default function TotalPriceBar({ shippingOption, updateShippingOption }) {
+    const { showModal, hideModal } = useModal();
 
-export default function TotalPriceBar() {
+    const handleChangeClick = () => {
+        showModal({
+            modal: (
+                <ShippingOptionModal
+                    hideModal={hideModal}
+                    shippingOption={shippingOption}
+                    updateShippingOption={updateShippingOption}
+                />
+            ),
+            disableBackdropDismiss: true,
+        });
+    };
+
     return (
         <Container2>
             <ShippingContainer>
                 <ShippingMethodHead>Shipping Method:</ShippingMethodHead>
-                <ShippingMethod>Standard Delivery</ShippingMethod>
-                <ChangeShippingMethod onClick={change}>
+                {shippingOption === 'standardDelivery' ? (
+                    <ShippingMethod>Standard Delivery</ShippingMethod>
+                ) : (
+                    <ShippingMethod>Self Collection</ShippingMethod>
+                )}
+
+                <ChangeShippingMethod onClick={handleChangeClick}>
                     <p>Change</p>
                 </ChangeShippingMethod>
                 <ShippingPrice>RM5.90</ShippingPrice>

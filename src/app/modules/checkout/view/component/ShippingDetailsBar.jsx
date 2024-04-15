@@ -48,24 +48,31 @@ const EditAddressButton = styled.button`
     border: none;
     background: none;
     color: #007ce0;
+    cursor: pointer;
 `;
 
 function showModel() {}
 
-export default function CheckoutScreen() {
+export default function ShippingDetailsBar({ shippingOption }) {
     return (
         <Container>
             <AddressHead>
                 <Place style={{ fontSize: FONTSIZE.large, marginRight: '1rem' }} />
-                Shipping Address
+                {shippingOption === 'standardDelivery' ? 'Standard Delivery' : 'Self Collection Point'}
             </AddressHead>
             <CustomerDetailsContainer>
                 <CustomerNameContainer>Aron Chia</CustomerNameContainer>
                 <ContactNumContainer>(+60) 12 345 6789</ContactNumContainer>
-                <AddressContainer>1, Jalan Penang, 10400 Georgetown, Penang</AddressContainer>
-                <EditAddressButton onClick={showModel}>
-                    <p>Edit</p>
-                </EditAddressButton>
+                {shippingOption === 'standardDelivery' ? (
+                    <AddressContainer>1, Jalan Penang, 10400 Georgetown, Penang</AddressContainer>
+                ) : (
+                    <AddressContainer>CollectCo JustPrint Penang</AddressContainer>
+                )}
+                {shippingOption === 'standardDelivery' && (
+                    <EditAddressButton onClick={showModel}>
+                        <p>Edit</p>
+                    </EditAddressButton>
+                )}
             </CustomerDetailsContainer>
         </Container>
     );
