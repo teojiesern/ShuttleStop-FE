@@ -1,7 +1,6 @@
 import { useCallback, useContext, useMemo } from 'react';
 import ShopSettingsContext from '../../../../platform/app/data/ShopSettingsContext';
 
-// eslint-disable-next-line no-unused-vars
 export default function useSCShippingSettings({ courierOptions, paymentOptions, shippingOptions }) {
     const { setShopSettings } = useContext(ShopSettingsContext);
 
