@@ -85,7 +85,7 @@ export default function CompetitionLayout() {
         showModal({
             modal: <CompetitionLinkModal hideModal={hideModal} />,
         });
-    }, [showModal]);
+    }, [hideModal, showModal]);
 
     const [setSelectedYear] = useState();
     const { getDetails } = useCompetitionDetail();

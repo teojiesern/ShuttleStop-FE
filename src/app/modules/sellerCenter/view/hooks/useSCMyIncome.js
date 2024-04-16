@@ -1,4 +1,3 @@
-/* eslint-disable no-new-wrappers */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import SCMyIncomeFakeRepositoryImpl from '../../data/SCMyIncomeFakeRepositoryImpl';
 
