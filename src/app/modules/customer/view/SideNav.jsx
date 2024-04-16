@@ -1,5 +1,6 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -81,7 +82,7 @@ const Rate = styled.div`
 export default function SideNav() {
     const brands = ['Yonex', 'Felet', 'Apacs', 'Li-Ning', 'Victor', 'Maxx', 'Alpsport'];
 
-    const [showAllBrands, setShowAllBrands] = useState(true);
+    const [showAllBrands, setShowAllBrands] = useState(false);
     const displayedBrands = showAllBrands ? brands : brands.slice(0, 5);
     const { filter, setFilter } = useContext(FilterContext);
 
@@ -192,7 +193,7 @@ export default function SideNav() {
                         }}
                     />
                 </Box>
-                <button
+                <Button
                     style={PlatformReusableStyles.PrimaryButtonStyles}
                     onClick={() => {
                         if (filter.tempMinPrice === '' || filter.tempMaxPrice === '') {
@@ -200,6 +201,14 @@ export default function SideNav() {
                                 ...prevFilter,
                                 minPrice: 0,
                                 maxPrice: Infinity,
+                            }));
+                        } else if (filter.tempMinPrice >= filter.tempMaxPrice) {
+                            setFilter((prevFilter) => ({
+                                ...prevFilter,
+                                minPrice: 0,
+                                maxPrice: Infinity,
+                                tempMinPrice: '',
+                                tempMaxPrice: '',
                             }));
                         } else {
                             setFilter((prevFilter) => ({
@@ -211,7 +220,7 @@ export default function SideNav() {
                     }}
                 >
                     APPLY NOW
-                </button>
+                </Button>
             </Price>
             <StyledHr />
             <Rate>
