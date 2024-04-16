@@ -42,6 +42,11 @@ const CustomerScreens = (
             path="/customer/fakeCheckout"
             element={<FakeCheckout />}
         />
+        <Route
+            path="/customer/my-account"
+            // TODO: Replace with my account screen
+            element={<FakeCheckout />}
+        />
     </>
 );
 
