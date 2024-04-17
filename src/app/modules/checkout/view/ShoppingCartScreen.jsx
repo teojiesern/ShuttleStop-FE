@@ -1,14 +1,18 @@
 import DeleteOutline from '@mui/icons-material/DeleteOutline';
+import ProductionQuantityLimits from '@mui/icons-material/ProductionQuantityLimits';
 import Storefront from '@mui/icons-material/Storefront';
 import { Checkbox, FormControlLabel, IconButton } from '@mui/material';
-import { useCallback, useState } from 'react';
+import Button from '@mui/material/Button';
+import { useCallback, useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
+import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
+import CartContext from '../../customer/context/CartContext';
 import DeleteItemModal from '../modal/DeleteItemModal';
-import ProductImage from './assets/product.png';
 import CheckoutBar from './component/CheckoutBar';
 import COReusableStyles from './styles/COReusableStyles';
 
@@ -18,6 +22,14 @@ const Wrapper = styled.div`
     margin-left: auto;
     margin-right: auto;
     gap: 1rem;
+`;
+const CenteredContainer = styled.div`
+    display: flex;
+    color: ${COLORS.grey};
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
 `;
 const Layout = styled.div`
     width: 100%;
@@ -55,24 +67,76 @@ function handleSelectAllChange() {}
 function handleSelectStoresChange() {}
 
 export default function ShoppingCartScreen() {
-    const [itemQty, setItemQty] = useState(1);
+    const [productQty, setProductQty] = useState({});
     const { showModal, hideModal } = useModal();
+    const { cart } = useContext(CartContext);
 
     const handleDeleteAction = useCallback(() => {
         showModal({ modal: <DeleteItemModal hideModal={hideModal} /> });
     }, [showModal, hideModal]);
 
     const handleIncreamentChange = useCallback(() => {
-        setItemQty(itemQty + 1);
-    }, [itemQty, setItemQty]);
+        setProductQty(productQty + 1);
+    }, [productQty, setProductQty]);
 
     const handleDecrementChange = useCallback(() => {
-        if (itemQty > 1) {
-            setItemQty(itemQty - 1);
+        if (productQty > 1) {
+            setProductQty(productQty - 1);
         } else {
             showModal({ modal: <DeleteItemModal hideModal={hideModal} /> });
         }
-    }, [itemQty, setItemQty, showModal, hideModal]);
+    }, [productQty, setProductQty, showModal, hideModal]);
+
+    if (cart.length === 0) {
+        return (
+            <Wrapper>
+                <COReusableStyles.BorderConatiner>
+                    <Layout>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    onChange={handleSelectAllChange}
+                                    disabled
+                                />
+                            }
+                            label={
+                                <COReusableStyles.Label style={{ marginLeft: '1.5rem' }}>
+                                    Product
+                                </COReusableStyles.Label>
+                            }
+                        />
+                        <COReusableStyles.Label>Unit Price</COReusableStyles.Label>
+                        <COReusableStyles.Label>Quantity</COReusableStyles.Label>
+                        <COReusableStyles.Label>Total Price</COReusableStyles.Label>
+                        <COReusableStyles.Label>Action</COReusableStyles.Label>
+                    </Layout>
+                </COReusableStyles.BorderConatiner>
+
+                <CenteredContainer>
+                    <ProductionQuantityLimits style={{ fontSize: '150px' }} />
+                    <span
+                        style={{
+                            color: COLORS.grey,
+                            fontSize: FONTSIZE['xx-large'],
+                            fontWeight: FONTWEIGHT.SEMI_BOLD,
+                            marginLeft: '2rem',
+                        }}
+                    >
+                        Your cart is empty
+                    </span>
+                </CenteredContainer>
+                <CenteredContainer>
+                    <Button
+                        component={Link}
+                        to="/"
+                        style={{ ...PlatformReusableStyles.OutlineButtonStyles }}
+                    >
+                        <p>BACK TO HOME</p>
+                    </Button>
+                </CenteredContainer>
+            </Wrapper>
+        );
+    }
 
     return (
         <Wrapper>
@@ -91,51 +155,62 @@ export default function ShoppingCartScreen() {
                 </Layout>
             </COReusableStyles.BorderConatiner>
 
-            <COReusableStyles.BorderConatiner>
-                <FormControlLabel
-                    control={<Checkbox onChange={handleSelectStoresChange} />}
-                    label={
-                        <CheckboxLabelContainer>
-                            <Storefront />
-                            <COReusableStyles.Text style={{}}>Titan Badminton Store</COReusableStyles.Text>
-                        </CheckboxLabelContainer>
-                    }
-                />
-                <COReusableStyles.Divider />
-                <Layout>
+            {cart.map((product) => (
+                <COReusableStyles.BorderConatiner key={product.id}>
                     <FormControlLabel
-                        control={<Checkbox />}
+                        control={<Checkbox onChange={handleSelectStoresChange} />}
                         label={
                             <CheckboxLabelContainer>
-                                <img
-                                    src={ProductImage}
-                                    alt="product"
-                                />
-                                <COReusableStyles.Text style={{ textAlign: 'start' }}>
-                                    YONEX ASTROX 99
-                                    <p style={{ color: COLORS.darkGrey, fontSize: FONTSIZE['x-small'] }}>Red, 4U/5G</p>
-                                </COReusableStyles.Text>
+                                <Storefront />
+                                <COReusableStyles.Text style={{}}>Titan Badminton Store</COReusableStyles.Text>
                             </CheckboxLabelContainer>
                         }
                     />
-                    <COReusableStyles.Text>RM729.00</COReusableStyles.Text>
-                    <QuantityControlContainer>
-                        <QuantityChangeButton onClick={handleDecrementChange}>-</QuantityChangeButton>
-                        <QuantityChangeButton style={{ cursor: 'auto' }}>
-                            <p>{itemQty}</p>
-                        </QuantityChangeButton>
-                        <QuantityChangeButton onClick={handleIncreamentChange}>+</QuantityChangeButton>
-                    </QuantityControlContainer>
-                    <COReusableStyles.Text>RM729.00</COReusableStyles.Text>
-                    <IconButton
-                        onClick={handleDeleteAction}
-                        aria-label="delete"
-                        style={{ color: COLORS.black }}
-                    >
-                        <DeleteOutline />
-                    </IconButton>
-                </Layout>
-            </COReusableStyles.BorderConatiner>
+                    <COReusableStyles.Divider />
+                    <Layout>
+                        <FormControlLabel
+                            control={<Checkbox />}
+                            label={
+                                <CheckboxLabelContainer>
+                                    <img
+                                        src={product.imgSrc}
+                                        alt={product.name}
+                                        width="100px"
+                                    />
+                                    <COReusableStyles.Text style={{ textAlign: 'start' }}>
+                                        {product.name}
+                                        <p style={{ color: COLORS.darkGrey, fontSize: FONTSIZE['x-small'] }}>
+                                            {[
+                                                product.options.color ? product.options.color : '',
+                                                product.options.size ? product.options.size : '',
+                                                product.options.grade ? product.options.grade : '',
+                                            ]
+                                                .filter(Boolean)
+                                                .join(', ')}
+                                        </p>
+                                    </COReusableStyles.Text>
+                                </CheckboxLabelContainer>
+                            }
+                        />
+                        <COReusableStyles.Text>{product.price.toFixed(2)}</COReusableStyles.Text>
+                        <QuantityControlContainer>
+                            <QuantityChangeButton onClick={handleDecrementChange}>-</QuantityChangeButton>
+                            <QuantityChangeButton style={{ cursor: 'auto' }}>
+                                <p>{product.quantity}</p>
+                            </QuantityChangeButton>
+                            <QuantityChangeButton onClick={handleIncreamentChange}>+</QuantityChangeButton>
+                        </QuantityControlContainer>
+                        <COReusableStyles.Text>{product.price.toFixed(2)}</COReusableStyles.Text>
+                        <IconButton
+                            onClick={handleDeleteAction}
+                            aria-label="delete"
+                            style={{ color: COLORS.black }}
+                        >
+                            <DeleteOutline />
+                        </IconButton>
+                    </Layout>
+                </COReusableStyles.BorderConatiner>
+            ))}
             <CheckoutBar />
         </Wrapper>
     );
