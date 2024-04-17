@@ -85,7 +85,7 @@ export default function SelectPaymentMethod() {
                     <p>Cash On Delivery</p>
                 </PaymentMethodButton>
             </ButtonContainer>
-            <RadioGroup>{mockData}</RadioGroup>
+            {paymentMethod === 'onlineBanking' && <RadioGroup>{mockData}</RadioGroup>}
         </Container>
     );
 }

@@ -4,8 +4,10 @@ import { Checkbox, FormControlLabel, IconButton } from '@mui/material';
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
+import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
+import DeleteItemModal from '../modal/DeleteItemModal';
 import ProductImage from './assets/product.png';
 import CheckoutBar from './component/CheckoutBar';
 import COReusableStyles from './styles/COReusableStyles';
@@ -54,15 +56,23 @@ function handleSelectStoresChange() {}
 
 export default function ShoppingCartScreen() {
     const [itemQty, setItemQty] = useState(1);
+    const { showModal, hideModal } = useModal();
+
+    const handleDeleteAction = useCallback(() => {
+        showModal({ modal: <DeleteItemModal hideModal={hideModal} /> });
+    }, [showModal, hideModal]);
 
     const handleIncreamentChange = useCallback(() => {
         setItemQty(itemQty + 1);
     }, [itemQty, setItemQty]);
+
     const handleDecrementChange = useCallback(() => {
         if (itemQty > 1) {
             setItemQty(itemQty - 1);
+        } else {
+            showModal({ modal: <DeleteItemModal hideModal={hideModal} /> });
         }
-    }, [itemQty, setItemQty]);
+    }, [itemQty, setItemQty, showModal, hideModal]);
 
     return (
         <Wrapper>
@@ -118,6 +128,7 @@ export default function ShoppingCartScreen() {
                     </QuantityControlContainer>
                     <COReusableStyles.Text>RM729.00</COReusableStyles.Text>
                     <IconButton
+                        onClick={handleDeleteAction}
                         aria-label="delete"
                         style={{ color: COLORS.black }}
                     >
