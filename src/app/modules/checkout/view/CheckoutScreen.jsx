@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import useModal from '../../../platform/modal/useModal';
@@ -38,12 +40,20 @@ const PlaceOrderButton = styled.button`
 `;
 
 export default function CheckoutScreen() {
-    const { showModal } = useModal();
+    const { showModal, hideModal } = useModal();
     const { shippingOption, updateShippingOption } = useShipping();
+    const navigate = useNavigate();
 
-    const handlePlaceOrderClick = () => {
-        showModal({ modal: <OrderPlacedModal /> });
-    };
+    const handlePlaceOrderClick = useCallback(() => {
+        showModal({
+            modal: (
+                <OrderPlacedModal
+                    hideModal={hideModal}
+                    navigate={navigate}
+                />
+            ),
+        });
+    }, [showModal, hideModal, navigate]);
 
     return (
         <Wrapper>
