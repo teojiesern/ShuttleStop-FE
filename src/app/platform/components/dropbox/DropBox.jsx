@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-shadow */
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Button } from '@mui/material';

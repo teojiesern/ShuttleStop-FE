@@ -1,8 +1,7 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { MuiOtpInput } from 'mui-one-time-password-input';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';

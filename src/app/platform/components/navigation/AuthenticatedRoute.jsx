@@ -1,9 +1,9 @@
 import { useContext, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import AppColdStartContext from '../../app/data/AppColdStartContext';
+import CustomerStatusContext from '../../app/data/CustomerStatusContext';
 
 export default function AuthenticatedRoute() {
-    const { isLogin } = useContext(AppColdStartContext);
+    const { isLogin } = useContext(CustomerStatusContext);
     const navigate = useNavigate();
 
     useEffect(() => {
