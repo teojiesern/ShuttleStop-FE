@@ -1,6 +1,7 @@
 import DeleteOutline from '@mui/icons-material/DeleteOutline';
 import Storefront from '@mui/icons-material/Storefront';
 import { Checkbox, FormControlLabel, IconButton } from '@mui/material';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import FONTSIZE from '../../../platform/style/FontSize';
@@ -50,10 +51,19 @@ const QuantityChangeButton = styled.button`
 
 function handleSelectAllChange() {}
 function handleSelectStoresChange() {}
-function handleIncreamentChange() {}
-function handleDecrementChange() {}
 
 export default function ShoppingCartScreen() {
+    const [itemQty, setItemQty] = useState(1);
+
+    const handleIncreamentChange = useCallback(() => {
+        setItemQty(itemQty + 1);
+    }, [itemQty, setItemQty]);
+    const handleDecrementChange = useCallback(() => {
+        if (itemQty > 1) {
+            setItemQty(itemQty - 1);
+        }
+    }, [itemQty, setItemQty]);
+
     return (
         <Wrapper>
             <COReusableStyles.BorderConatiner>
@@ -101,7 +111,9 @@ export default function ShoppingCartScreen() {
                     <COReusableStyles.Text>RM729.00</COReusableStyles.Text>
                     <QuantityControlContainer>
                         <QuantityChangeButton onClick={handleDecrementChange}>-</QuantityChangeButton>
-                        <QuantityChangeButton style={{ cursor: 'auto' }}>1</QuantityChangeButton>
+                        <QuantityChangeButton style={{ cursor: 'auto' }}>
+                            <p>{itemQty}</p>
+                        </QuantityChangeButton>
                         <QuantityChangeButton onClick={handleIncreamentChange}>+</QuantityChangeButton>
                     </QuantityControlContainer>
                     <COReusableStyles.Text>RM729.00</COReusableStyles.Text>
