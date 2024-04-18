@@ -12,7 +12,7 @@ const Container = styled.div`
     padding: 2rem 1rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
 `;
 
 const Title = styled.h1`
@@ -20,7 +20,6 @@ const Title = styled.h1`
     text-align: left;
     font-weight: ${FONTWEIGHT.SEMI_BOLD};
     color: ${COLORS.black};
-    text-align: left;
     margin-bottom: 1rem;
 `;
 
@@ -33,7 +32,7 @@ const Description = styled.p`
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: flex-end;
-    gap: 20rem;
+    gap: 15rem;
 `;
 
 const CenteredDiv = styled.div`

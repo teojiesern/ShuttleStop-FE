@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
-import ReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import useCompetitionDetail from './hooks/useCompetitionDetail';
 import CompReusableStyles from './style/reusableStyle';
 
@@ -77,7 +76,7 @@ export default function MarketingTestScreen() {
                     <Container>
                         <Title>{month}</Title>
                         {filteredDetails.map((detail) => (
-                            <div key={detail}>
+                            <div key={`${detail.compName}-${detail.date}-${detail.state}`}>
                                 <Layout>
                                     <CompReusableStyles.Text>{detail.compName}</CompReusableStyles.Text>
                                     <CompReusableStyles.Text>{detail.date}</CompReusableStyles.Text>
@@ -85,11 +84,10 @@ export default function MarketingTestScreen() {
                                     <CompReusableStyles.Text>{detail.fee}</CompReusableStyles.Text>
                                     <CompReusableStyles.Text>{detail.deadline}</CompReusableStyles.Text>
                                     <CompReusableStyles.Text>{detail.prize}</CompReusableStyles.Text>
-                                    <ReusableStyles.SecondaryButtonStyles href={detail.url}>
+                                    <CompReusableStyles.SecondaryButtonStyles href={detail.url}>
                                         Register
-                                    </ReusableStyles.SecondaryButtonStyles>
+                                    </CompReusableStyles.SecondaryButtonStyles>
                                 </Layout>
-                                console.log(detail.compName)
                             </div>
                         ))}
                     </Container>

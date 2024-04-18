@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 
 const DropDownYear = styled.div`
-    padding-left: 7 rem;
     select {
         border: 1px;
         color: ${COLORS.darkGrey};
