@@ -16,13 +16,14 @@ const ButtonContainer = styled.div`
     box-sizing: border-box;
 `;
 
-export default function OrderPlacedModal({ hideModal, productId }) {
+export default function OrderPlacedModal({ hideModal, productId, onDelete }) {
     const { removeFromCart } = useContext(CartContext);
 
     const handleConfirmDelete = useCallback(() => {
         removeFromCart(productId);
+        onDelete();
         hideModal();
-    }, [productId, removeFromCart, hideModal]);
+    }, [productId, removeFromCart, onDelete, hideModal]);
 
     return (
         <COReusableStyles.BorderConatiner>

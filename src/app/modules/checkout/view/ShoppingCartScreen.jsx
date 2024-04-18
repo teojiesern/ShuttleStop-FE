@@ -93,6 +93,18 @@ export default function ShoppingCartScreen() {
                     <DeleteItemModal
                         hideModal={hideModal}
                         productId={productId}
+                        onDelete={() => {
+                            setProductQty((prevQty) => {
+                                const updatedQty = { ...prevQty };
+                                delete updatedQty[productId];
+                                return updatedQty;
+                            });
+                            setProductTotal((prevTotal) => {
+                                const updatedTotal = { ...prevTotal };
+                                delete updatedTotal[productId];
+                                return updatedTotal;
+                            });
+                        }}
                     />
                 ),
             });
@@ -100,20 +112,23 @@ export default function ShoppingCartScreen() {
         [showModal, hideModal],
     );
 
-    const handleIncreamentChange = useCallback((productId) => {
-        setProductQty((prevQty) => {
-            const updatedQty = prevQty[productId] + 1;
-            const updatedTotal = updatedQty * cart.find((product) => product.id === productId).price;
-            setProductTotal((prevTotal) => ({
-                ...prevTotal,
-                [productId]: updatedTotal,
-            }));
-            return {
-                ...prevQty,
-                [productId]: updatedQty,
-            };
-        });
-    }, []);
+    const handleIncrementChange = useCallback(
+        (productId) => {
+            setProductQty((prevQty) => {
+                const updatedQty = prevQty[productId] + 1;
+                const updatedTotal = updatedQty * cart.find((product) => product.id === productId).price;
+                setProductTotal((prevTotal) => ({
+                    ...prevTotal,
+                    [productId]: updatedTotal,
+                }));
+                return {
+                    ...prevQty,
+                    [productId]: updatedQty,
+                };
+            });
+        },
+        [cart],
+    );
 
     const handleDecrementChange = useCallback(
         (productId) => {
@@ -136,12 +151,24 @@ export default function ShoppingCartScreen() {
                         <DeleteItemModal
                             hideModal={hideModal}
                             productId={productId}
+                            onDelete={() => {
+                                setProductQty((prevQty) => {
+                                    const updatedQty = { ...prevQty };
+                                    delete updatedQty[productId];
+                                    return updatedQty;
+                                });
+                                setProductTotal((prevTotal) => {
+                                    const updatedTotal = { ...prevTotal };
+                                    delete updatedTotal[productId];
+                                    return updatedTotal;
+                                });
+                            }}
                         />
                     ),
                 });
             }
         },
-        [productQty, setProductQty, showModal, hideModal],
+        [productQty, setProductQty, showModal, hideModal, cart],
     );
 
     if (cart.length === 0) {
@@ -257,11 +284,13 @@ export default function ShoppingCartScreen() {
                             <QuantityChangeButton style={{ cursor: 'auto' }}>
                                 <p>{productQty[product.id]}</p>
                             </QuantityChangeButton>
-                            <QuantityChangeButton onClick={() => handleIncreamentChange(product.id)}>
+                            <QuantityChangeButton onClick={() => handleIncrementChange(product.id)}>
                                 +
                             </QuantityChangeButton>
                         </QuantityControlContainer>
-                        <COReusableStyles.Text>RM{productTotal[product.id].toFixed(2)}</COReusableStyles.Text>
+                        {productTotal[product.id] !== undefined && (
+                            <COReusableStyles.Text>RM{productTotal[product.id].toFixed(2)}</COReusableStyles.Text>
+                        )}
                         <IconButton
                             onClick={() => handleActionClick(product.id)}
                             aria-label="delete"
