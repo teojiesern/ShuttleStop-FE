@@ -1,8 +1,11 @@
 import Place from '@mui/icons-material/Place';
+import { useCallback } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import EditAddressModal from '../../modal/EditAddressModal';
 
 const Container = styled.div`
     display: grid;
@@ -51,9 +54,13 @@ const EditAddressButton = styled.button`
     cursor: pointer;
 `;
 
-function showModel() {}
-
 export default function ShippingDetailsBar({ shippingOption }) {
+    const { showModal, hideModal } = useModal();
+
+    const handleEditAddressClick = useCallback(() => {
+        showModal({ modal: <EditAddressModal hideModal={hideModal} /> });
+    }, [showModal, hideModal]);
+
     return (
         <Container>
             <AddressHead>
@@ -69,7 +76,7 @@ export default function ShippingDetailsBar({ shippingOption }) {
                     <AddressContainer>CollectCo JustPrint Penang</AddressContainer>
                 )}
                 {shippingOption === 'standardDelivery' && (
-                    <EditAddressButton onClick={showModel}>
+                    <EditAddressButton onClick={handleEditAddressClick}>
                         <p>Edit</p>
                     </EditAddressButton>
                 )}
