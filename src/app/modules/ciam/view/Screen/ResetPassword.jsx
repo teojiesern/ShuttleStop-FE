@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
@@ -20,10 +21,6 @@ const TextMdSemiBold = styled.p`
     font-weight: ${FONTWEIGHT.SEMI_BOLD};
 `;
 
-const TextFieldBox = styled(Box)`
-    margin: 1.5rem 0 0 0;
-`;
-
 const StyledButton = styled.button`
     background-color: ${COLORS.green};
     border: none;
@@ -36,13 +33,14 @@ const StyledButton = styled.button`
     font-family: montserrat;
 `;
 
-const StyledLink = styled(Link)`
-    text-decoration: none;
-`;
-
 export default function ResetPassword() {
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(password);
+        navigate('../Login');
     };
 
     return (
@@ -53,10 +51,7 @@ export default function ResetPassword() {
             <ContainerBox>
                 <TextMdSemiBold>Reset Password</TextMdSemiBold>
 
-                <TextFieldBox
-                    component="form"
-                    onSubmit={handleSubmit}
-                >
+                <form onSubmit={handleSubmit}>
                     <TextField
                         margin="normal"
                         required
@@ -67,11 +62,11 @@ export default function ResetPassword() {
                         autoComplete="password"
                         type="password"
                         autofocus
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
-                    <StyledLink to="/authentication/login">
-                        <StyledButton>Confirm</StyledButton>
-                    </StyledLink>
-                </TextFieldBox>
+                    <StyledButton>Confirm</StyledButton>
+                </form>
             </ContainerBox>
         </Container>
     );

@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
@@ -24,10 +25,6 @@ const TextMdSemiBold = styled.p`
 const TextSmRegular = styled.p`
     font-size: ${FONTSIZE.small};
     font-weight: ${FONTWEIGHT.REGULAR};
-`;
-
-const TextFieldBox = styled(Box)`
-    margin: 1.5rem 0 0 0;
 `;
 
 const StyledLink = styled(Link)`
@@ -95,8 +92,21 @@ const RowContainer = styled.div`
 `;
 
 export default function Signup() {
+    const [username, setUsername] = useState('');
+    // const [usernameError, setUsernameError] = useState('');
+
+    const [emailTel, setEmailTel] = useState('');
+    // const [emailTelError, setEmailTelError] = useState('');
+
+    const [password, setPassword] = useState('');
+    // const [passwordError, setPasswordError] = useState('');
+
+    const navigate = useNavigate();
+
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(username, emailTel, password);
+        navigate('../login');
     };
 
     return (
@@ -107,10 +117,7 @@ export default function Signup() {
             <ContainerBox>
                 <TextMdSemiBold>Create Account</TextMdSemiBold>
 
-                <TextFieldBox
-                    component="form"
-                    onSubmit={handleSubmit}
-                >
+                <form onSubmit={handleSubmit}>
                     <TextField
                         margin="normal"
                         required
@@ -119,6 +126,8 @@ export default function Signup() {
                         label="Username"
                         name="username"
                         autoFocus
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
 
                     <TextField
@@ -129,6 +138,8 @@ export default function Signup() {
                         label="Email Address/Mobile Number"
                         name="email-mobile"
                         autoComplete="email tel"
+                        value={emailTel}
+                        onChange={(e) => setEmailTel(e.target.value)}
                     />
 
                     <TextField
@@ -140,11 +151,11 @@ export default function Signup() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
-                    <StyledLink to="/">
-                        <StyledButton>Create Account</StyledButton>
-                    </StyledLink>
-                </TextFieldBox>
+                    <StyledButton>Create Account</StyledButton>
+                </form>
                 <OrContainer>
                     <Line />
                     <OrText>or</OrText>
