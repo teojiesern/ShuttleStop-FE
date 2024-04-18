@@ -1,6 +1,8 @@
 import Button from '@mui/material/Button';
+import { useCallback, useContext } from 'react';
 import styled from 'styled-components';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
+import CartContext from '../../customer/context/CartContext';
 import COReusableStyles from '../view/styles/COReusableStyles';
 
 const Container = styled.span`
@@ -14,9 +16,14 @@ const ButtonContainer = styled.div`
     box-sizing: border-box;
 `;
 
-function handleConfirmDelete() {}
+export default function OrderPlacedModal({ hideModal, productId }) {
+    const { removeFromCart } = useContext(CartContext);
 
-export default function OrderPlacedModal({ hideModal }) {
+    const handleConfirmDelete = useCallback(() => {
+        removeFromCart(productId);
+        hideModal();
+    }, [productId, removeFromCart, hideModal]);
+
     return (
         <COReusableStyles.BorderConatiner>
             <Container>Do you want to remove this product?</Container>

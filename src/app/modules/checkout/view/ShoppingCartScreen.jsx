@@ -3,7 +3,7 @@ import ProductionQuantityLimits from '@mui/icons-material/ProductionQuantityLimi
 import Storefront from '@mui/icons-material/Storefront';
 import { Checkbox, FormControlLabel, IconButton } from '@mui/material';
 import Button from '@mui/material/Button';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
@@ -71,21 +71,55 @@ export default function ShoppingCartScreen() {
     const { showModal, hideModal } = useModal();
     const { cart } = useContext(CartContext);
 
-    const handleDeleteAction = useCallback(() => {
-        showModal({ modal: <DeleteItemModal hideModal={hideModal} /> });
-    }, [showModal, hideModal]);
+    useEffect(() => {
+        const initialQty = cart.reduce((acc, product) => {
+            acc[product.id] = product.quantity;
+            return acc;
+        }, {});
+        setProductQty(initialQty);
+    }, [cart]);
 
-    const handleIncreamentChange = useCallback(() => {
-        setProductQty(productQty + 1);
-    }, [productQty, setProductQty]);
+    const handleActionClick = useCallback(
+        (productId) => {
+            showModal({
+                modal: (
+                    <DeleteItemModal
+                        hideModal={hideModal}
+                        productId={productId}
+                    />
+                ),
+            });
+        },
+        [showModal, hideModal],
+    );
 
-    const handleDecrementChange = useCallback(() => {
-        if (productQty > 1) {
-            setProductQty(productQty - 1);
-        } else {
-            showModal({ modal: <DeleteItemModal hideModal={hideModal} /> });
-        }
-    }, [productQty, setProductQty, showModal, hideModal]);
+    const handleIncreamentChange = useCallback((productId) => {
+        setProductQty((prevQty) => ({
+            ...prevQty,
+            [productId]: prevQty[productId] + 1,
+        }));
+    }, []);
+
+    const handleDecrementChange = useCallback(
+        (productId) => {
+            if (productQty[productId] > 1) {
+                setProductQty((prevQty) => ({
+                    ...prevQty,
+                    [productId]: prevQty[productId] - 1,
+                }));
+            } else {
+                showModal({
+                    modal: (
+                        <DeleteItemModal
+                            hideModal={hideModal}
+                            productId={productId}
+                        />
+                    ),
+                });
+            }
+        },
+        [productQty, setProductQty, showModal, hideModal],
+    );
 
     if (cart.length === 0) {
         return (
@@ -194,15 +228,19 @@ export default function ShoppingCartScreen() {
                         />
                         <COReusableStyles.Text>{product.price.toFixed(2)}</COReusableStyles.Text>
                         <QuantityControlContainer>
-                            <QuantityChangeButton onClick={handleDecrementChange}>-</QuantityChangeButton>
-                            <QuantityChangeButton style={{ cursor: 'auto' }}>
-                                <p>{product.quantity}</p>
+                            <QuantityChangeButton onClick={() => handleDecrementChange(product.id)}>
+                                -
                             </QuantityChangeButton>
-                            <QuantityChangeButton onClick={handleIncreamentChange}>+</QuantityChangeButton>
+                            <QuantityChangeButton style={{ cursor: 'auto' }}>
+                                <p>{productQty[product.id]}</p>
+                            </QuantityChangeButton>
+                            <QuantityChangeButton onClick={() => handleIncreamentChange(product.id)}>
+                                +
+                            </QuantityChangeButton>
                         </QuantityControlContainer>
                         <COReusableStyles.Text>{product.price.toFixed(2)}</COReusableStyles.Text>
                         <IconButton
-                            onClick={handleDeleteAction}
+                            onClick={() => handleActionClick(product.id)}
                             aria-label="delete"
                             style={{ color: COLORS.black }}
                         >

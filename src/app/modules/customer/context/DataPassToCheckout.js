@@ -27,12 +27,18 @@ function PassData() {
         setBuyNowProduct(product);
     };
 
+    // Additional for delete product in cart
+    const removeFromCart = (productId) => {
+        setCart((prevCart) => prevCart.filter((product) => product.id !== productId));
+    };
+
     // The value that will be provided to the context
     const CartArrayValue = {
         cart,
         addToCart,
         buyNowProduct,
         buyNow,
+        removeFromCart,
     };
 
     return CartArrayValue;
