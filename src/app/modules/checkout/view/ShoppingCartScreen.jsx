@@ -68,6 +68,7 @@ function handleSelectStoresChange() {}
 
 export default function ShoppingCartScreen() {
     const [productQty, setProductQty] = useState({});
+    const [productTotal, setProductTotal] = useState({});
     const { showModal, hideModal } = useModal();
     const { cart } = useContext(CartContext);
 
@@ -77,6 +78,12 @@ export default function ShoppingCartScreen() {
             return acc;
         }, {});
         setProductQty(initialQty);
+
+        const initialProductTotal = cart.reduce((acc, product) => {
+            acc[product.id] = product.quantity * product.price;
+            return acc;
+        }, {});
+        setProductTotal(initialProductTotal);
     }, [cart]);
 
     const handleActionClick = useCallback(
@@ -94,19 +101,35 @@ export default function ShoppingCartScreen() {
     );
 
     const handleIncreamentChange = useCallback((productId) => {
-        setProductQty((prevQty) => ({
-            ...prevQty,
-            [productId]: prevQty[productId] + 1,
-        }));
+        setProductQty((prevQty) => {
+            const updatedQty = prevQty[productId] + 1;
+            const updatedTotal = updatedQty * cart.find((product) => product.id === productId).price;
+            setProductTotal((prevTotal) => ({
+                ...prevTotal,
+                [productId]: updatedTotal,
+            }));
+            return {
+                ...prevQty,
+                [productId]: updatedQty,
+            };
+        });
     }, []);
 
     const handleDecrementChange = useCallback(
         (productId) => {
             if (productQty[productId] > 1) {
-                setProductQty((prevQty) => ({
-                    ...prevQty,
-                    [productId]: prevQty[productId] - 1,
-                }));
+                setProductQty((prevQty) => {
+                    const updatedQty = prevQty[productId] - 1;
+                    const updatedTotal = updatedQty * cart.find((product) => product.id === productId).price;
+                    setProductTotal((prevTotal) => ({
+                        ...prevTotal,
+                        [productId]: updatedTotal,
+                    }));
+                    return {
+                        ...prevQty,
+                        [productId]: updatedQty,
+                    };
+                });
             } else {
                 showModal({
                     modal: (
@@ -226,7 +249,7 @@ export default function ShoppingCartScreen() {
                                 </CheckboxLabelContainer>
                             }
                         />
-                        <COReusableStyles.Text>{product.price.toFixed(2)}</COReusableStyles.Text>
+                        <COReusableStyles.Text>RM{product.price.toFixed(2)}</COReusableStyles.Text>
                         <QuantityControlContainer>
                             <QuantityChangeButton onClick={() => handleDecrementChange(product.id)}>
                                 -
@@ -238,7 +261,7 @@ export default function ShoppingCartScreen() {
                                 +
                             </QuantityChangeButton>
                         </QuantityControlContainer>
-                        <COReusableStyles.Text>{product.price.toFixed(2)}</COReusableStyles.Text>
+                        <COReusableStyles.Text>RM{productTotal[product.id].toFixed(2)}</COReusableStyles.Text>
                         <IconButton
                             onClick={() => handleActionClick(product.id)}
                             aria-label="delete"
