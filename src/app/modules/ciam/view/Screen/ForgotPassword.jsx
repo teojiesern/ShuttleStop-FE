@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
@@ -20,10 +21,6 @@ const TextMdSemiBold = styled.p`
     font-weight: ${FONTWEIGHT.SEMI_BOLD};
 `;
 
-const TextFieldBox = styled(Box)`
-    margin: 1.5rem 0 0 0;
-`;
-
 const StyledButton = styled.button`
     background-color: ${COLORS.green};
     border: none;
@@ -36,13 +33,14 @@ const StyledButton = styled.button`
     font-family: montserrat;
 `;
 
-const StyledLink = styled(Link)`
-    text-decoration: none;
-`;
-
 export default function ForgotPassword() {
+    const [emailTel, setEmailTel] = useState('');
+    const navigate = useNavigate();
+
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(emailTel);
+        navigate('../login/forgot-password/verification');
     };
 
     return (
@@ -53,10 +51,7 @@ export default function ForgotPassword() {
             <ContainerBox>
                 <TextMdSemiBold>Reset Password</TextMdSemiBold>
 
-                <TextFieldBox
-                    component="form"
-                    onSubmit={handleSubmit}
-                >
+                <form onSubmit={handleSubmit}>
                     <TextField
                         margin="normal"
                         required
@@ -66,11 +61,11 @@ export default function ForgotPassword() {
                         name="email-mobile"
                         autoComplete="email tel"
                         autofocus
+                        value={emailTel}
+                        onChange={(e) => setEmailTel(e.target.value)}
                     />
-                    <StyledLink to="verification">
-                        <StyledButton>Next</StyledButton>
-                    </StyledLink>
-                </TextFieldBox>
+                    <StyledButton>Next</StyledButton>
+                </form>
             </ContainerBox>
         </Container>
     );

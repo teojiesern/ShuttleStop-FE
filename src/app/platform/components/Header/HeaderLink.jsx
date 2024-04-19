@@ -26,7 +26,7 @@ export default function HeaderLink({ align = 'end' }) {
             <StyledLink to="/seller-center">Seller Center</StyledLink>
             {isLogin ? null : <StyledLink to="/authentication/login">Log In</StyledLink>}
             {isLogin ? (
-                <StyledLink to="/customer/my-account">My Account</StyledLink>
+                <StyledLink to="/customer/my-profile">My Account</StyledLink>
             ) : (
                 <StyledLink to="/authentication/signup">Sign Up</StyledLink>
             )}

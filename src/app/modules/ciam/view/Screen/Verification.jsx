@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
@@ -21,10 +21,6 @@ const TextMdSemiBold = styled.p`
     font-weight: ${FONTWEIGHT.SEMI_BOLD};
 `;
 
-const TextFieldBox = styled(Box)`
-    margin: 1.5rem 0 0 0;
-`;
-
 const StyledButton = styled.button`
     background-color: ${COLORS.green};
     border: none;
@@ -37,16 +33,13 @@ const StyledButton = styled.button`
     font-family: montserrat;
 `;
 
-const StyledLink = styled(Link)`
-    text-decoration: none;
-`;
-
 const StyledOtpInput = styled(MuiOtpInput)`
     margin: 1rem 0;
 `;
 
 export default function Verification() {
     const [otp, setOtp] = React.useState('');
+    const navigate = useNavigate();
 
     const handleChange = (newValue) => {
         setOtp(newValue);
@@ -54,6 +47,8 @@ export default function Verification() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(otp);
+        navigate('../login/forgot-password/verification/reset-password');
     };
 
     return (
@@ -64,19 +59,14 @@ export default function Verification() {
             <ContainerBox>
                 <TextMdSemiBold>Enter Verification Code</TextMdSemiBold>
 
-                <TextFieldBox
-                    component="form"
-                    onSubmit={handleSubmit}
-                >
+                <form onSubmit={handleSubmit}>
                     <StyledOtpInput
                         length={6}
                         value={otp}
                         onChange={handleChange}
                     />
-                    <StyledLink to="reset-password">
-                        <StyledButton>Next</StyledButton>
-                    </StyledLink>
-                </TextFieldBox>
+                    <StyledButton>Next</StyledButton>
+                </form>
             </ContainerBox>
         </Container>
     );
