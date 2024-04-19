@@ -1,5 +1,6 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -13,7 +14,8 @@ import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
-import FilterContext from './FilterContext';
+import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
+import FilterContext from '../context/FilterContext';
 
 const NavBar = styled.div`
     float: left;
@@ -71,15 +73,6 @@ const StyledHr = styled.hr`
     width: 100%;
 `;
 
-const BtnApply = styled.button`
-    background-color: ${COLORS.green};
-    border: none;
-    color: ${COLORS.white};
-    height: 40px;
-    width: 100%;
-    cursor: pointer;
-`;
-
 const Rate = styled.div`
     display: flex;
     flex-direction: column;
@@ -89,7 +82,7 @@ const Rate = styled.div`
 export default function SideNav() {
     const brands = ['Yonex', 'Felet', 'Apacs', 'Li-Ning', 'Victor', 'Maxx', 'Alpsport'];
 
-    const [showAllBrands, setShowAllBrands] = useState(true);
+    const [showAllBrands, setShowAllBrands] = useState(false);
     const displayedBrands = showAllBrands ? brands : brands.slice(0, 5);
     const { filter, setFilter } = useContext(FilterContext);
 
@@ -166,7 +159,7 @@ export default function SideNav() {
                     alignItems="center"
                 >
                     <TextField
-                        id="outlined-basic"
+                        id="RM-MIN"
                         label="RM MIN"
                         variant="outlined"
                         size="small"
@@ -184,7 +177,7 @@ export default function SideNav() {
 
                     <ShortHr />
                     <TextField
-                        id="outlined-basic"
+                        id="RM_MAX"
                         label="RM MAX"
                         variant="outlined"
                         size="small"
@@ -200,13 +193,22 @@ export default function SideNav() {
                         }}
                     />
                 </Box>
-                <BtnApply
+                <Button
+                    style={PlatformReusableStyles.PrimaryButtonStyles}
                     onClick={() => {
                         if (filter.tempMinPrice === '' || filter.tempMaxPrice === '') {
                             setFilter((prevFilter) => ({
                                 ...prevFilter,
                                 minPrice: 0,
                                 maxPrice: Infinity,
+                            }));
+                        } else if (filter.tempMinPrice >= filter.tempMaxPrice) {
+                            setFilter((prevFilter) => ({
+                                ...prevFilter,
+                                minPrice: 0,
+                                maxPrice: Infinity,
+                                tempMinPrice: '',
+                                tempMaxPrice: '',
                             }));
                         } else {
                             setFilter((prevFilter) => ({
@@ -218,7 +220,7 @@ export default function SideNav() {
                     }}
                 >
                     APPLY NOW
-                </BtnApply>
+                </Button>
             </Price>
             <StyledHr />
             <Rate>

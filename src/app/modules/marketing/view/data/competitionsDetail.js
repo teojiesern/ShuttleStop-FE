@@ -1,4 +1,5 @@
 export default class CompetitionDetails {
+
     getDetais = async () => ({
         status: 200,
         data: {

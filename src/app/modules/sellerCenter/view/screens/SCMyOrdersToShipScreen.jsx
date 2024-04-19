@@ -119,18 +119,18 @@ export default function SCMyOrdersToShipScreen() {
                         <Layout onClick={() => handleOrderClick(order.orderID)}>
                             <Checkbox checked={checkedOrders.includes(order.orderID)} />
                             <OrdersContainer>
-                                <OrderImage src={orders[index].productImage} />
+                                <OrderImage src={order.productImage} />
                                 <OrderDescriptionContainer>
-                                    <SCReusableStyles.Text>{orders[index].productName}</SCReusableStyles.Text>
+                                    <SCReusableStyles.Text>{order.productName}</SCReusableStyles.Text>
                                     <SCReusableStyles.TextDescription>
-                                        {orders[index].productDescription}
+                                        {order.productDescription}
                                     </SCReusableStyles.TextDescription>
-                                    <SCReusableStyles.Text>{orders[index].quantity}</SCReusableStyles.Text>
+                                    <SCReusableStyles.Text>{order.quantity}</SCReusableStyles.Text>
                                 </OrderDescriptionContainer>
                             </OrdersContainer>
-                            <SCReusableStyles.Text>{orders[index].orderID}</SCReusableStyles.Text>
-                            <SCReusableStyles.Text>{orders[index].buyer}</SCReusableStyles.Text>
-                            <SCReusableStyles.Text>{orders[index].shippingOption}</SCReusableStyles.Text>
+                            <SCReusableStyles.Text>{order.orderID}</SCReusableStyles.Text>
+                            <SCReusableStyles.Text>{order.buyer}</SCReusableStyles.Text>
+                            <SCReusableStyles.Text>{order.shippingOption}</SCReusableStyles.Text>
                         </Layout>
                         {index !== orders.length - 1 && <SCReusableStyles.Divider />}
                     </div>

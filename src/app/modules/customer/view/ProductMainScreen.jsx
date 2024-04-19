@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import FilterContext from './FilterContext';
+import FilterContext from '../context/FilterContext';
 import ProductBrowsing from './ProductBrowsing';
 import SideNav from './SideNav';
 

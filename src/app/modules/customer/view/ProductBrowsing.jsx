@@ -1,4 +1,5 @@
 import MenuItem from '@mui/material/MenuItem';
+import Pagination from '@mui/material/Pagination';
 import Select from '@mui/material/Select';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -6,7 +7,7 @@ import styled from 'styled-components';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import products from '../assets/ProductList2';
-import FilterContext from './FilterContext';
+import FilterContext from '../context/FilterContext';
 import Product from './Product';
 
 const ProductGrid = styled.div`
@@ -30,7 +31,7 @@ export default function ProductBrowsing() {
 
     const category = pathnames[pathnames.length - 1];
 
-    const [productDisplay, setProductDisplay] = useState(products); // This is where you store your products
+    const [productDisplay, setProductDisplay] = useState(products);
     useEffect(() => {
         const newProductsDisplay = products.filter((p) => p.category === category);
         setProductDisplay(newProductsDisplay);
@@ -78,6 +79,22 @@ export default function ProductBrowsing() {
         setFilter((prevFilter) => ({ ...prevFilter, sort: sortOption }));
     };
 
+    const PRODUCTS_PER_PAGE = 18;
+
+    const [page, setPage] = useState(1);
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+        window.scrollTo(0, 0);
+    };
+
+    // to reset page to 1 when category, filter and sort changes
+    useEffect(() => {
+        setPage(1);
+    }, [category, filteredProducts]);
+
+    const productsForCurrentPage = filteredProducts.slice((page - 1) * PRODUCTS_PER_PAGE, page * PRODUCTS_PER_PAGE);
+
     return (
         <div>
             <Sort>
@@ -102,20 +119,32 @@ export default function ProductBrowsing() {
                 </Select>
             </Sort>
             <ProductGrid key={category}>
-                {filteredProducts.length === 0 ? (
+                {productsForCurrentPage.length === 0 ? (
                     <p>No product available</p>
                 ) : (
-                    filteredProducts.map((product) => (
+                    productsForCurrentPage.map((product) => (
                         <Product
                             key={product.id}
                             id={product.id}
                             imgSrc={product.imgSrc}
                             name={product.name}
                             price={product.price}
+                            category={product.category}
                         />
                     ))
                 )}
             </ProductGrid>
+            <Pagination
+                count={Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)}
+                page={page}
+                onChange={handlePageChange}
+                shape="rounded"
+                style={{
+                    marginTop: '20px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                }}
+            />
         </div>
     );
 }
