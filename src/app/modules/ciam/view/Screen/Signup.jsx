@@ -98,6 +98,8 @@ const RowContainer = styled.div`
 export default function Signup() {
     const navigate = useNavigate();
 
+    const [submitted, setSubmitted] = useState(false);
+
     const [showPassword, setShowPassword] = useState(false);
 
     const handleTogglePasswordVisibility = () => {
@@ -116,12 +118,15 @@ export default function Signup() {
         const { name, value } = e.target;
         const newObj = { ...values, [e.target.name]: e.target.value };
         setValues(newObj);
-        const fieldErrors = FormValidation({ ...values, [name]: value });
-        setErrors((prevErrors) => ({ ...prevErrors, [name]: fieldErrors[name] }));
+        if (submitted) {
+            const fieldErrors = FormValidation({ ...values, [name]: value });
+            setErrors((prevErrors) => ({ ...prevErrors, [name]: fieldErrors[name] }));
+        }
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setSubmitted(true);
         const formErrors = FormValidation(values);
         if (Object.keys(formErrors).length === 0) {
             navigate('../login');

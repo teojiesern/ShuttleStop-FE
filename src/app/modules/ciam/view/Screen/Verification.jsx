@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { MuiOtpInput } from 'mui-one-time-password-input';
-import React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
@@ -37,18 +37,32 @@ const StyledOtpInput = styled(MuiOtpInput)`
     margin: 1rem 0;
 `;
 
+const ErrorMessage = styled.p`
+    color: ${COLORS.red};
+`;
+
 export default function Verification() {
-    const [otp, setOtp] = React.useState('');
+    const [otp, setOtp] = useState('');
+    const [isValidOtp, setIsValidOtp] = useState(true);
+    const [submitted, setSubmitted] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (newValue) => {
-        setOtp(newValue);
+        if (/^\d{6}$/.test(newValue)) {
+            setOtp(newValue); // Set the OTP if it meets the criteria
+            setIsValidOtp(true); // Set isValidOtp to true if OTP is valid
+        } else {
+            setOtp(newValue); // Still update the OTP state even if it's invalid
+            setIsValidOtp(false); // Set isValidOtp to false if OTP is invalid
+        }
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(otp);
-        navigate('../login/forgot-password/verification/reset-password');
+        setSubmitted(true);
+        if (isValidOtp) {
+            navigate('../login/forgot-password/verification/reset-password');
+        }
     };
 
     return (
@@ -65,6 +79,7 @@ export default function Verification() {
                         value={otp}
                         onChange={handleChange}
                     />
+                    {!isValidOtp && submitted && <ErrorMessage>Please enter a valid OTP.</ErrorMessage>}
                     <StyledButton>Next</StyledButton>
                 </form>
             </ContainerBox>
