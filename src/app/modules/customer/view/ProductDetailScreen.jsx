@@ -448,7 +448,7 @@ export default function ProductDetailScreen() {
                                     ADD TO CART
                                 </Button>
 
-                                <Link to="/customer/fakeCheckout">
+                                <Link to="/checkout/checkoutScreen">
                                     <Button
                                         style={{
                                             ...PlatformReusableStyles.PrimaryButtonStyles,

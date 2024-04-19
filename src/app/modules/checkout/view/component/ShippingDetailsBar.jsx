@@ -6,12 +6,11 @@ import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import EditAddressModal from '../../modal/EditAddressModal';
+import COReusableStyles from '../styles/COReusableStyles';
 
-const Container = styled.div`
-    display: grid;
-    padding: 1rem 2rem;
-    border: 1px solid ${COLORS.darkGrey};
-    margin-bottom: 1rem;
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
 `;
 const AddressHead = styled.span`
     display: flex;
@@ -24,6 +23,8 @@ const AddressHead = styled.span`
 `;
 const CustomerDetailsContainer = styled.div`
     display: flex;
+    flex-direction: row;
+    gap: 1rem;
     text-align: center;
     align-items: center;
 `;
@@ -31,19 +32,6 @@ const CustomerNameContainer = styled.span`
     color: ${COLORS.black};
     font-size: ${FONTSIZE.small};
     font-weight: ${FONTWEIGHT.BOLD};
-    margin-right: 0.5rem;
-`;
-const ContactNumContainer = styled.span`
-    color: ${COLORS.black};
-    font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.BOLD};
-    margin-right: 1.5rem;
-`;
-const AddressContainer = styled.span`
-    color: ${COLORS.black};
-    font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.REGULAR};
-    margin-right: 1.5rem;
 `;
 const EditAddressButton = styled.button`
     font-size: ${FONTSIZE.small};
@@ -62,18 +50,17 @@ export default function ShippingDetailsBar({ shippingOption }) {
     }, [showModal, hideModal]);
 
     return (
-        <Container>
+        <Wrapper>
             <AddressHead>
                 <Place style={{ fontSize: FONTSIZE.large, marginRight: '1rem' }} />
                 {shippingOption === 'standardDelivery' ? 'Standard Delivery' : 'Self Collection Point'}
             </AddressHead>
             <CustomerDetailsContainer>
-                <CustomerNameContainer>Aron Chia</CustomerNameContainer>
-                <ContactNumContainer>(+60) 12 345 6789</ContactNumContainer>
+                <CustomerNameContainer>Aron Chia (+60) 12 345 6789</CustomerNameContainer>
                 {shippingOption === 'standardDelivery' ? (
-                    <AddressContainer>1, Jalan Penang, 10400 Georgetown, Penang</AddressContainer>
+                    <COReusableStyles.Text>1, Jalan Penang, 10400 Georgetown, Penang</COReusableStyles.Text>
                 ) : (
-                    <AddressContainer>CollectCo JustPrint Penang</AddressContainer>
+                    <COReusableStyles.Text>CollectCo JustPrint Penang</COReusableStyles.Text>
                 )}
                 {shippingOption === 'standardDelivery' && (
                     <EditAddressButton onClick={handleEditAddressClick}>
@@ -81,6 +68,6 @@ export default function ShippingDetailsBar({ shippingOption }) {
                     </EditAddressButton>
                 )}
             </CustomerDetailsContainer>
-        </Container>
+        </Wrapper>
     );
 }

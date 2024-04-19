@@ -7,21 +7,16 @@ import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import bankList from '../../data/bankList';
+import COReusableStyles from '../styles/COReusableStyles';
 
 const Container = styled.div`
-    display: grid;
-    padding: 1.5rem 2rem;
-    border: 1px solid ${COLORS.darkGrey};
-`;
-const PaymentMethodHead = styled.span`
-    color: ${COLORS.black};
-    font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.SEMI_BOLD};
-    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
 `;
 const ButtonContainer = styled.div`
     display: flex;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
 `;
 const PaymentMethodButton = styled.button`
     padding: 0.5rem 1rem;
@@ -70,7 +65,7 @@ export default function SelectPaymentMethod() {
 
     return (
         <Container>
-            <PaymentMethodHead>Payment Method</PaymentMethodHead>
+            <COReusableStyles.Title>Payment Method</COReusableStyles.Title>
             <ButtonContainer>
                 <PaymentMethodButton
                     isActive={paymentMethod === 'onlineBanking'}
