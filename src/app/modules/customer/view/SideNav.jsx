@@ -16,8 +16,9 @@ import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
-import warning from '../assets/warning.jpeg';
 import FilterContext from '../context/FilterContext';
+import WarnModal1 from '../modal/WarnModal1';
+import WarnModal2 from '../modal/WarnModal2';
 
 const NavBar = styled.div`
     float: left;
@@ -208,40 +209,12 @@ export default function SideNav() {
                             }));
 
                             showModal({
-                                modal: (
-                                    <div
-                                        style={{
-                                            backgroundColor: 'white',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            width: '100%',
-                                            height: '400px',
-                                            border: '1px solid black',
-                                            gap: '30px',
-                                        }}
-                                    >
-                                        <img
-                                            src={warning}
-                                            alt="warning"
-                                            style={{ width: '200px', height: '200px' }}
-                                        />
-                                        <p
-                                            style={{
-                                                fontWeight: `${FONTWEIGHT.BOLD}`,
-                                                fontSize: `${FONTSIZE['x-large']}`,
-                                            }}
-                                        >
-                                            Minimum and Maximum Price cannot be empty
-                                        </p>
-                                    </div>
-                                ),
+                                modal: <WarnModal1 />,
                                 disableBackdropDismiss: false,
                             });
                             setTimeout(() => {
                                 hideModal();
-                            }, 3000);
+                            }, 2000);
                         } else if (filter.tempMinPrice >= filter.tempMaxPrice) {
                             setFilter((prevFilter) => ({
                                 ...prevFilter,
@@ -251,35 +224,7 @@ export default function SideNav() {
                                 tempMaxPrice: '',
                             }));
                             showModal({
-                                modal: (
-                                    <div
-                                        style={{
-                                            backgroundColor: 'white',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            width: '100%',
-                                            height: '400px',
-                                            border: '1px solid black',
-                                            gap: '30px',
-                                        }}
-                                    >
-                                        <img
-                                            src={warning}
-                                            alt="warning"
-                                            style={{ width: '200px', height: '200px' }}
-                                        />
-                                        <p
-                                            style={{
-                                                fontWeight: `${FONTWEIGHT.BOLD}`,
-                                                fontSize: `${FONTSIZE['x-large']}`,
-                                            }}
-                                        >
-                                            Maximum Price must be greater than Minimum Price
-                                        </p>
-                                    </div>
-                                ),
+                                modal: <WarnModal2 />,
                                 disableBackdropDismiss: false,
                             });
                             setTimeout(() => {
