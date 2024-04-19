@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-shadow */
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Button } from '@mui/material';
@@ -6,7 +7,6 @@ import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 import COLORS from '../../Colors';
 import FONTSIZE from '../../style/FontSize';
-import FONTWEIGHT from '../../style/FontWeight';
 
 const Container = styled.div`
     width: 100%;
@@ -20,40 +20,21 @@ const DropZone = styled.div`
     color: ${COLORS.darkGrey};
     font-size: ${FONTSIZE['xxx-large']};
     font-weight: 100;
-`;
-
-const ListWrapper = styled.ul`
-    list-style-type: none;
-    margin: 1rem 0;
-`;
-
-const UnstyledList = styled.li`
-    display: flex;
-    align-items: start;
-    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    text-align: center;
 `;
 
 const ErrorMessage = styled.p`
     color: ${COLORS.red};
-`;
-
-const PreviewContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin: 1rem 0;
-`;
-
-const PreviewHeader = styled.h3`
-    font-size: ${FONTSIZE.medium};
-    font-weight: ${FONTWEIGHT.REGULAR};
-    color: ${COLORS.darkGrey};
+    font-size: ${FONTSIZE['x-small']};
 `;
 
 const PreviewImageContainer = styled.div`
     position: relative;
     height: 200px;
-    width: 200px;
+    width: 300px;
 `;
 
 export default function DropBox({ style, files, setFiles }) {
@@ -80,6 +61,7 @@ export default function DropBox({ style, files, setFiles }) {
         maxSize: 1024 * 1024 * 3, // currently limiting to 3MB
         maxFiles: 1, // currently limiting to 1 file
         onDrop,
+        noClick: files.length > 0,
     });
 
     useEffect(
@@ -110,67 +92,58 @@ export default function DropBox({ style, files, setFiles }) {
                         borderStyle: 'solid',
                         borderRadius: '4px',
                         borderColor: COLORS['light-grey'],
-                        width: '200px',
-                        height: '100px',
+                        width: '300px',
+                        height: '200px',
                         ...style,
                     },
                 })}
             >
                 <input {...getInputProps()} />
-                <DropZone>+</DropZone>
+                <DropZone>
+                    {/* Error message */}
+                    {rejected.length > 0
+                        ? rejected.map(({ file, errors }) => (
+                              <div key={file.name}>
+                                  <ErrorMessage>Error uploading `{file.name}`</ErrorMessage>
+                                  {errors.map((error) => (
+                                      <ErrorMessage key={error.code}>{error.message}</ErrorMessage>
+                                  ))}
+                              </div>
+                          ))
+                        : files.length > 0
+                          ? // Preview
+                            files.map((file) => (
+                                <PreviewImageContainer key={file.name}>
+                                    <img
+                                        src={file.preview}
+                                        alt={file.name}
+                                        width={100}
+                                        height={100}
+                                        onLoad={() => {
+                                            URL.revokeObjectURL(file.preview);
+                                        }}
+                                        style={{
+                                            height: '100%',
+                                            width: '100%',
+                                        }}
+                                    />
+                                    <Button
+                                        onClick={() => removeFile(file.name)}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '3px',
+                                            right: '3px',
+                                            cursor: 'pointer',
+                                            backgroundColor: 'transparent',
+                                        }}
+                                    >
+                                        <CloseOutlinedIcon style={{ color: COLORS.red }} />
+                                    </Button>
+                                </PreviewImageContainer>
+                            ))
+                          : '+'}
+                </DropZone>
             </div>
-
-            {/* Error message */}
-            {rejected.length > 0 && (
-                <ListWrapper>
-                    {rejected.map(({ file, errors }) => (
-                        <UnstyledList key={file.name}>
-                            <div>
-                                <ErrorMessage>Error uploading `{file.name}`</ErrorMessage>
-                                {errors.map((error) => (
-                                    <ErrorMessage key={error.code}>{error.message}</ErrorMessage>
-                                ))}
-                            </div>
-                        </UnstyledList>
-                    ))}
-                </ListWrapper>
-            )}
-
-            {/* Preview */}
-            {files.length > 0 && (
-                <PreviewContainer>
-                    <PreviewHeader>Preview:</PreviewHeader>
-                    {files.map((file) => (
-                        <PreviewImageContainer key={file.name}>
-                            <img
-                                src={file.preview}
-                                alt={file.name}
-                                width={100}
-                                height={100}
-                                onLoad={() => {
-                                    URL.revokeObjectURL(file.preview);
-                                }}
-                                style={{
-                                    height: '100%',
-                                    width: '100%',
-                                }}
-                            />
-                            <Button
-                                onClick={() => removeFile(file.name)}
-                                style={{
-                                    position: 'absolute',
-                                    top: '3px',
-                                    right: '3px',
-                                    cursor: 'pointer',
-                                    backgroundColor: 'transparent',
-                                }}
-                            >
-                                <CloseOutlinedIcon style={{ color: COLORS.red }} />
-                            </Button>
-                        </PreviewImageContainer>
-                    ))}
-                </PreviewContainer>
-            )}
         </Container>
     );
 }
