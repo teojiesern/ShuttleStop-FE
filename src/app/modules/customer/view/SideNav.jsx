@@ -12,9 +12,11 @@ import TextField from '@mui/material/TextField';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
+import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
+import warning from '../assets/warning.jpeg';
 import FilterContext from '../context/FilterContext';
 
 const NavBar = styled.div`
@@ -85,6 +87,8 @@ export default function SideNav() {
     const [showAllBrands, setShowAllBrands] = useState(false);
     const displayedBrands = showAllBrands ? brands : brands.slice(0, 5);
     const { filter, setFilter } = useContext(FilterContext);
+
+    const { showModal, hideModal } = useModal();
 
     return (
         <NavBar>
@@ -202,6 +206,42 @@ export default function SideNav() {
                                 minPrice: 0,
                                 maxPrice: Infinity,
                             }));
+
+                            showModal({
+                                modal: (
+                                    <div
+                                        style={{
+                                            backgroundColor: 'white',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            width: '100%',
+                                            height: '400px',
+                                            border: '1px solid black',
+                                            gap: '30px',
+                                        }}
+                                    >
+                                        <img
+                                            src={warning}
+                                            alt="warning"
+                                            style={{ width: '200px', height: '200px' }}
+                                        />
+                                        <p
+                                            style={{
+                                                fontWeight: `${FONTWEIGHT.BOLD}`,
+                                                fontSize: `${FONTSIZE['x-large']}`,
+                                            }}
+                                        >
+                                            Minimum and Maximum Price cannot be empty
+                                        </p>
+                                    </div>
+                                ),
+                                disableBackdropDismiss: false,
+                            });
+                            setTimeout(() => {
+                                hideModal();
+                            }, 3000);
                         } else if (filter.tempMinPrice >= filter.tempMaxPrice) {
                             setFilter((prevFilter) => ({
                                 ...prevFilter,
@@ -210,6 +250,41 @@ export default function SideNav() {
                                 tempMinPrice: '',
                                 tempMaxPrice: '',
                             }));
+                            showModal({
+                                modal: (
+                                    <div
+                                        style={{
+                                            backgroundColor: 'white',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            width: '100%',
+                                            height: '400px',
+                                            border: '1px solid black',
+                                            gap: '30px',
+                                        }}
+                                    >
+                                        <img
+                                            src={warning}
+                                            alt="warning"
+                                            style={{ width: '200px', height: '200px' }}
+                                        />
+                                        <p
+                                            style={{
+                                                fontWeight: `${FONTWEIGHT.BOLD}`,
+                                                fontSize: `${FONTSIZE['x-large']}`,
+                                            }}
+                                        >
+                                            Maximum Price must be greater than Minimum Price
+                                        </p>
+                                    </div>
+                                ),
+                                disableBackdropDismiss: false,
+                            });
+                            setTimeout(() => {
+                                hideModal();
+                            }, 2000);
                         } else {
                             setFilter((prevFilter) => ({
                                 ...prevFilter,
