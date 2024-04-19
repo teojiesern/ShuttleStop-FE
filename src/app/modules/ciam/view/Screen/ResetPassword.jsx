@@ -1,5 +1,8 @@
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +10,7 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import FormValidation from '../utils/FormValidation';
 
 const ContainerBox = styled(Box)`
     margin: 2rem 0;
@@ -34,13 +38,40 @@ const StyledButton = styled.button`
 `;
 
 export default function ResetPassword() {
-    const [password, setPassword] = useState('');
     const navigate = useNavigate();
+
+    const [submitted, setSubmitted] = useState(false);
+
+    const [values, setValues] = useState({
+        password: '',
+    });
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    };
+
+    const [errors, setErrors] = useState({});
+
+    const handleInput = (e) => {
+        const { name, value } = e.target;
+        setValues({ ...values, [name]: value });
+        if (submitted) {
+            const fieldErrors = FormValidation({ ...values, [name]: value });
+            setErrors((prevErrors) => ({ ...prevErrors, [name]: fieldErrors[name] }));
+        }
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(password);
-        navigate('../Login');
+        setSubmitted(true);
+        const formErrors = FormValidation(values);
+        if (Object.keys(formErrors).length === 0) {
+            navigate('../Login');
+        } else {
+            setErrors(formErrors);
+        }
     };
 
     return (
@@ -60,10 +91,24 @@ export default function ResetPassword() {
                         label="Password"
                         name="password"
                         autoComplete="password"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         autofocus
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={handleInput}
+                        error={!!errors.password}
+                        helperText={errors.password}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleTogglePasswordVisibility}
+                                        onMouseDown={(event) => event.preventDefault()}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
                     <StyledButton>Confirm</StyledButton>
                 </form>

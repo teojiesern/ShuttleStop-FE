@@ -47,7 +47,7 @@ export default function SellerCenterSideNav() {
                     style={NavLinkStylesUtil.activeStyleWithFontWeight}
                     to="customer/my-address"
                 >
-                    My Addresses
+                    My Address
                 </SideNavLink>
             </SectionGroup>
         </SideNavContainer>
