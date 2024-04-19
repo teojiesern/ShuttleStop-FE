@@ -1,6 +1,9 @@
 import { Route } from 'react-router-dom';
+import MyAccountLayout from '../Layout/MyAccountLayout';
 import FakeCart from '../view/FakeCart';
 import FakeCheckout from '../view/FakeCheckout';
+import MyAddress from '../view/MyAddress';
+import MyProfile from '../view/MyProfile';
 import ProductDetailScreen from '../view/ProductDetailScreen';
 import ProductMainScreen from '../view/ProductMainScreen';
 
@@ -42,11 +45,16 @@ const CustomerScreens = (
             path="/customer/fakeCheckout"
             element={<FakeCheckout />}
         />
-        <Route
-            path="/customer/my-account"
-            // TODO: Replace with my account screen
-            element={<FakeCheckout />}
-        />
+        <Route element={<MyAccountLayout />}>
+            <Route
+                path="/customer/my-profile"
+                element={<MyProfile />}
+            />
+            <Route
+                path="/customer/my-address"
+                element={<MyAddress />}
+            />
+        </Route>
     </>
 );
 

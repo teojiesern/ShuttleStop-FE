@@ -1,9 +1,11 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import { Link } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import CustomerStatusContext from '../../../../platform/app/data/CustomerStatusContext';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import GoogleIcon from '../assets/google-icon.svg';
@@ -24,10 +26,6 @@ const TextMdSemiBold = styled.p`
 const TextSmRegular = styled.p`
     font-size: ${FONTSIZE.small};
     font-weight: ${FONTWEIGHT.REGULAR};
-`;
-
-const TextFieldBox = styled(Box)`
-    margin: 1.5rem 0 0 0;
 `;
 
 const StyledLink = styled(Link)`
@@ -95,9 +93,30 @@ const RowContainer = styled.div`
 `;
 
 export default function Login() {
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const [emailTel, setEmailTel] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    const { setCustomerStatus } = useContext(CustomerStatusContext);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const credential = { emailTel, password };
+        console.log(credential);
+        navigate('/');
+        const loginSuccessful = true;
+
+        if (loginSuccessful) {
+            setCustomerStatus((prevStatus) => ({
+                ...prevStatus,
+                isLogin: true,
+            }));
+            navigate('/');
+        } else {
+            console.log('Login failed');
+        }
     };
+
+    useEffect(() => {}, []);
 
     return (
         <Container
@@ -107,10 +126,7 @@ export default function Login() {
             <ContainerBox>
                 <TextMdSemiBold>Login</TextMdSemiBold>
 
-                <TextFieldBox
-                    component="form"
-                    onSubmit={handleSubmit}
-                >
+                <form onSubmit={handleSubmit}>
                     <TextField
                         margin="normal"
                         required
@@ -120,6 +136,8 @@ export default function Login() {
                         name="email-mobile"
                         autoComplete="email tel"
                         autoFocus
+                        value={emailTel}
+                        onChange={(e) => setEmailTel(e.target.value)}
                     />
 
                     <TextField
@@ -131,13 +149,14 @@ export default function Login() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
 
                     <StyledLink to="forgot-password">Forgot password?</StyledLink>
-                    <StyledLink to="/">
-                        <StyledButton>Login</StyledButton>
-                    </StyledLink>
-                </TextFieldBox>
+                    <StyledButton>Login</StyledButton>
+                </form>
+
                 <OrContainer>
                     <Line />
                     <OrText>or</OrText>
