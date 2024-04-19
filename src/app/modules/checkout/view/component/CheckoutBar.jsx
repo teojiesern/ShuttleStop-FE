@@ -10,7 +10,8 @@ import PlatformReusableStyles from '../../../../platform/style/PlatformReusableS
 import COReusableStyles from '../styles/COReusableStyles';
 
 const BottomBar = styled.div`
-    position: absolute;
+    position: relative;
+    background-color: ${COLORS.white};
     display: flex;
     align-items: center;
     box-sizing: border-box;
@@ -23,7 +24,7 @@ const BottomBar = styled.div`
 `;
 const Layout = styled.div`
     display: grid;
-    grid-template-columns: 6fr 1fr 1fr 1fr;
+    grid-template-columns: 6fr 2fr 1fr 1fr;
     gap: 2rem;
     align-items: center;
 `;
@@ -34,7 +35,7 @@ const TotalCheckout = styled.span`
     text-align: center;
 `;
 
-export default function CheckoutBar() {
+export default function CheckoutBar({ totalItem }) {
     return (
         <BottomBar>
             <Layout>
@@ -42,7 +43,7 @@ export default function CheckoutBar() {
                     control={<Checkbox />}
                     label={<COReusableStyles.Text>Select All</COReusableStyles.Text>}
                 />
-                <COReusableStyles.Text>Total Item: 1 item</COReusableStyles.Text>
+                <COReusableStyles.Text>Total Item: {totalItem} item(s)</COReusableStyles.Text>
                 <TotalCheckout>RM729.00</TotalCheckout>
                 <Button
                     component={Link}
