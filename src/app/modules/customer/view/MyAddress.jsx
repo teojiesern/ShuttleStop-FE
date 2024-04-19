@@ -1,7 +1,10 @@
+import { useCallback } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
+import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
+import EditAddressModal from '../../checkout/modal/EditAddressModal';
 
 const OuterContainer = styled.div`
     display: flex;
@@ -39,7 +42,23 @@ const AddressText = styled.p`
     display: inline-block;
 `;
 
+const StyledButton = styled.button`
+    background-color: ${COLORS.white};
+    border: none;
+    font-size: ${FONTSIZE.small};
+    font-weight: ${FONTWEIGHT.REGULAR};
+    font-family: montserrat;
+`;
+
 export default function MyAddress() {
+    const { showModal, hideModal } = useModal();
+
+    const handleEditAddress = useCallback(() => {
+        showModal({
+            modal: <EditAddressModal hideModal={hideModal} />,
+        });
+    }, [hideModal, showModal]);
+
     return (
         <OuterContainer>
             <InnerContainer style={{ width: '90%' }}>
@@ -60,13 +79,12 @@ export default function MyAddress() {
             </InnerContainer>
 
             <InnerContainer style={{ width: '10%' }}>
-                <p
+                <StyledButton
+                    onClick={handleEditAddress}
                     style={{ color: COLORS['semantic-blue'], cursor: 'pointer' }}
-                    // TODO : open edit modal address on click
-                    // onClick={handleEditAddress}
                 >
                     Edit
-                </p>
+                </StyledButton>
             </InnerContainer>
         </OuterContainer>
     );
