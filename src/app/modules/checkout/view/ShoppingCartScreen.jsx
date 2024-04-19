@@ -13,7 +13,6 @@ import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import CartContext from '../../customer/context/CartContext';
 import DeleteItemModal from '../modal/DeleteItemModal';
-import CheckoutBar from './component/CheckoutBar';
 import COReusableStyles from './styles/COReusableStyles';
 
 const Wrapper = styled.div`
@@ -21,6 +20,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 64px;
     gap: 1rem;
 `;
 const CenteredContainer = styled.div`
@@ -62,29 +62,77 @@ const QuantityChangeButton = styled.button`
     height: 48px;
     cursor: pointer;
 `;
+const BottomBar = styled.div`
+    position: fixed;
+    background-color: ${COLORS.white};
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 84px;
+    box-shadow: 0 0 10px ${COLORS.darkGrey};
+    padding: 0.5rem 5rem;
+`;
+const BottomLayout = styled.div`
+    display: grid;
+    grid-template-columns: 6fr 2fr 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+`;
+const TotalCheckout = styled.span`
+    font-size: ${FONTSIZE.medium};
+    font-weight: ${FONTWEIGHT.SEMI_BOLD};
+    color: ${COLORS.green};
+    text-align: center;
+`;
 
-function handleSelectAllChange() {}
-function handleSelectStoresChange() {}
+// function handleSelectStoresChange() {}
 
 export default function ShoppingCartScreen() {
-    const [productQty, setProductQty] = useState({});
     const [productTotal, setProductTotal] = useState({});
+    const [checkedProducts, setCheckedProducts] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
     const { showModal, hideModal } = useModal();
-    const { cart } = useContext(CartContext);
+    const { cart, increaseQty, decreaseQty } = useContext(CartContext);
 
     useEffect(() => {
-        const initialQty = cart.reduce((acc, product) => {
-            acc[product.id] = product.quantity;
-            return acc;
-        }, {});
-        setProductQty(initialQty);
-
         const initialProductTotal = cart.reduce((acc, product) => {
             acc[product.id] = product.quantity * product.price;
             return acc;
         }, {});
         setProductTotal(initialProductTotal);
     }, [cart]);
+
+    const calculateTotalPrice = useCallback(() => {
+        let total = 0;
+        checkedProducts.forEach((productId) => {
+            total += productTotal[productId] || 0;
+        });
+        return total;
+    }, [checkedProducts, productTotal]);
+
+    const handleProductChecked = useCallback((productId) => {
+        setCheckedProducts((prevCheckedProducts) => {
+            if (prevCheckedProducts.includes(productId)) {
+                return prevCheckedProducts.filter((id) => id !== productId);
+            }
+            return [...prevCheckedProducts, productId];
+        });
+    }, []);
+
+    const handleSelectAllChange = useCallback(
+        (event) => {
+            setCheckedProducts(() => {
+                if (event.target.checked) {
+                    return cart.map((product) => product.id);
+                }
+                return [];
+            });
+        },
+        [cart],
+    );
 
     const handleActionClick = useCallback(
         (productId) => {
@@ -94,11 +142,6 @@ export default function ShoppingCartScreen() {
                         hideModal={hideModal}
                         productId={productId}
                         onDelete={() => {
-                            setProductQty((prevQty) => {
-                                const updatedQty = { ...prevQty };
-                                delete updatedQty[productId];
-                                return updatedQty;
-                            });
                             setProductTotal((prevTotal) => {
                                 const updatedTotal = { ...prevTotal };
                                 delete updatedTotal[productId];
@@ -114,37 +157,25 @@ export default function ShoppingCartScreen() {
 
     const handleIncrementChange = useCallback(
         (productId) => {
-            setProductQty((prevQty) => {
-                const updatedQty = prevQty[productId] + 1;
-                const updatedTotal = updatedQty * cart.find((product) => product.id === productId).price;
-                setProductTotal((prevTotal) => ({
-                    ...prevTotal,
-                    [productId]: updatedTotal,
-                }));
-                return {
-                    ...prevQty,
-                    [productId]: updatedQty,
-                };
-            });
+            increaseQty(productId);
+            const product = cart.find((item) => item.id === productId);
+            setProductTotal((prevTotal) => ({
+                ...prevTotal,
+                [productId]: product.quantity * product.price,
+            }));
         },
-        [cart],
+        [increaseQty, cart],
     );
 
     const handleDecrementChange = useCallback(
         (productId) => {
-            if (productQty[productId] > 1) {
-                setProductQty((prevQty) => {
-                    const updatedQty = prevQty[productId] - 1;
-                    const updatedTotal = updatedQty * cart.find((product) => product.id === productId).price;
-                    setProductTotal((prevTotal) => ({
-                        ...prevTotal,
-                        [productId]: updatedTotal,
-                    }));
-                    return {
-                        ...prevQty,
-                        [productId]: updatedQty,
-                    };
-                });
+            const product = cart.find((item) => item.id === productId);
+            if (product.quantity > 1) {
+                decreaseQty(productId);
+                setProductTotal((prevTotal) => ({
+                    ...prevTotal,
+                    [productId]: product.quantity * product.price,
+                }));
             } else {
                 showModal({
                     modal: (
@@ -152,11 +183,6 @@ export default function ShoppingCartScreen() {
                             hideModal={hideModal}
                             productId={productId}
                             onDelete={() => {
-                                setProductQty((prevQty) => {
-                                    const updatedQty = { ...prevQty };
-                                    delete updatedQty[productId];
-                                    return updatedQty;
-                                });
                                 setProductTotal((prevTotal) => {
                                     const updatedTotal = { ...prevTotal };
                                     delete updatedTotal[productId];
@@ -168,8 +194,13 @@ export default function ShoppingCartScreen() {
                 });
             }
         },
-        [productQty, setProductQty, showModal, hideModal, cart],
+        [setProductTotal, decreaseQty, showModal, hideModal, cart],
     );
+
+    useEffect(() => {
+        const updatedTotalPrice = calculateTotalPrice(productTotal, checkedProducts);
+        setTotalPrice(updatedTotalPrice);
+    }, [productTotal, checkedProducts, calculateTotalPrice]);
 
     if (cart.length === 0) {
         return (
@@ -177,12 +208,7 @@ export default function ShoppingCartScreen() {
                 <COReusableStyles.BorderConatiner>
                     <Layout>
                         <FormControlLabel
-                            control={
-                                <Checkbox
-                                    onChange={handleSelectAllChange}
-                                    disabled
-                                />
-                            }
+                            control={<Checkbox disabled />}
                             label={
                                 <COReusableStyles.Label style={{ marginLeft: '1.5rem' }}>
                                     Product
@@ -227,11 +253,17 @@ export default function ShoppingCartScreen() {
             <COReusableStyles.BorderConatiner>
                 <Layout>
                     <FormControlLabel
-                        control={<Checkbox onChange={handleSelectAllChange} />}
+                        control={
+                            <Checkbox
+                                onChange={handleSelectAllChange}
+                                checked={cart.length > 0 && checkedProducts.length === cart.length}
+                            />
+                        }
                         label={
                             <COReusableStyles.Label style={{ marginLeft: '1.5rem' }}>Product</COReusableStyles.Label>
                         }
                     />
+                    {console.log('checked product:', checkedProducts)}
                     <COReusableStyles.Label>Unit Price</COReusableStyles.Label>
                     <COReusableStyles.Label>Quantity</COReusableStyles.Label>
                     <COReusableStyles.Label>Total Price</COReusableStyles.Label>
@@ -242,7 +274,12 @@ export default function ShoppingCartScreen() {
             {cart.map((product) => (
                 <COReusableStyles.BorderConatiner key={product.id}>
                     <FormControlLabel
-                        control={<Checkbox onChange={handleSelectStoresChange} />}
+                        control={
+                            <Checkbox
+                                onChange={() => handleProductChecked(product.id)}
+                                checked={checkedProducts.includes(product.id)}
+                            />
+                        }
                         label={
                             <CheckboxLabelContainer>
                                 <Storefront />
@@ -253,7 +290,12 @@ export default function ShoppingCartScreen() {
                     <COReusableStyles.Divider />
                     <Layout>
                         <FormControlLabel
-                            control={<Checkbox />}
+                            control={
+                                <Checkbox
+                                    onChange={() => handleProductChecked(product.id)}
+                                    checked={checkedProducts.includes(product.id)}
+                                />
+                            }
                             label={
                                 <CheckboxLabelContainer>
                                     <img
@@ -282,7 +324,7 @@ export default function ShoppingCartScreen() {
                                 -
                             </QuantityChangeButton>
                             <QuantityChangeButton style={{ cursor: 'auto' }}>
-                                <p>{productQty[product.id]}</p>
+                                <p>{product.quantity}</p>
                             </QuantityChangeButton>
                             <QuantityChangeButton onClick={() => handleIncrementChange(product.id)}>
                                 +
@@ -301,7 +343,29 @@ export default function ShoppingCartScreen() {
                     </Layout>
                 </COReusableStyles.BorderConatiner>
             ))}
-            <CheckoutBar />
+            <BottomBar>
+                <BottomLayout>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={handleSelectAllChange}
+                                checked={cart.length > 0 && checkedProducts.length === cart.length}
+                            />
+                        }
+                        label={<COReusableStyles.Text>Select All ({cart.length})</COReusableStyles.Text>}
+                    />
+                    <COReusableStyles.Text>Total Item: {checkedProducts.length} item(s)</COReusableStyles.Text>
+                    <TotalCheckout>RM{totalPrice.toFixed(2)}</TotalCheckout>
+                    <Button
+                        component={Link}
+                        to="checkoutScreen"
+                        style={{ ...PlatformReusableStyles.PrimaryButtonStyles }}
+                    >
+                        <p style={{ fontWeight: FONTWEIGHT.SEMI_BOLD }}>CHECK OUT</p>
+                    </Button>
+                </BottomLayout>
+            </BottomBar>
+            {console.log('cart: ', cart)}
         </Wrapper>
     );
 }
