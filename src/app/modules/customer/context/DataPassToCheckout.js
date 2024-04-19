@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 function PassData() {
     const [cart, setCart] = useState([]);
@@ -32,6 +32,24 @@ function PassData() {
         setCart((prevCart) => prevCart.filter((product) => product.id !== productId));
     };
 
+    // Additional for edit product quantity in cart
+    const increaseQty = useCallback((productId) => {
+        setCart((prevCart) => {
+            const index = prevCart.findIndex((product) => product.id === productId);
+            const newCart = [...prevCart];
+            newCart[index].quantity += 1;
+            return newCart;
+        });
+    }, []);
+    const decreaseQty = useCallback((productId) => {
+        setCart((prevCart) => {
+            const index = prevCart.findIndex((product) => product.id === productId);
+            const newCart = [...prevCart];
+            newCart[index].quantity -= 1;
+            return newCart;
+        });
+    }, []);
+
     // The value that will be provided to the context
     const CartArrayValue = {
         cart,
@@ -39,6 +57,8 @@ function PassData() {
         buyNowProduct,
         buyNow,
         removeFromCart,
+        increaseQty,
+        decreaseQty,
     };
 
     return CartArrayValue;

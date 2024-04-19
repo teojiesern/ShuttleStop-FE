@@ -91,20 +91,13 @@ const TotalCheckout = styled.span`
 // function handleSelectStoresChange() {}
 
 export default function ShoppingCartScreen() {
-    const [productQty, setProductQty] = useState({});
     const [productTotal, setProductTotal] = useState({});
     const [checkedProducts, setCheckedProducts] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const { showModal, hideModal } = useModal();
-    const { cart } = useContext(CartContext);
+    const { cart, increaseQty, decreaseQty } = useContext(CartContext);
 
     useEffect(() => {
-        const initialQty = cart.reduce((acc, product) => {
-            acc[product.id] = product.quantity;
-            return acc;
-        }, {});
-        setProductQty(initialQty);
-
         const initialProductTotal = cart.reduce((acc, product) => {
             acc[product.id] = product.quantity * product.price;
             return acc;
@@ -149,11 +142,6 @@ export default function ShoppingCartScreen() {
                         hideModal={hideModal}
                         productId={productId}
                         onDelete={() => {
-                            setProductQty((prevQty) => {
-                                const updatedQty = { ...prevQty };
-                                delete updatedQty[productId];
-                                return updatedQty;
-                            });
                             setProductTotal((prevTotal) => {
                                 const updatedTotal = { ...prevTotal };
                                 delete updatedTotal[productId];
@@ -169,37 +157,25 @@ export default function ShoppingCartScreen() {
 
     const handleIncrementChange = useCallback(
         (productId) => {
-            setProductQty((prevQty) => {
-                const updatedQty = prevQty[productId] + 1;
-                const updatedTotal = updatedQty * cart.find((product) => product.id === productId).price;
-                setProductTotal((prevTotal) => ({
-                    ...prevTotal,
-                    [productId]: updatedTotal,
-                }));
-                return {
-                    ...prevQty,
-                    [productId]: updatedQty,
-                };
-            });
+            increaseQty(productId);
+            const product = cart.find((item) => item.id === productId);
+            setProductTotal((prevTotal) => ({
+                ...prevTotal,
+                [productId]: product.quantity * product.price,
+            }));
         },
-        [cart],
+        [increaseQty, cart],
     );
 
     const handleDecrementChange = useCallback(
         (productId) => {
-            if (productQty[productId] > 1) {
-                setProductQty((prevQty) => {
-                    const updatedQty = prevQty[productId] - 1;
-                    const updatedTotal = updatedQty * cart.find((product) => product.id === productId).price;
-                    setProductTotal((prevTotal) => ({
-                        ...prevTotal,
-                        [productId]: updatedTotal,
-                    }));
-                    return {
-                        ...prevQty,
-                        [productId]: updatedQty,
-                    };
-                });
+            const product = cart.find((item) => item.id === productId);
+            if (product.quantity > 1) {
+                decreaseQty(productId);
+                setProductTotal((prevTotal) => ({
+                    ...prevTotal,
+                    [productId]: product.quantity * product.price,
+                }));
             } else {
                 showModal({
                     modal: (
@@ -207,11 +183,6 @@ export default function ShoppingCartScreen() {
                             hideModal={hideModal}
                             productId={productId}
                             onDelete={() => {
-                                setProductQty((prevQty) => {
-                                    const updatedQty = { ...prevQty };
-                                    delete updatedQty[productId];
-                                    return updatedQty;
-                                });
                                 setProductTotal((prevTotal) => {
                                     const updatedTotal = { ...prevTotal };
                                     delete updatedTotal[productId];
@@ -223,7 +194,7 @@ export default function ShoppingCartScreen() {
                 });
             }
         },
-        [productQty, setProductQty, showModal, hideModal, cart],
+        [setProductTotal, decreaseQty, showModal, hideModal, cart],
     );
 
     useEffect(() => {
@@ -353,7 +324,7 @@ export default function ShoppingCartScreen() {
                                 -
                             </QuantityChangeButton>
                             <QuantityChangeButton style={{ cursor: 'auto' }}>
-                                <p>{productQty[product.id]}</p>
+                                <p>{product.quantity}</p>
                             </QuantityChangeButton>
                             <QuantityChangeButton onClick={() => handleIncrementChange(product.id)}>
                                 +
@@ -394,6 +365,7 @@ export default function ShoppingCartScreen() {
                     </Button>
                 </BottomLayout>
             </BottomBar>
+            {console.log('cart: ', cart)}
         </Wrapper>
     );
 }
