@@ -12,10 +12,13 @@ import TextField from '@mui/material/TextField';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
+import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import FilterContext from '../context/FilterContext';
+import WarnModal1 from '../modal/WarnModal1';
+import WarnModal2 from '../modal/WarnModal2';
 
 const NavBar = styled.div`
     float: left;
@@ -85,6 +88,8 @@ export default function SideNav() {
     const [showAllBrands, setShowAllBrands] = useState(false);
     const displayedBrands = showAllBrands ? brands : brands.slice(0, 5);
     const { filter, setFilter } = useContext(FilterContext);
+
+    const { showModal, hideModal } = useModal();
 
     return (
         <NavBar>
@@ -202,6 +207,14 @@ export default function SideNav() {
                                 minPrice: 0,
                                 maxPrice: Infinity,
                             }));
+
+                            showModal({
+                                modal: <WarnModal1 />,
+                                disableBackdropDismiss: false,
+                            });
+                            setTimeout(() => {
+                                hideModal();
+                            }, 2000);
                         } else if (filter.tempMinPrice >= filter.tempMaxPrice) {
                             setFilter((prevFilter) => ({
                                 ...prevFilter,
@@ -210,6 +223,13 @@ export default function SideNav() {
                                 tempMinPrice: '',
                                 tempMaxPrice: '',
                             }));
+                            showModal({
+                                modal: <WarnModal2 />,
+                                disableBackdropDismiss: false,
+                            });
+                            setTimeout(() => {
+                                hideModal();
+                            }, 2000);
                         } else {
                             setFilter((prevFilter) => ({
                                 ...prevFilter,

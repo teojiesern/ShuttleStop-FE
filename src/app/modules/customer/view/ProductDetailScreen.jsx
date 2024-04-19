@@ -5,14 +5,17 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Button } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import React, { useContext, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import CustomerStatusContext from '../../../platform/app/data/CustomerStatusContext';
 import COLORS from '../../../platform/Colors';
+import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import products from '../assets/ProductList2';
 import CartContext from '../context/CartContext';
+import AddCartModal from '../modal/AddCartModal';
 
 const AllDetails = styled.div`
     display: flex;
@@ -37,7 +40,6 @@ const SmallImg = styled.div`
     display: flex;
     gap: 13px;
     position: relative;
-    justify-content: space-between;
 `;
 
 const NextButton = styled.button`
@@ -170,6 +172,9 @@ const TextSmallGrey = styled.p`
 `;
 
 export default function ProductDetailScreen() {
+    const { isLogin } = useContext(CustomerStatusContext);
+    const navigate = useNavigate();
+
     const { id } = useParams();
     const product = products.find((p) => p.id === Number(id));
 
@@ -193,15 +198,25 @@ export default function ProductDetailScreen() {
 
     const { addToCart, buyNow } = useContext(CartContext);
 
+    const { showModal } = useModal();
+
     const handleAddToCart = () => {
-        addToCart({
-            id: product.id + JSON.stringify(selectedOptions),
-            name: product.name,
-            price: product.price,
-            imgSrc: product.imgSrc,
-            quantity,
-            options: selectedOptions,
-        });
+        if (!isLogin) {
+            navigate('/authentication/login', { replace: true });
+        } else {
+            addToCart({
+                id: product.id + JSON.stringify(selectedOptions),
+                name: product.name,
+                price: product.price,
+                imgSrc: product.imgSrc,
+                quantity,
+                options: selectedOptions,
+            });
+            showModal({
+                modal: <AddCartModal />,
+                disableBackdropDismiss: true,
+            });
+        }
     };
 
     const handleBuyNow = () => {
@@ -269,29 +284,35 @@ export default function ProductDetailScreen() {
             <AllDetails>
                 <AllImage>
                     <BigImg>
-                        <PrevButton
-                            onClick={handlePrevClickBigImage}
-                            style={{ width: '40px', height: '40px' }}
-                        >
-                            <ArrowBackIosOutlined style={{ fontSize: '22px' }} />
-                        </PrevButton>
+                        {product.imgAll.length > 1 && (
+                            <PrevButton
+                                onClick={handlePrevClickBigImage}
+                                style={{ width: '40px', height: '40px' }}
+                            >
+                                <ArrowBackIosOutlined style={{ fontSize: '22px' }} />
+                            </PrevButton>
+                        )}
                         <img
                             src={product.imgAll[selectedImageIndex]}
                             alt={product.name}
                             width={400}
                             height={400}
                         />
-                        <NextButton
-                            onClick={handleNextClickBigImage}
-                            style={{ width: '40px', height: '40px' }}
-                        >
-                            <ArrowForwardIosOutlined style={{ fontSize: '22px' }} />
-                        </NextButton>
+                        {product.imgAll.length > 1 && (
+                            <NextButton
+                                onClick={handleNextClickBigImage}
+                                style={{ width: '40px', height: '40px' }}
+                            >
+                                <ArrowForwardIosOutlined style={{ fontSize: '22px' }} />
+                            </NextButton>
+                        )}
                     </BigImg>
                     <SmallImg>
-                        <PrevButton onClick={handlePrevClick}>
-                            <ArrowBackIosOutlined style={{ fontSize: '10px' }} />
-                        </PrevButton>
+                        {product.imgAll.length > 4 && (
+                            <PrevButton onClick={handlePrevClick}>
+                                <ArrowBackIosOutlined style={{ fontSize: '10px' }} />
+                            </PrevButton>
+                        )}
                         {product.imgAll.slice(imageListStart, imageListStart + 4).map((image, index) => (
                             <button
                                 key={Math.random()}
@@ -316,9 +337,11 @@ export default function ProductDetailScreen() {
                                 />
                             </button>
                         ))}
-                        <NextButton onClick={handleNextClick}>
-                            <ArrowForwardIosOutlined style={{ fontSize: '10px' }} />
-                        </NextButton>
+                        {product.imgAll.length > 4 && (
+                            <NextButton onClick={handleNextClick}>
+                                <ArrowForwardIosOutlined style={{ fontSize: '10px' }} />
+                            </NextButton>
+                        )}
                     </SmallImg>
                 </AllImage>
                 <Details>
@@ -328,6 +351,7 @@ export default function ProductDetailScreen() {
                         <Rating
                             name="read-only"
                             value={product.rate}
+                            precision={0.5}
                             readOnly
                         />
                         <TextSmallGrey>({product.numReviews} reviews)</TextSmallGrey>
@@ -448,7 +472,7 @@ export default function ProductDetailScreen() {
                                     ADD TO CART
                                 </Button>
 
-                                <Link to="/customer/fakeCheckout">
+                                <Link to="/checkoutScreen">
                                     <Button
                                         style={{
                                             ...PlatformReusableStyles.PrimaryButtonStyles,
@@ -481,9 +505,6 @@ export default function ProductDetailScreen() {
                 <p>{description}</p>
             </ProductDescription>
             <br />
-            <Link to="/customer/fakeCart">
-                <Button style={PlatformReusableStyles.OutlineButtonStyles}>Go to Fake Cart</Button>
-            </Link>
         </div>
     );
 }
