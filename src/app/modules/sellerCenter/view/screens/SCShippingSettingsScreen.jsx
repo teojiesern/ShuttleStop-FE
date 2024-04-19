@@ -6,13 +6,13 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import ShopSettingsContext from '../../../../platform/app/data/ShopSettingsContext';
 import CustomSwitch from '../../../../platform/components/control/CustomSwitch';
+import TickedModal from '../../../../platform/modal/TickedModal';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
 import { CourierOptions, PaymentOptions, ShippingOptions } from '../../constants/SellerCenterConstants';
 import useSCShippingSettings from '../hooks/useSCShippingSettings';
-import SCUpdateSettingsSuccessModal from '../modal/SCUpdateSettingsSuccessModal';
 import SCReusableStyles from '../styles/SCReusableStyles';
 
 const Container = styled.div`
@@ -87,7 +87,7 @@ export default function SCShippingSettingsScreen() {
 
     const onSaveClick = useCallback(() => {
         updateShippingSettings();
-        showModal({ modal: <SCUpdateSettingsSuccessModal /> });
+        showModal({ modal: <TickedModal title="Shop Settings updated successfully!" /> });
         setTimeout(() => {
             hideModal();
         }, 3500);

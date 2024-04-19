@@ -1,9 +1,9 @@
 import Lottie from 'react-lottie';
 import styled from 'styled-components';
-import COLORS from '../../../../platform/Colors';
-import lottieTicked from '../../../../platform/animation/lottieTicked.json';
-import FONTSIZE from '../../../../platform/style/FontSize';
-import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import COLORS from '../Colors';
+import lottieTicked from '../animation/lottieTicked.json';
+import FONTSIZE from '../style/FontSize';
+import FONTWEIGHT from '../style/FontWeight';
 
 const CenteredDiv = styled.div`
     display: flex;
@@ -20,7 +20,13 @@ const Title = styled.h1`
     color: ${COLORS.black};
 `;
 
-export default function SCUpdateSettingsSuccessModal() {
+const Description = styled.p`
+    font-size: ${FONTSIZE.small};
+    font-weight: ${FONTWEIGHT.REGULAR};
+    color: ${COLORS.darkGrey};
+`;
+
+export default function TickedModal({ title, description }) {
     return (
         <CenteredDiv>
             <Lottie
@@ -29,7 +35,8 @@ export default function SCUpdateSettingsSuccessModal() {
                 height={200}
                 isClickToPauseDisabled
             />
-            <Title>Shop Settings updated successfully!</Title>
+            {title && <Title>{title}</Title>}
+            {description && <Description>{description}</Description>}
         </CenteredDiv>
     );
 }

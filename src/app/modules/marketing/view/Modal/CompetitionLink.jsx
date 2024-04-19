@@ -1,9 +1,8 @@
 import { Button, TextField } from '@mui/material';
 import { useCallback, useState } from 'react';
-import Lottie from 'react-lottie';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
-import lottieTicked from '../../../../platform/animation/lottieTicked.json';
+import TickedModal from '../../../../platform/modal/TickedModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
@@ -21,12 +20,6 @@ const Title = styled.h1`
     font-weight: ${FONTWEIGHT.SEMI_BOLD};
     color: ${COLORS.black};
     margin-bottom: 1rem;
-`;
-
-const Description = styled.p`
-    font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.REGULAR};
-    color: ${COLORS.darkGrey};
 `;
 
 const ButtonContainer = styled.div`
@@ -163,16 +156,10 @@ export default function CompetitionLinkModal({ hideModal }) {
             );
         }
         return (
-            <CenteredDiv>
-                <Lottie
-                    options={{ animationData: lottieTicked, autoplay: true, loop: true }}
-                    width={200}
-                    height={200}
-                    isClickToPauseDisabled
-                />
-                <Title>Your competition information have been saved</Title>
-                <Description>You can now review your competition details in the webside</Description>
-            </CenteredDiv>
+            <TickedModal
+                title="Your competition information have been saved"
+                description="You can now review your competition details in the website"
+            />
         );
     }, [formData, handleChange, hideModal, onConfirm, link]);
 

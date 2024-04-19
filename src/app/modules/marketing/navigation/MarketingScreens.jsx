@@ -1,6 +1,7 @@
 import { Route } from 'react-router-dom';
 import MarketingTestScreenTwo from '../view/MarketingTestScreenTwo';
 
+import MarketingCoachRegistrationScreen from '../view/MarketingCoachRegistrationScreen';
 import CompetitionScreen from './CompetitionScreen';
 
 const MarketingScreens = (
@@ -10,7 +11,7 @@ const MarketingScreens = (
             element={<CompetitionScreen />}
         />
 
-            {/* <Route
+        {/* <Route
 
             <Route
 
@@ -23,10 +24,13 @@ const MarketingScreens = (
 
             /> */}
 
-       
         <Route
             path="/marketing/coaches"
             element={<MarketingTestScreenTwo />}
+        />
+        <Route
+            path="/marketing/coach-registration"
+            element={<MarketingCoachRegistrationScreen />}
         />
     </>
 );
