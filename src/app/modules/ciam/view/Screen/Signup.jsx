@@ -98,6 +98,12 @@ const RowContainer = styled.div`
 export default function Signup() {
     const navigate = useNavigate();
 
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    };
+
     const [values, setValues] = useState({
         username: '',
         emailTel: '',
@@ -106,18 +112,12 @@ export default function Signup() {
 
     const [errors, setErrors] = useState({});
 
-    const [showPassword, setShowPassword] = useState(false);
-
-    const handleTogglePasswordVisibility = () => {
-        setShowPassword((prevShowPassword) => !prevShowPassword);
-    };
-
     const handleInput = (e) => {
         const { name, value } = e.target;
         const newObj = { ...values, [e.target.name]: e.target.value };
         setValues(newObj);
-        const passwordErrors = FormValidation({ ...values, [name]: value });
-        setErrors((prevErrors) => ({ ...prevErrors, [name]: passwordErrors[name] }));
+        const fieldErrors = FormValidation({ ...values, [name]: value });
+        setErrors((prevErrors) => ({ ...prevErrors, [name]: fieldErrors[name] }));
     };
 
     const handleSubmit = (event) => {
