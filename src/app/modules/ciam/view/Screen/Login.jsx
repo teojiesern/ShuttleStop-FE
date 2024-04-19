@@ -11,7 +11,6 @@ import COLORS from '../../../../platform/Colors';
 import CustomerStatusContext from '../../../../platform/app/data/CustomerStatusContext';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
-import GoogleIcon from '../assets/google-icon.svg';
 import FormValidation from '../utils/FormValidation';
 
 const ContainerBox = styled(Box)`
@@ -48,45 +47,6 @@ const StyledButton = styled.button`
     margin: 1rem 0px;
     font-weight: ${FONTWEIGHT.SEMI_BOLD};
     font-family: montserrat;
-`;
-
-const OrContainer = styled.div`
-    display: flex;
-    align-items: center;
-    margin: 0.5rem 0;
-`;
-
-const Line = styled.div`
-    flex: 1;
-    height: 1px;
-    width: 100%;
-    background-color: ${COLORS['content-light-grey']};
-`;
-
-const OrText = styled.span`
-    padding: 0 16px;
-    color: ${COLORS.darkGrey};
-`;
-
-const BtnContinueWithGoogle = styled.button`
-    font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.REGULAR};
-    font-family: montserrat;
-    border: solid ${COLORS['content-light-grey']};
-    border-width: 1px;
-    border-radius: 0;
-    background-color: ${COLORS.white};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    margin: 1rem 0;
-`;
-
-const GoogleIconImg = styled.img`
-    width: 24px;
-    height: 24px;
-    margin-right: 1rem;
 `;
 
 const RowContainer = styled.div`
@@ -196,20 +156,6 @@ export default function Login() {
                     <StyledLink to="forgot-password">Forgot password?</StyledLink>
                     <StyledButton>Login</StyledButton>
                 </form>
-
-                <OrContainer>
-                    <Line />
-                    <OrText>or</OrText>
-                    <Line />
-                </OrContainer>
-
-                <BtnContinueWithGoogle>
-                    <GoogleIconImg
-                        src={GoogleIcon}
-                        alt="Google Icon"
-                    />
-                    Continue with Google
-                </BtnContinueWithGoogle>
 
                 <RowContainer>
                     <TextSmRegular>Don&apos;t have an account?</TextSmRegular>
