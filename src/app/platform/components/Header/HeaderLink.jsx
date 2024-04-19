@@ -24,11 +24,13 @@ export default function HeaderLink({ align = 'end' }) {
     return (
         <Container align={align}>
             <StyledLink to="/seller-center">Seller Center</StyledLink>
-            {isLogin ? null : <StyledLink to="/authentication/login">Log In</StyledLink>}
             {isLogin ? (
                 <StyledLink to="/customer/my-profile">My Account</StyledLink>
             ) : (
-                <StyledLink to="/authentication/signup">Sign Up</StyledLink>
+                <>
+                    <StyledLink to="/authentication/login">Log In</StyledLink>
+                    <StyledLink to="/authentication/signup">Sign Up</StyledLink>
+                </>
             )}
         </Container>
     );

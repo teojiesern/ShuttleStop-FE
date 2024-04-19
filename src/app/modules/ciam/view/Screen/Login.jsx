@@ -95,13 +95,23 @@ export default function Login() {
                 ...prevStatus,
                 isLogin: true,
             }));
+            sessionStorage.setItem('isLogin', true);
             navigate('/');
         } else {
             setErrors(formErrors);
         }
     };
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        const isUserLoggedIn = sessionStorage.getItem('isLogin');
+        if (isUserLoggedIn) {
+            setCustomerStatus((prevStatus) => ({
+                ...prevStatus,
+                isLogin: true,
+            }));
+            navigate('/');
+        }
+    }, []);
 
     return (
         <Container
