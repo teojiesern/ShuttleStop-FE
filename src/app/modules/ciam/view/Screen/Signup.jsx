@@ -1,5 +1,8 @@
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,6 +11,7 @@ import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import GoogleIcon from '../assets/google-icon.svg';
+import FormValidation from '../utils/FormValidation';
 
 const ContainerBox = styled(Box)`
     margin: 2rem 0;
@@ -92,21 +96,38 @@ const RowContainer = styled.div`
 `;
 
 export default function Signup() {
-    const [username, setUsername] = useState('');
-    // const [usernameError, setUsernameError] = useState('');
-
-    const [emailTel, setEmailTel] = useState('');
-    // const [emailTelError, setEmailTelError] = useState('');
-
-    const [password, setPassword] = useState('');
-    // const [passwordError, setPasswordError] = useState('');
-
     const navigate = useNavigate();
+
+    const [values, setValues] = useState({
+        username: '',
+        emailTel: '',
+        password: '',
+    });
+
+    const [errors, setErrors] = useState({});
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    };
+
+    const handleInput = (e) => {
+        const { name, value } = e.target;
+        const newObj = { ...values, [e.target.name]: e.target.value };
+        setValues(newObj);
+        const passwordErrors = FormValidation({ ...values, [name]: value });
+        setErrors((prevErrors) => ({ ...prevErrors, [name]: passwordErrors[name] }));
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(username, emailTel, password);
-        navigate('../login');
+        const formErrors = FormValidation(values);
+        if (Object.keys(formErrors).length === 0) {
+            navigate('../login');
+        } else {
+            setErrors(formErrors);
+        }
     };
 
     return (
@@ -126,20 +147,22 @@ export default function Signup() {
                         label="Username"
                         name="username"
                         autoFocus
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        onChange={handleInput}
+                        error={!!errors.username}
+                        helperText={errors.username}
                     />
 
                     <TextField
                         margin="normal"
                         required
                         fullWidth
-                        id="email-mobile"
+                        id="emailTel"
                         label="Email Address/Mobile Number"
-                        name="email-mobile"
+                        name="emailTel"
                         autoComplete="email tel"
-                        value={emailTel}
-                        onChange={(e) => setEmailTel(e.target.value)}
+                        onChange={handleInput}
+                        error={!!errors.emailTel}
+                        helperText={errors.emailTel}
                     />
 
                     <TextField
@@ -148,11 +171,25 @@ export default function Signup() {
                         fullWidth
                         name="password"
                         label="Password"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         id="password"
                         autoComplete="current-password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={handleInput}
+                        error={!!errors.password}
+                        helperText={errors.password}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleTogglePasswordVisibility}
+                                        onMouseDown={(event) => event.preventDefault()}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
                     <StyledButton>Create Account</StyledButton>
                 </form>
