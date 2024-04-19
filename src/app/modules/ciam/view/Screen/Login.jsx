@@ -61,7 +61,7 @@ export default function Login() {
 
     const [submitted, setSubmitted] = useState(false);
 
-    const { setCustomerStatus } = useContext(CustomerStatusContext);
+    const { setCustomerStatus, isLogin } = useContext(CustomerStatusContext);
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -95,7 +95,6 @@ export default function Login() {
                 ...prevStatus,
                 isLogin: true,
             }));
-            sessionStorage.setItem('isLogin', true);
             navigate('/');
         } else {
             setErrors(formErrors);
@@ -103,15 +102,10 @@ export default function Login() {
     };
 
     useEffect(() => {
-        const isUserLoggedIn = sessionStorage.getItem('isLogin');
-        if (isUserLoggedIn) {
-            setCustomerStatus((prevStatus) => ({
-                ...prevStatus,
-                isLogin: true,
-            }));
+        if (isLogin) {
             navigate('/');
         }
-    }, []);
+    }, [isLogin, navigate]);
 
     return (
         <Container
