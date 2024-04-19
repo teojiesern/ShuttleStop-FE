@@ -6,7 +6,7 @@ export default function MarketingTestScreenTwo() {
         <div>
             <HeadContainer
                 imageUrl={CoachHeadImage}
-                top="38%"
+                top="40%"
                 title="Coaches"
             />
         </div>

@@ -155,7 +155,7 @@ export default function SCAddNewProductsScreen() {
                 <div
                     style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        gridTemplateColumns: 'repeat(2, 1fr)',
                         gap: '1rem',
                     }}
                 >

@@ -1,5 +1,8 @@
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,7 +11,7 @@ import COLORS from '../../../../platform/Colors';
 import CustomerStatusContext from '../../../../platform/app/data/CustomerStatusContext';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
-import GoogleIcon from '../assets/google-icon.svg';
+import FormValidation from '../utils/FormValidation';
 
 const ContainerBox = styled(Box)`
     margin: 2rem 0;
@@ -46,45 +49,6 @@ const StyledButton = styled.button`
     font-family: montserrat;
 `;
 
-const OrContainer = styled.div`
-    display: flex;
-    align-items: center;
-    margin: 0.5rem 0;
-`;
-
-const Line = styled.div`
-    flex: 1;
-    height: 1px;
-    width: 100%;
-    background-color: ${COLORS['content-light-grey']};
-`;
-
-const OrText = styled.span`
-    padding: 0 16px;
-    color: ${COLORS.darkGrey};
-`;
-
-const BtnContinueWithGoogle = styled.button`
-    font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.REGULAR};
-    font-family: montserrat;
-    border: solid ${COLORS['content-light-grey']};
-    border-width: 1px;
-    border-radius: 0;
-    background-color: ${COLORS.white};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    margin: 1rem 0;
-`;
-
-const GoogleIconImg = styled.img`
-    width: 24px;
-    height: 24px;
-    margin-right: 1rem;
-`;
-
 const RowContainer = styled.div`
     display: flex;
     align-items: center;
@@ -93,30 +57,55 @@ const RowContainer = styled.div`
 `;
 
 export default function Login() {
-    const [emailTel, setEmailTel] = useState('');
-    const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const { setCustomerStatus } = useContext(CustomerStatusContext);
+
+    const [submitted, setSubmitted] = useState(false);
+
+    const { setCustomerStatus, isLogin } = useContext(CustomerStatusContext);
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    };
+
+    const [values, setValues] = useState({
+        emailTel: '',
+        password: '',
+    });
+
+    const [errors, setErrors] = useState({});
+
+    const handleInput = (e) => {
+        const { name, value } = e.target;
+        setValues((prevValues) => ({ ...prevValues, [name]: value }));
+        if (submitted) {
+            const fieldErrors = FormValidation({ ...values, [name]: value });
+            setErrors((prevErrors) => ({ ...prevErrors, [name]: fieldErrors[name] }));
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const credential = { emailTel, password };
-        console.log(credential);
-        navigate('/');
-        const loginSuccessful = true;
+        setSubmitted(true);
+        const formErrors = FormValidation(values);
 
-        if (loginSuccessful) {
+        if (Object.keys(formErrors).length === 0) {
             setCustomerStatus((prevStatus) => ({
                 ...prevStatus,
                 isLogin: true,
             }));
             navigate('/');
         } else {
-            console.log('Login failed');
+            setErrors(formErrors);
         }
     };
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        if (isLogin) {
+            navigate('/');
+        }
+    }, [isLogin, navigate]);
 
     return (
         <Container
@@ -131,13 +120,14 @@ export default function Login() {
                         margin="normal"
                         required
                         fullWidth
-                        id="email-mobile"
+                        id="emailTel"
                         label="Email Address/Mobile Number"
-                        name="email-mobile"
+                        name="emailTel"
                         autoComplete="email tel"
                         autoFocus
-                        value={emailTel}
-                        onChange={(e) => setEmailTel(e.target.value)}
+                        onChange={handleInput}
+                        error={!!errors.emailTel}
+                        helperText={errors.emailTel}
                     />
 
                     <TextField
@@ -146,30 +136,30 @@ export default function Login() {
                         fullWidth
                         name="password"
                         label="Password"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         id="password"
                         autoComplete="current-password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={handleInput}
+                        error={!!errors.password}
+                        helperText={errors.password}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleTogglePasswordVisibility}
+                                        onMouseDown={(event) => event.preventDefault()}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
 
                     <StyledLink to="forgot-password">Forgot password?</StyledLink>
                     <StyledButton>Login</StyledButton>
                 </form>
-
-                <OrContainer>
-                    <Line />
-                    <OrText>or</OrText>
-                    <Line />
-                </OrContainer>
-
-                <BtnContinueWithGoogle>
-                    <GoogleIconImg
-                        src={GoogleIcon}
-                        alt="Google Icon"
-                    />
-                    Continue with Google
-                </BtnContinueWithGoogle>
 
                 <RowContainer>
                     <TextSmRegular>Don&apos;t have an account?</TextSmRegular>

@@ -28,7 +28,7 @@ export default class CompReusableStyles {
     static TextDescription = styled.p`
         font-size: ${FONTSIZE.small};
         font-weight: ${FONTWEIGHT.REGULAR};
-        color: ${COLORS.grey};
+        color: ${COLORS.darkGrey};
     `;
 
     static Divider = styled.div`

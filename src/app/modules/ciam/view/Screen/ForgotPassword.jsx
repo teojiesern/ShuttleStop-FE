@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import FormValidation from '../utils/FormValidation';
 
 const ContainerBox = styled(Box)`
     margin: 2rem 0;
@@ -34,13 +35,34 @@ const StyledButton = styled.button`
 `;
 
 export default function ForgotPassword() {
-    const [emailTel, setEmailTel] = useState('');
     const navigate = useNavigate();
+
+    const [submitted, setSubmitted] = useState(false);
+
+    const [values, setValues] = useState({
+        emailTel: '',
+    });
+
+    const [errors, setErrors] = useState({});
+
+    const handleInput = (e) => {
+        const { name, value } = e.target;
+        setValues({ ...values, [name]: value });
+        if (submitted) {
+            const fieldErrors = FormValidation({ ...values, [name]: value });
+            setErrors((prevErrors) => ({ ...prevErrors, [name]: fieldErrors[name] }));
+        }
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(emailTel);
-        navigate('../login/forgot-password/verification');
+        setSubmitted(true);
+        const formErrors = FormValidation(values);
+        if (Object.keys(formErrors).length === 0) {
+            navigate('../login/forgot-password/verification');
+        } else {
+            setErrors(formErrors);
+        }
     };
 
     return (
@@ -56,13 +78,14 @@ export default function ForgotPassword() {
                         margin="normal"
                         required
                         fullWidth
-                        id="email-mobile"
+                        id="emailTel"
                         label="Email Address/Mobile Number"
-                        name="email-mobile"
+                        name="emailTel"
                         autoComplete="email tel"
                         autofocus
-                        value={emailTel}
-                        onChange={(e) => setEmailTel(e.target.value)}
+                        onChange={handleInput}
+                        error={!!errors.emailTel}
+                        helperText={errors.emailTel}
                     />
                     <StyledButton>Next</StyledButton>
                 </form>

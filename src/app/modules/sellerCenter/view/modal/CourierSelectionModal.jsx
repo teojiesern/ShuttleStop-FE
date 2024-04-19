@@ -1,9 +1,8 @@
 import { Button } from '@mui/material';
 import { useCallback, useState } from 'react';
-import Lottie from 'react-lottie';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
-import lottieTicked from '../../../../platform/animation/lottieTicked.json';
+import TickedModal from '../../../../platform/modal/TickedModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
@@ -22,25 +21,10 @@ const Title = styled.h1`
     color: ${COLORS.black};
 `;
 
-const Description = styled.p`
-    font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.REGULAR};
-    color: ${COLORS.darkGrey};
-`;
-
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
-`;
-
-const CenteredDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    min-height: 50vh;
 `;
 
 export default function CourierSelectionModal({ hideModal, shipOrders, activeCourierOptions }) {
@@ -95,16 +79,10 @@ export default function CourierSelectionModal({ hideModal, shipOrders, activeCou
             );
         }
         return (
-            <CenteredDiv>
-                <Lottie
-                    options={{ animationData: lottieTicked, autoplay: true, loop: true }}
-                    width={200}
-                    height={200}
-                    isClickToPauseDisabled
-                />
-                <Title>Your mass shipment is confirmed to be shipped</Title>
-                <Description>The courier will collect your item soon</Description>
-            </CenteredDiv>
+            <TickedModal
+                title="Your mass shipment is confirmed to be shipped"
+                description="The courier will collect your item soon"
+            />
         );
     }, [activeCourierOptions, hideModal, onConfirm, selectedCourier, shipped]);
 

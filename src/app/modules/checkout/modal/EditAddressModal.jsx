@@ -103,7 +103,7 @@ export default function EditAddressModal({ hideModal }) {
                     style={{ ...PlatformReusableStyles.PrimaryButtonStyles }}
                     onClick={handleBuyNowClick}
                 >
-                    <p>BUY NOW</p>
+                    <p>SAVE</p>
                 </Button>
             </ButtonContainer>
         </Wrapper>
