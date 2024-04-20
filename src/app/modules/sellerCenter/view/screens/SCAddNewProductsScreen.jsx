@@ -9,7 +9,7 @@ import {
     TableRow,
     TextField,
 } from '@mui/material';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import DropBox from '../../../../platform/components/dropbox/DropBox';
@@ -66,24 +66,32 @@ export default function SCAddNewProductsScreen() {
     const [productImage3, setProductImage3] = useState([]);
     const [productImage4, setProductImage4] = useState([]);
     const [productDescription, setProductDescription] = useState('');
-    // eslint-disable-next-line no-unused-vars
-    const [variants, _setVariants] = useState([
+    const [variants, setVariants] = useState([
         {
-            color: 'Red',
-            totalStock: 200,
-            totalSales: 100,
-            price: 729,
-        },
-        {
-            color: 'Blue',
-            totalStock: 150,
-            totalSales: 80,
-            price: 349,
+            color: '',
+            totalStock: 0,
+            totalSales: 0,
+            price: 0,
         },
     ]);
     const [colors, setColors] = useState(variants.map((variant) => variant.color));
     const [remainingStock, setRemainingStock] = useState(variants.map((variant) => variant.totalStock));
     const [price, setPrice] = useState(variants.map((variant) => variant.price));
+
+    const onAddNewVariant = useCallback(() => {
+        setVariants([
+            ...variants,
+            {
+                color: '',
+                totalStock: 0,
+                totalSales: 0,
+                price: 0,
+            },
+        ]);
+        setColors([...colors, '']);
+        setRemainingStock([...remainingStock, 0]);
+        setPrice([...price, 0]);
+    }, [colors, price, remainingStock, variants]);
 
     return (
         <Container>
@@ -192,7 +200,15 @@ export default function SCAddNewProductsScreen() {
 
             <Divider />
 
-            <SectionTitle>Sales Information</SectionTitle>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <SectionTitle>Sales Information</SectionTitle>
+                <Button
+                    style={PlatformReusableStyles.OutlineButtonStyles}
+                    onClick={onAddNewVariant}
+                >
+                    Add New Variant
+                </Button>
+            </div>
             <TableContainer>
                 <Table
                     sx={{
