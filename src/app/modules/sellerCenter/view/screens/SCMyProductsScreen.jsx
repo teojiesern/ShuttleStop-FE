@@ -1,8 +1,10 @@
 /* eslint-disable no-shadow */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import useModal from '../../../../platform/modal/useModal';
 import useSCMyProducts from '../hooks/useSCMyProducts';
+import SCEditProductsModal from '../modal/SCEditProductsModal';
 import SCReusableStyles from '../styles/SCReusableStyles';
 
 const Container = styled.div`
@@ -32,19 +34,34 @@ const ProductImage = styled.img`
 export default function SCMyProductsScreen() {
     const [products, setProducts] = useState(null);
     const { getMyProducts } = useSCMyProducts();
-    // const { showModal, hideModal } = useModal();
+    const { showModal, hideModal } = useModal();
 
-    // const onEditClicked = useCallback(() => {
-    //     showModal({
-    //         modal: (
-    //             <CourierSelectionModal
-    //                 hideModal={hideModal}
-    //                 shipOrders={shipOrders}
-    //                 activeCourierOptions={activeCourierOptions}
-    //             />
-    //         ),
-    //     });
-    // }, [hideModal, showModal]);
+    const onEditClicked = useCallback(
+        (product) => {
+            showModal({
+                modal: (
+                    <SCEditProductsModal
+                        hideModal={hideModal}
+                        cproducts={products}
+                        csetProducts={setProducts}
+                        cproductID={product.productID}
+                        cproductName={product.productName}
+                        cproductCategory={product.category}
+                        cproductBrand={product.brand}
+                        // cthumbnailFile={products.thumbnailFile}
+                        // cproductImage1={products.productImage1}
+                        // cproductImage2={products.productImage2}
+                        // cproductImage3={products.productImage3}
+                        // cproductImage4={products.productImage4}
+                        cproductDescription={product.description}
+                        cvariants={product.variants}
+                    />
+                ),
+                cmaxWidth: 'xl',
+            });
+        },
+        [hideModal, products, showModal],
+    );
 
     useEffect(() => {
         getMyProducts().then((data) => {
@@ -81,7 +98,7 @@ export default function SCMyProductsScreen() {
                                         <SCReusableStyles.Text>{product.productName}</SCReusableStyles.Text>
                                     </ProductContainer>
                                 ) : (
-                                    <div key={variant.color} />
+                                    <div key={variant} />
                                 ),
                                 <SCReusableStyles.Text key={variant.color}>{variant.color}</SCReusableStyles.Text>,
                                 <SCReusableStyles.Text key={variant.color}>{variant.price}</SCReusableStyles.Text>,
@@ -90,6 +107,7 @@ export default function SCMyProductsScreen() {
                                 index === 0 ? (
                                     <SCReusableStyles.Text
                                         style={{ color: COLORS['semantic-blue'], cursor: 'pointer' }}
+                                        onClick={() => onEditClicked(product)}
                                     >
                                         Edit
                                     </SCReusableStyles.Text>

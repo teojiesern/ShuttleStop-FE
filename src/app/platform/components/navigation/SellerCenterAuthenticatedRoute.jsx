@@ -7,11 +7,11 @@ export default function SellerCenterAuthenticatedRoute() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!isLogin) {
-            navigate('/authentication/login', { replace: true });
-        } else if (!registeredSeller) {
-            navigate('/seller-center/registration', { replace: true });
-        }
+        // if (!isLogin) {
+        //     navigate('/authentication/login', { replace: true });
+        // } else if (!registeredSeller) {
+        //     navigate('/seller-center/registration', { replace: true });
+        // }
     }, [isLogin, navigate, registeredSeller]);
 
     return <Outlet />;
