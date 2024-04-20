@@ -196,7 +196,7 @@ export default function ProductDetailScreen() {
     const [quantity, setQuantity] = useState(1);
     const [inputQuantity, setInputQuantity] = useState(quantity);
 
-    const { addToCart, buyNow } = useContext(CartContext);
+    const { addToCart, buyNow, buyNowProduct } = useContext(CartContext);
 
     const { showModal } = useModal();
 
@@ -471,7 +471,12 @@ export default function ProductDetailScreen() {
                                     <ShoppingCartOutlinedIcon />
                                     ADD TO CART
                                 </Button>
-                                <Link to="/checkout/checkoutScreen">
+                                <Link
+                                    to={{
+                                        pathname: '/checkout/checkoutScreen',
+                                        search: `?from=buyNow&products=${encodeURIComponent(JSON.stringify(buyNowProduct))}`,
+                                    }}
+                                >
                                     <Button
                                         style={{
                                             ...PlatformReusableStyles.PrimaryButtonStyles,

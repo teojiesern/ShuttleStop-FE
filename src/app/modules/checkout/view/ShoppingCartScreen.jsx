@@ -376,7 +376,7 @@ export default function ShoppingCartScreen() {
                             component={Link}
                             to={{
                                 pathname: 'checkoutScreen',
-                                search: `?checkedProduct=${encodeURIComponent(JSON.stringify(checkedProducts))}`,
+                                search: `?from=cart&products=${encodeURIComponent(JSON.stringify(checkedProducts))}`,
                             }}
                             style={{ ...PlatformReusableStyles.PrimaryButtonStyles }}
                         >

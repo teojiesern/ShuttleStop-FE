@@ -41,7 +41,7 @@ const TotalPrice = styled.span`
     text-align: center;
 `;
 
-export default function TotalPriceBar({ shippingOption, updateShippingOption }) {
+export default function TotalPriceBar({ shippingOption, updateShippingOption, total, itemNum }) {
     const { showModal, hideModal } = useModal();
 
     const handleChangeClick = () => {
@@ -72,9 +72,15 @@ export default function TotalPriceBar({ shippingOption, updateShippingOption }) 
                 <COReusableStyles.Text>RM5.90</COReusableStyles.Text>
             </ShippingLayout>
             <OrderTotalLayout>
-                <COReusableStyles.Text style={{ textAlign: 'right' }}>Order Total (1 item):</COReusableStyles.Text>
+                {itemNum === 1 ? (
+                    <COReusableStyles.Text style={{ textAlign: 'right' }}>Order Total (1 item):</COReusableStyles.Text>
+                ) : (
+                    <COReusableStyles.Text style={{ textAlign: 'right' }}>
+                        Order Total ({itemNum} items):
+                    </COReusableStyles.Text>
+                )}
                 <div />
-                <TotalPrice>RM734.90</TotalPrice>
+                <TotalPrice>RM{total.toFixed(2)}</TotalPrice>
             </OrderTotalLayout>
         </Wrapper>
     );

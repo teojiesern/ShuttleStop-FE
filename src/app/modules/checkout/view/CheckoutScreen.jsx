@@ -1,7 +1,7 @@
 import Storefront from '@mui/icons-material/Storefront';
 import { Button } from '@mui/material';
 import { useCallback, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import useModal from '../../../platform/modal/useModal';
@@ -72,8 +72,11 @@ const ButtonContainer = styled.div`
 `;
 
 export default function CheckoutScreen() {
-    const { buyNowProduct } = useContext(CartContext);
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const from = searchParams.get('from');
 
+    const { cart } = useContext(CartContext);
     const { showModal, hideModal } = useModal();
     const { shippingOption, updateShippingOption } = useShipping();
     const navigate = useNavigate();
@@ -89,57 +92,162 @@ export default function CheckoutScreen() {
         });
     }, [showModal, hideModal, navigate]);
 
+    if (from === 'buyNow') {
+        const buyNowProduct = JSON.parse(searchParams.get('products'));
+
+        return (
+            <Wrapper>
+                <COReusableStyles.BorderConatiner>
+                    <ShippingDetailsBar shippingOption={shippingOption} />
+                </COReusableStyles.BorderConatiner>
+                <COReusableStyles.BorderConatiner>
+                    <Container>
+                        <COReusableStyles.Title>Products Ordered</COReusableStyles.Title>
+                        <ProductOrderedLayout>
+                            <ItemStoreContainer>
+                                <Storefront />
+                                <COReusableStyles.Text>Titan Badminton Store</COReusableStyles.Text>
+                            </ItemStoreContainer>
+                            <Label>Unit Price</Label>
+                            <Label>Quantity</Label>
+                            <Label>Total Price</Label>
+                        </ProductOrderedLayout>
+                    </Container>
+                    <COReusableStyles.Divider />
+
+                    <ProductOrderedLayout>
+                        <ItemStoreContainer>
+                            <img
+                                src={buyNowProduct.imgSrc}
+                                alt={buyNowProduct.name}
+                                width="54px"
+                            />
+                            <COReusableStyles.Text style={{ textAlign: 'start' }}>
+                                {buyNowProduct.name}
+                                <p style={{ color: COLORS.darkGrey, fontSize: FONTSIZE['x-small'] }}>
+                                    {[
+                                        buyNowProduct.options.color ? buyNowProduct.options.color : '',
+                                        buyNowProduct.options.size ? buyNowProduct.options.size : '',
+                                        buyNowProduct.options.grade ? buyNowProduct.options.grade : '',
+                                    ]
+                                        .filter(Boolean)
+                                        .join(', ')}
+                                </p>
+                            </COReusableStyles.Text>
+                        </ItemStoreContainer>
+                        <COReusableStyles.Text>RM{buyNowProduct.price.toFixed(2)}</COReusableStyles.Text>
+                        <COReusableStyles.Text>{buyNowProduct.quantity}</COReusableStyles.Text>
+                        <COReusableStyles.Text>
+                            RM{(buyNowProduct.price * buyNowProduct.quantity).toFixed(2)}
+                        </COReusableStyles.Text>
+                    </ProductOrderedLayout>
+                    <COReusableStyles.Divider />
+
+                    <TotalPriceBar
+                        shippingOption={shippingOption}
+                        updateShippingOption={updateShippingOption}
+                    />
+                </COReusableStyles.BorderConatiner>
+
+                <COReusableStyles.BorderConatiner>
+                    <SelectPaymentMethod />
+                    <COReusableStyles.Divider />
+
+                    <Container>
+                        <PaymentDetailsLayout>
+                            <TextAlignEnd>Order Subtotal: </TextAlignEnd>
+                            <TextAlignEnd>RM{(buyNowProduct.price * buyNowProduct.quantity).toFixed(2)}</TextAlignEnd>
+                        </PaymentDetailsLayout>
+                        <PaymentDetailsLayout>
+                            <TextAlignEnd>Shipping Subtotal: </TextAlignEnd>
+                            <TextAlignEnd>RM5.90</TextAlignEnd>
+                        </PaymentDetailsLayout>
+                        <PaymentDetailsLayout>
+                            <TextAlignEnd>Total Payment: </TextAlignEnd>
+                            <TotalPayment>
+                                RM{(buyNowProduct.price * buyNowProduct.quantity + 5.9).toFixed(2)}
+                            </TotalPayment>
+                        </PaymentDetailsLayout>
+                    </Container>
+                    <COReusableStyles.Divider />
+                    <ButtonContainer>
+                        <Button
+                            style={{ ...PlatformReusableStyles.PrimaryButtonStyles }}
+                            onClick={handlePlaceOrderClick}
+                        >
+                            <p>PLACE ORDER</p>
+                        </Button>
+                    </ButtonContainer>
+                </COReusableStyles.BorderConatiner>
+            </Wrapper>
+        );
+    }
+
+    const checkedProducts = JSON.parse(searchParams.get('products'));
+    let totalPrice = 0;
+
     return (
         <Wrapper>
             <COReusableStyles.BorderConatiner>
                 <ShippingDetailsBar shippingOption={shippingOption} />
             </COReusableStyles.BorderConatiner>
             <COReusableStyles.BorderConatiner>
-                <Container>
-                    <COReusableStyles.Title>Products Ordered</COReusableStyles.Title>
-                    <ProductOrderedLayout>
-                        <ItemStoreContainer>
-                            <Storefront />
-                            <COReusableStyles.Text>Titan Badminton Store</COReusableStyles.Text>
-                        </ItemStoreContainer>
-                        <Label>Unit Price</Label>
-                        <Label>Quantity</Label>
-                        <Label>Total Price</Label>
-                    </ProductOrderedLayout>
-                </Container>
-                <COReusableStyles.Divider />
+                {checkedProducts.map((element, index) => {
+                    const product = cart.find((item) => item.id === element);
+                    totalPrice += product.quantity * product.price;
 
-                <ProductOrderedLayout>
-                    <ItemStoreContainer>
-                        <img
-                            src={buyNowProduct.imgSrc}
-                            alt={buyNowProduct.name}
-                            width="54px"
-                        />
-                        <COReusableStyles.Text style={{ textAlign: 'start' }}>
-                            {buyNowProduct.name}
-                            <p style={{ color: COLORS.darkGrey, fontSize: FONTSIZE['x-small'] }}>
-                                {[
-                                    buyNowProduct.options.color ? buyNowProduct.options.color : '',
-                                    buyNowProduct.options.size ? buyNowProduct.options.size : '',
-                                    buyNowProduct.options.grade ? buyNowProduct.options.grade : '',
-                                ]
-                                    .filter(Boolean)
-                                    .join(', ')}
-                            </p>
-                        </COReusableStyles.Text>
-                    </ItemStoreContainer>
-                    <COReusableStyles.Text>RM{buyNowProduct.price.toFixed(2)}</COReusableStyles.Text>
-                    <COReusableStyles.Text>{buyNowProduct.quantity}</COReusableStyles.Text>
-                    <COReusableStyles.Text>
-                        RM{(buyNowProduct.price * buyNowProduct.quantity).toFixed(2)}
-                    </COReusableStyles.Text>
-                </ProductOrderedLayout>
-                <COReusableStyles.Divider />
+                    return (
+                        <>
+                            <Container>
+                                {index === 0 && <COReusableStyles.Title>Products Ordered</COReusableStyles.Title>}
+                                <ProductOrderedLayout>
+                                    <ItemStoreContainer>
+                                        <Storefront />
+                                        <COReusableStyles.Text>Titan Badminton Store</COReusableStyles.Text>
+                                    </ItemStoreContainer>
+                                    <Label>Unit Price</Label>
+                                    <Label>Quantity</Label>
+                                    <Label>Total Price</Label>
+                                </ProductOrderedLayout>
+                            </Container>
+                            <COReusableStyles.Divider />
+
+                            <ProductOrderedLayout>
+                                <ItemStoreContainer>
+                                    <img
+                                        src={product.imgSrc}
+                                        alt={product.name}
+                                        width="54px"
+                                    />
+                                    <COReusableStyles.Text style={{ textAlign: 'start' }}>
+                                        {product.name}
+                                        <p style={{ color: COLORS.darkGrey, fontSize: FONTSIZE['x-small'] }}>
+                                            {[
+                                                product.options.color ? product.options.color : '',
+                                                product.options.size ? product.options.size : '',
+                                                product.options.grade ? product.options.grade : '',
+                                            ]
+                                                .filter(Boolean)
+                                                .join(', ')}
+                                        </p>
+                                    </COReusableStyles.Text>
+                                </ItemStoreContainer>
+                                <COReusableStyles.Text>RM{product.price.toFixed(2)}</COReusableStyles.Text>
+                                <COReusableStyles.Text>{product.quantity}</COReusableStyles.Text>
+                                <COReusableStyles.Text>
+                                    RM{(product.price * product.quantity).toFixed(2)}
+                                </COReusableStyles.Text>
+                            </ProductOrderedLayout>
+                            <COReusableStyles.Divider />
+                        </>
+                    );
+                })}
 
                 <TotalPriceBar
                     shippingOption={shippingOption}
                     updateShippingOption={updateShippingOption}
+                    total={totalPrice}
+                    itemNum={checkedProducts.length}
                 />
             </COReusableStyles.BorderConatiner>
 
@@ -150,7 +258,7 @@ export default function CheckoutScreen() {
                 <Container>
                     <PaymentDetailsLayout>
                         <TextAlignEnd>Order Subtotal: </TextAlignEnd>
-                        <TextAlignEnd>RM{(buyNowProduct.price * buyNowProduct.quantity).toFixed(2)}</TextAlignEnd>
+                        <TextAlignEnd>RM{totalPrice.toFixed(2)}</TextAlignEnd>
                     </PaymentDetailsLayout>
                     <PaymentDetailsLayout>
                         <TextAlignEnd>Shipping Subtotal: </TextAlignEnd>
@@ -158,7 +266,7 @@ export default function CheckoutScreen() {
                     </PaymentDetailsLayout>
                     <PaymentDetailsLayout>
                         <TextAlignEnd>Total Payment: </TextAlignEnd>
-                        <TotalPayment>RM{(buyNowProduct.price * buyNowProduct.quantity + 5.9).toFixed(2)}</TotalPayment>
+                        <TotalPayment>RM{(totalPrice + 5.9).toFixed(2)}</TotalPayment>
                     </PaymentDetailsLayout>
                 </Container>
                 <COReusableStyles.Divider />
