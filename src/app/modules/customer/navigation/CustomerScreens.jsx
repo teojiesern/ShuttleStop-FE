@@ -2,7 +2,11 @@ import { Route } from 'react-router-dom';
 import AuthenticatedRoute from '../../../platform/components/navigation/AuthenticatedRoute';
 import CheckoutScreen from '../../checkout/view/CheckoutScreen';
 import Login from '../../ciam/view/Screen/Login';
+import MyPurchaseCompleted from '../components/MyPurchaseCompleted';
+import MyPurchaseToReceive from '../components/MyPurchaseToReceive';
+import MyPurchaseToShip from '../components/MyPurchaseToShip';
 import MyAccountLayout from '../Layout/MyAccountLayout';
+import MyPurchaseLayout from '../Layout/MyPurchaseLayout';
 import MyAddress from '../view/MyAddress';
 import MyProfile from '../view/MyProfile';
 import ProductDetailScreen from '../view/ProductDetailScreen';
@@ -64,6 +68,20 @@ const CustomerScreens = (
             <Route
                 path="/customer/my-address"
                 element={<MyAddress />}
+            />
+        </Route>
+        <Route element={<MyPurchaseLayout />}>
+            <Route
+                path="/customer/my-purchase/completed"
+                element={<MyPurchaseCompleted />}
+            />
+            <Route
+                path="/customer/my-purchase/to-ship"
+                element={<MyPurchaseToShip />}
+            />
+            <Route
+                path="/customer/my-purchase/to-receive"
+                element={<MyPurchaseToReceive />}
             />
         </Route>
     </>

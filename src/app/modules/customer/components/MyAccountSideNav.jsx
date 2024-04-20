@@ -1,4 +1,5 @@
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import FONTSIZE from '../../../platform/style/FontSize';
@@ -20,8 +21,14 @@ const SectionGroup = styled.div`
 
 const SideNavHeader = styled.h3`
     font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.BOLD};
     color: ${COLORS.black};
+    cursor: pointer;
+`;
+
+const SideNavHeader2 = styled(Link)`
+    font-size: ${FONTSIZE.small};
+    color: ${COLORS.black};
+    text-decoration: none;
 `;
 
 const SideNavLink = styled(NavLink)`
@@ -33,10 +40,29 @@ const SideNavLink = styled(NavLink)`
 `;
 
 export default function SellerCenterSideNav() {
+    const [activeHeader, setActiveHeader] = useState('My Account');
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.pathname.includes('my-purchase')) {
+            setActiveHeader('My Purchase');
+        } else if (location.pathname.includes('my-address')) {
+            setActiveHeader('My Account');
+        }
+    }, [location]);
+
     return (
         <SideNavContainer>
             <SectionGroup>
-                <SideNavHeader>My Account</SideNavHeader>
+                <SideNavHeader
+                    style={
+                        activeHeader === 'My Account'
+                            ? { fontWeight: `${FONTWEIGHT.BOLD}` }
+                            : { fontWeight: `${FONTWEIGHT.REGULAR}` }
+                    }
+                >
+                    My Account
+                </SideNavHeader>
                 <SideNavLink
                     style={NavLinkStylesUtil.activeStyleWithFontWeight}
                     to="customer/my-profile"
@@ -49,6 +75,16 @@ export default function SellerCenterSideNav() {
                 >
                     My Address
                 </SideNavLink>
+                <SideNavHeader2
+                    to="/customer/my-purchase/to-ship"
+                    style={
+                        activeHeader === 'My Purchase'
+                            ? { fontWeight: `${FONTWEIGHT.BOLD}` }
+                            : { fontWeight: `${FONTWEIGHT.REGULAR}` }
+                    }
+                >
+                    My Purchase
+                </SideNavHeader2>
             </SectionGroup>
         </SideNavContainer>
     );
