@@ -17,7 +17,7 @@ const Container = styled.div`
 
 const ContentContainer = styled.div`
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     min-width: 90%;
     gap: 2rem;
@@ -32,7 +32,7 @@ const FormLabel = styled.label`
     width: 200px;
 `;
 
-export default function ShopInformationRegistration({ registrationData }) {
+export default function ShopInformationRegistration({ registrationData, errors, setErrors }) {
     const [shopName, setShopName] = useState(registrationData.current.shopName);
     const [pickupAddress, setPickupAddress] = useState(registrationData.current.pickupAddress);
     const [email, setEmail] = useState(registrationData.current.email);
@@ -43,32 +43,45 @@ export default function ShopInformationRegistration({ registrationData }) {
         (event) => {
             setShopName(event.target.value);
             registrationData.current.shopName = event.target.value;
+            setErrors({ ...errors, shopName: '' });
         },
-        [registrationData],
+        [errors, registrationData, setErrors],
     );
 
     const handlePickupAddressChange = useCallback(
         (event) => {
             setPickupAddress(event.target.value);
             registrationData.current.pickupAddress = event.target.value;
+            setErrors({ ...errors, pickupAddress: '' });
         },
-        [registrationData],
+        [errors, registrationData, setErrors],
     );
 
     const handleEmailChange = useCallback(
         (event) => {
             setEmail(event.target.value);
             registrationData.current.email = event.target.value;
+            setErrors({ ...errors, email: '' });
         },
-        [registrationData],
+        [errors, registrationData, setErrors],
     );
 
     const handlePhoneNumberChange = useCallback(
         (event) => {
             setPhoneNumber(event.target.value);
             registrationData.current.phoneNumber = event.target.value;
+            setErrors({ ...errors, phoneNumber: '' });
         },
-        [registrationData],
+        [errors, registrationData, setErrors],
+    );
+
+    const handleFilesChange = useCallback(
+        (newFiles) => {
+            setFiles(newFiles);
+            registrationData.current.files = newFiles;
+            setErrors({ ...errors, files: '' });
+        },
+        [errors, registrationData, setErrors],
     );
 
     return (
@@ -81,6 +94,8 @@ export default function ShopInformationRegistration({ registrationData }) {
                     style={{ minWidth: '50%' }}
                     value={shopName}
                     onChange={handleShopNameChange}
+                    error={!!errors.shopName}
+                    helperText={errors.shopName}
                 />
             </ContentContainer>
             <ContentContainer>
@@ -91,6 +106,8 @@ export default function ShopInformationRegistration({ registrationData }) {
                     style={{ minWidth: '50%' }}
                     value={pickupAddress}
                     onChange={handlePickupAddressChange}
+                    error={!!errors.pickupAddress}
+                    helperText={errors.pickupAddress}
                 />
             </ContentContainer>
             <ContentContainer>
@@ -102,6 +119,8 @@ export default function ShopInformationRegistration({ registrationData }) {
                     style={{ minWidth: '50%' }}
                     value={email}
                     onChange={handleEmailChange}
+                    error={!!errors.email}
+                    helperText={errors.email}
                 />
             </ContentContainer>
             <ContentContainer>
@@ -109,10 +128,12 @@ export default function ShopInformationRegistration({ registrationData }) {
                 <TextField
                     label="Enter your Phone Number..."
                     size="small"
-                    type="tel"
+                    type="number"
                     style={{ minWidth: '50%' }}
                     value={phoneNumber}
                     onChange={handlePhoneNumberChange}
+                    error={!!errors.phoneNumber}
+                    helperText={errors.phoneNumber}
                 />
             </ContentContainer>
             <ContentContainer style={{ alignItems: 'start' }}>
@@ -120,7 +141,8 @@ export default function ShopInformationRegistration({ registrationData }) {
                 <div style={{ width: '50%' }}>
                     <DropBox
                         files={files}
-                        setFiles={setFiles}
+                        setFiles={handleFilesChange}
+                        consumerError={errors.files}
                     />
                 </div>
             </ContentContainer>

@@ -7,7 +7,6 @@ export default function SellerCenterAuthenticatedRoute() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // TODO: Uncomment once login is implemented
         if (!isLogin) {
             navigate('/authentication/login', { replace: true });
         } else if (!registeredSeller) {
