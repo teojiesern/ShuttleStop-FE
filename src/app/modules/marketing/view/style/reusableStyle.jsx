@@ -8,13 +8,12 @@ export default class CompReusableStyles {
         display: flex;
         flex-direction: column;
         border: 1px solid ${COLORS.grey};
-        padding: 1rem;
+        padding-top: 2rem;
     `;
 
     static Line = styled.div`
         position: flex;
         bottom: -1rem;
-
         width: 100%;
         border-bottom: 1px solid ${COLORS['light-grey']};
     `;
@@ -29,6 +28,12 @@ export default class CompReusableStyles {
         font-size: ${FONTSIZE.small};
         font-weight: ${FONTWEIGHT.REGULAR};
         color: ${COLORS.darkGrey};
+    `;
+
+    static Title = styled.p`
+        font-size: ${FONTSIZE.medium};
+        font-weight: ${FONTWEIGHT.BOLD};
+        color: ${COLORS.black};
     `;
 
     static Divider = styled.div`
