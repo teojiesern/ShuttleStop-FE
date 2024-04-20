@@ -48,11 +48,11 @@ export default function SCMyProductsScreen() {
                         cproductName={product.productName}
                         cproductCategory={product.category}
                         cproductBrand={product.brand}
-                        // cthumbnailFile={products.thumbnailFile}
-                        // cproductImage1={products.productImage1}
-                        // cproductImage2={products.productImage2}
-                        // cproductImage3={products.productImage3}
-                        // cproductImage4={products.productImage4}
+                        cthumbnailFile={product.thumbnailFile}
+                        cproductImage1={product.productImage1}
+                        cproductImage2={product.productImage2}
+                        cproductImage3={product.productImage3}
+                        cproductImage4={product.productImage4}
                         cproductDescription={product.description}
                         cvariants={product.variants}
                     />
@@ -94,7 +94,7 @@ export default function SCMyProductsScreen() {
                             {product.variants.flatMap((variant, index) => [
                                 index === 0 ? (
                                     <ProductContainer>
-                                        <ProductImage src={product.thumbnailImage} />
+                                        <ProductImage src={product.thumbnailFile[0]?.preview} />
                                         <SCReusableStyles.Text>{product.productName}</SCReusableStyles.Text>
                                     </ProductContainer>
                                 ) : (

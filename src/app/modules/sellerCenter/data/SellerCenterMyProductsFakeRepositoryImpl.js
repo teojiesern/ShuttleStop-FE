@@ -2,6 +2,27 @@ import { ProductBrands, ProductCategories } from '../../../platform/constants/Pl
 import FootwearApacs1 from '../../customer/assets/footwearApacs1.webp';
 import RacquetImage from '../../customer/assets/racquet.png';
 
+const RacquetImageObject = {
+    path: 'RacquetYonex.png',
+    preview: RacquetImage,
+    lastModified: 1709650939314,
+    lastModifiedDate: new Date(1709650939314),
+    name: 'RacquetYonex.png',
+    size: 2339497,
+    type: 'image/png',
+    webkitRelativePath: '',
+};
+
+const FootwearImageObject = {
+    path: 'FootwearApacs.png',
+    preview: FootwearApacs1,
+    lastModified: 1709650939314,
+    lastModifiedDate: new Date(1709650939314),
+    name: 'FootwearApacs.png',
+    size: 2339497,
+    type: 'image/png',
+    webkitRelativePath: '',
+};
 export default class SellerCenterMyProductsFakeRepositoryImpl {
     getMyProductsEditableInformation = async () => ({
         status: 200,
@@ -12,8 +33,11 @@ export default class SellerCenterMyProductsFakeRepositoryImpl {
                     productName: 'YONEX ASTROX 99',
                     category: ProductCategories.RACQUETS,
                     brand: ProductBrands.YONEX,
-                    thumbnailImage: RacquetImage,
-                    productImages: [RacquetImage, RacquetImage, RacquetImage],
+                    thumbnailFile: [RacquetImageObject],
+                    productImage1: [RacquetImageObject],
+                    productImage2: [RacquetImageObject],
+                    productImage3: [RacquetImageObject],
+                    productImage4: [RacquetImageObject],
                     description: 'This is a description for the YONEX ASTROX 99 racquet.',
                     variants: [
                         {
@@ -35,8 +59,11 @@ export default class SellerCenterMyProductsFakeRepositoryImpl {
                     productName: 'YONEX ASTROX 88S',
                     category: ProductCategories.RACQUETS,
                     brand: ProductBrands.YONEX,
-                    thumbnailImage: RacquetImage,
-                    productImages: [RacquetImage, RacquetImage, RacquetImage],
+                    thumbnailFile: [RacquetImageObject],
+                    productImage1: [RacquetImageObject],
+                    productImage2: [RacquetImageObject],
+                    productImage3: [RacquetImageObject],
+                    productImage4: [RacquetImageObject],
                     description: 'This is a description for the YONEX ASTROX 88S racquet.',
                     variants: [
                         {
@@ -58,8 +85,11 @@ export default class SellerCenterMyProductsFakeRepositoryImpl {
                     productName: 'Apachs Footwear 1',
                     category: ProductCategories.FOOTWEARS,
                     brand: ProductBrands.APACS,
-                    thumbnailImage: FootwearApacs1,
-                    productImages: [FootwearApacs1, FootwearApacs1, FootwearApacs1],
+                    thumbnailFile: [FootwearImageObject],
+                    productImage1: [FootwearImageObject],
+                    productImage2: [FootwearImageObject],
+                    productImage3: [FootwearImageObject],
+                    productImage4: [FootwearImageObject],
                     description: 'This is a description for Apachs footwear.',
                     variants: [
                         {
@@ -81,8 +111,11 @@ export default class SellerCenterMyProductsFakeRepositoryImpl {
                     productName: 'YONEX ASTROX 88S',
                     category: ProductCategories.RACQUETS,
                     brand: ProductBrands.YONEX,
-                    thumbnailImage: RacquetImage,
-                    productImages: [RacquetImage, RacquetImage, RacquetImage],
+                    thumbnailFile: [RacquetImageObject],
+                    productImage1: [RacquetImageObject],
+                    productImage2: [RacquetImageObject],
+                    productImage3: [RacquetImageObject],
+                    productImage4: [RacquetImageObject],
                     description: 'This is a description for the YONEX ASTROX 88S racquet.',
                     variants: [
                         {
@@ -104,8 +137,11 @@ export default class SellerCenterMyProductsFakeRepositoryImpl {
                     productName: 'Apachs Footwear 2',
                     category: ProductCategories.FOOTWEARS,
                     brand: ProductBrands.APACS,
-                    thumbnailImage: FootwearApacs1,
-                    productImages: [FootwearApacs1, FootwearApacs1, FootwearApacs1],
+                    thumbnailFile: [FootwearImageObject],
+                    productImage1: [FootwearImageObject],
+                    productImage2: [FootwearImageObject],
+                    productImage3: [FootwearImageObject],
+                    productImage4: [FootwearImageObject],
                     description: 'This is a description for Apachs footwear 2.',
                     variants: [
                         {
