@@ -10,9 +10,9 @@ import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import CartContext from '../../customer/context/CartContext';
 import OrderPlacedModal from '../modal/OrderPlacedModal';
+import ShippingOptionModal from '../modal/ShippingOptionModal';
 import SelectPaymentMethod from './component/SelectPaymentMethod';
 import ShippingDetailsBar from './component/ShippingDetailsBar';
-import TotalPriceBar from './component/TotalPriceBar';
 import useShipping from './hooks/useShipping';
 import COReusableStyles from './styles/COReusableStyles';
 
@@ -46,6 +46,35 @@ const Label = styled.span`
     color: ${COLORS.darkGrey};
     font-size: ${FONTSIZE['x-small']};
     font-weight: ${FONTWEIGHT.REGULAR};
+    text-align: center;
+`;
+const ShippingLayout = styled.div`
+    width: 100%;
+    display: grid;
+    grid-template-columns: 6.5fr 1.5fr 1fr 1fr;
+    align-items: center;
+    gap: 1rem;
+`;
+const OrderTotalLayout = styled.div`
+    width: 100%;
+    display: grid;
+    grid-template-columns: 8fr 1fr 1fr;
+    align-items: center;
+    gap: 1rem;
+`;
+const ChangeShippingMethod = styled.button`
+    background: none;
+    color: #007ce0;
+    border: none;
+    font-size: ${FONTSIZE.small};
+    font-weight: ${FONTWEIGHT.REGULAR};
+    cursor: pointer;
+`;
+const TotalPrice = styled.span`
+    color: ${COLORS.black};
+    font-size: ${FONTSIZE.medium};
+    font-weight: ${FONTWEIGHT.REGULAR};
+    padding-right: 1.5rem;
     text-align: center;
 `;
 const PaymentDetailsLayout = styled.div`
@@ -91,6 +120,19 @@ export default function CheckoutScreen() {
             ),
         });
     }, [showModal, hideModal, navigate]);
+
+    const handleChangeClick = () => {
+        showModal({
+            modal: (
+                <ShippingOptionModal
+                    hideModal={hideModal}
+                    shippingOption={shippingOption}
+                    updateShippingOption={updateShippingOption}
+                />
+            ),
+            disableBackdropDismiss: true,
+        });
+    };
 
     if (from === 'buyNow') {
         const buyNowProduct = JSON.parse(searchParams.get('products'));
@@ -142,11 +184,34 @@ export default function CheckoutScreen() {
                         </COReusableStyles.Text>
                     </ProductOrderedLayout>
                     <COReusableStyles.Divider />
+                    <Container>
+                        <ShippingLayout>
+                            <COReusableStyles.Text style={{ textAlign: 'right' }}>
+                                Shipping Method:
+                            </COReusableStyles.Text>
+                            {shippingOption === 'standardDelivery' ? (
+                                <COReusableStyles.Title style={{ textAlign: 'center' }}>
+                                    Standard Delivery
+                                </COReusableStyles.Title>
+                            ) : (
+                                <COReusableStyles.Title style={{ textAlign: 'center' }}>
+                                    Self Collection
+                                </COReusableStyles.Title>
+                            )}
+                            <ChangeShippingMethod onClick={handleChangeClick}>
+                                <p>Change</p>
+                            </ChangeShippingMethod>
+                            <COReusableStyles.Text>RM5.90</COReusableStyles.Text>
+                        </ShippingLayout>
+                        <OrderTotalLayout>
+                            <COReusableStyles.Text style={{ textAlign: 'right' }}>
+                                Order Total (1 item):
+                            </COReusableStyles.Text>
 
-                    <TotalPriceBar
-                        shippingOption={shippingOption}
-                        updateShippingOption={updateShippingOption}
-                    />
+                            <div />
+                            <TotalPrice>RM{(buyNowProduct.price * buyNowProduct.quantity).toFixed(2)}</TotalPrice>
+                        </OrderTotalLayout>
+                    </Container>
                 </COReusableStyles.BorderConatiner>
 
                 <COReusableStyles.BorderConatiner>
@@ -243,12 +308,37 @@ export default function CheckoutScreen() {
                     );
                 })}
 
-                <TotalPriceBar
-                    shippingOption={shippingOption}
-                    updateShippingOption={updateShippingOption}
-                    total={totalPrice}
-                    itemNum={checkedProducts.length}
-                />
+                <Container>
+                    <ShippingLayout>
+                        <COReusableStyles.Text style={{ textAlign: 'right' }}>Shipping Method:</COReusableStyles.Text>
+                        {shippingOption === 'standardDelivery' ? (
+                            <COReusableStyles.Title style={{ textAlign: 'center' }}>
+                                Standard Delivery
+                            </COReusableStyles.Title>
+                        ) : (
+                            <COReusableStyles.Title style={{ textAlign: 'center' }}>
+                                Self Collection
+                            </COReusableStyles.Title>
+                        )}
+                        <ChangeShippingMethod onClick={handleChangeClick}>
+                            <p>Change</p>
+                        </ChangeShippingMethod>
+                        <COReusableStyles.Text>RM5.90</COReusableStyles.Text>
+                    </ShippingLayout>
+                    <OrderTotalLayout>
+                        {checkedProducts.length === 1 ? (
+                            <COReusableStyles.Text style={{ textAlign: 'right' }}>
+                                Order Total (1 item):
+                            </COReusableStyles.Text>
+                        ) : (
+                            <COReusableStyles.Text style={{ textAlign: 'right' }}>
+                                Order Total ({checkedProducts.length} items):
+                            </COReusableStyles.Text>
+                        )}
+                        <div />
+                        <TotalPrice>RM{totalPrice.toFixed(2)}</TotalPrice>
+                    </OrderTotalLayout>
+                </Container>
             </COReusableStyles.BorderConatiner>
 
             <COReusableStyles.BorderConatiner>
