@@ -1,5 +1,6 @@
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import FONTSIZE from '../../../platform/style/FontSize';
@@ -57,6 +58,7 @@ export default function MarketingTestScreenTwo() {
     const { getCoachDetails } = useCoachDetail();
     const [coaches, setCoach] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getCoachDetails().then((data) => {
@@ -83,7 +85,7 @@ export default function MarketingTestScreenTwo() {
         <ContentContainer>
             <HeadContainer
                 imageUrl={CoachHeadImage}
-                top="40%"
+                top="43%"
                 title="Coaches"
             />
             <LinkContainer>
@@ -96,7 +98,6 @@ export default function MarketingTestScreenTwo() {
                     alt="arrow"
                     width="20px"
                     height="20px"
-                    style={{ paddingRight: '85px' }}
                 />
             </LinkContainer>
 
@@ -105,15 +106,20 @@ export default function MarketingTestScreenTwo() {
                     {coaches.length === 0 ? (
                         <p>No coach available</p>
                     ) : (
-                        coaches.slice(currentIndex * 8, currentIndex * 8 + 8).map((coach) => (
+                        coaches.slice(currentIndex * 6, currentIndex * 6 + 6).map((coach) => (
                             <div key={coach.coachID}>
-                                <CoachView
-                                    coachName={coach.coachName}
-                                    state={coach.state}
-                                    level={coach.level}
-                                    targetAge={coach.targetAge}
-                                    rating={coach.rating}
-                                />
+                                <ContentContainer
+                                    onClick={() => navigate('/marketing/coach-profile', { state: { coach } })}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <CoachView
+                                        coachName={coach.coachName}
+                                        state={coach.state}
+                                        level={coach.level}
+                                        targetAge={coach.targetAge}
+                                        rating={coach.rating}
+                                    />
+                                </ContentContainer>
                             </div>
                         ))
                     )}
@@ -140,7 +146,7 @@ export default function MarketingTestScreenTwo() {
                             cursor: 'pointer',
                         }}
                     >
-                        <CoachReusableStyle.TextDescription> {i + 1}</CoachReusableStyle.TextDescription>
+                        <CoachReusableStyle.Text> {i + 1}</CoachReusableStyle.Text>
                     </Button>
                 ))}
                 <Button onClick={handleNextClick}>

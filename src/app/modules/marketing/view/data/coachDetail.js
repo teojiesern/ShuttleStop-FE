@@ -8,7 +8,7 @@ export default class CoachDetails {
                     coachName: 'Rexy Mainaky',
                     level: 'All level',
                     targetAge: '12-60',
-                    rating: '5',
+                    rating: 5,
                     qualification:
                         'Bachelors Degree in Sports Science from the University of Malaya, specializing in Badminton Coaching and Training',
                     experience:
@@ -27,7 +27,7 @@ export default class CoachDetails {
                     coachName: 'Rexy Mainaky',
                     level: 'All level',
                     targetAge: '12-60',
-                    rating: '5',
+                    rating: 5,
                     qualification:
                         'Bachelors Degree in Sports Science from the University of Malaya, specializing in Badminton Coaching and Training',
                     experience:
@@ -46,7 +46,7 @@ export default class CoachDetails {
                     coachName: 'Rexy Mainaky',
                     level: 'All level',
                     targetAge: '12-60',
-                    rating: '5',
+                    rating: 5,
                     qualification:
                         'Bachelors Degree in Sports Science from the University of Malaya, specializing in Badminton Coaching and Training',
                     experience:
@@ -65,7 +65,7 @@ export default class CoachDetails {
                     coachName: 'Rexy Mainaky',
                     level: 'All level',
                     targetAge: '12-60',
-                    rating: '5',
+                    rating: 5,
                     qualification:
                         'Bachelors Degree in Sports Science from the University of Malaya, specializing in Badminton Coaching and Training',
                     experience:
@@ -84,7 +84,7 @@ export default class CoachDetails {
                     coachName: 'Rexy Mainaky',
                     level: 'All level',
                     targetAge: '12-60',
-                    rating: '5',
+                    rating: 5,
                     qualification:
                         'Bachelors Degree in Sports Science from the University of Malaya, specializing in Badminton Coaching and Training',
                     experience:
@@ -103,7 +103,7 @@ export default class CoachDetails {
                     coachName: 'Rexy Mainaky',
                     level: 'All level',
                     targetAge: '12-60',
-                    rating: '5',
+                    rating: 5,
                     qualification:
                         'Bachelors Degree in Sports Science from the University of Malaya, specializing in Badminton Coaching and Training',
                     experience:
@@ -122,7 +122,7 @@ export default class CoachDetails {
                     coachName: 'Rexy Mainaky',
                     level: 'All level',
                     targetAge: '12-60',
-                    rating: '5',
+                    rating: 5,
                     qualification:
                         'Bachelors Degree in Sports Science from the University of Malaya, specializing in Badminton Coaching and Training',
                     experience:
@@ -141,7 +141,7 @@ export default class CoachDetails {
                     coachName: 'Rexy Mainaky',
                     level: 'All level',
                     targetAge: '12-60',
-                    rating: '5',
+                    rating: 5,
                     qualification:
                         'Bachelors Degree in Sports Science from the University of Malaya, specializing in Badminton Coaching and Training',
                     experience:
@@ -160,7 +160,7 @@ export default class CoachDetails {
                     coachName: 'Rexy Mainaky',
                     level: 'All level',
                     targetAge: '12-60',
-                    rating: '5',
+                    rating: 5,
                     qualification:
                         'Bachelors Degree in Sports Science from the University of Malaya, specializing in Badminton Coaching and Training',
                     experience:
@@ -179,7 +179,7 @@ export default class CoachDetails {
                     coachName: 'Rexy Mainaky',
                     level: 'All level',
                     targetAge: '12-60',
-                    rating: '5',
+                    rating: 5,
                     qualification:
                         'Bachelors Degree in Sports Science from the University of Malaya, specializing in Badminton Coaching and Training',
                     experience:
@@ -198,7 +198,7 @@ export default class CoachDetails {
                     coachName: 'Rexy Mainaky',
                     level: 'All level',
                     targetAge: '12-60',
-                    rating: '5',
+                    rating: 5,
                     qualification:
                         'Bachelors Degree in Sports Science from the University of Malaya, specializing in Badminton Coaching and Training',
                     experience:

@@ -6,7 +6,7 @@ import CoachReusableStyles from '../style/reusableStyle';
 
 const DescriptionContainer = styled.div`
     display: flex;
-    border-top: 1px solid ${COLORS.black};
+    border-top: 1px solid ${COLORS['content-light-grey']};
 `;
 
 const DescriptionLayout = styled.div`
@@ -53,27 +53,30 @@ export default function CoachView({ coachName, state, level, targetAge, rating }
             <CoachReusableStyles.TextDescription style={{ textAlign: 'center', paddingBottom: '20px' }}>
                 {state}
             </CoachReusableStyles.TextDescription>
+            <br />
             <DescriptionWrapper>
                 <DescriptionContainer>
                     <DescriptionLayout>
-                        <CoachReusableStyles.TextDescription>Level</CoachReusableStyles.TextDescription>
-                        <CoachReusableStyles.TextDescription>Age</CoachReusableStyles.TextDescription>
-                        <CoachReusableStyles.TextDescription>Rating</CoachReusableStyles.TextDescription>
+                        <CoachReusableStyles.Text>Level</CoachReusableStyles.Text>
+                        <CoachReusableStyles.Text>Age</CoachReusableStyles.Text>
+                        <CoachReusableStyles.Text>Rating</CoachReusableStyles.Text>
                     </DescriptionLayout>
                 </DescriptionContainer>
                 <DescriptionLayout2>
-                    <CoachReusableStyles.Text style={{ paddingBottom: '20px', paddingLeft: '10px' }}>
+                    <CoachReusableStyles.TextBold style={{ paddingBottom: '20px', paddingLeft: '10px' }}>
                         {level}
-                    </CoachReusableStyles.Text>
-                    <CoachReusableStyles.Text style={{ paddingBottom: '20px' }}>{targetAge}</CoachReusableStyles.Text>
-                    <CoachReusableStyles.Text style={{ paddingBottom: '20px' }}>
+                    </CoachReusableStyles.TextBold>
+                    <CoachReusableStyles.TextBold style={{ paddingBottom: '20px' }}>
+                        {targetAge}
+                    </CoachReusableStyles.TextBold>
+                    <CoachReusableStyles.TextBold style={{ paddingBottom: '20px' }}>
                         {rating}
                         <img
                             src={star}
                             alt="HeadImage"
                             style={{ width: '15px', height: '15px', paddingLeft: '5px' }}
                         />
-                    </CoachReusableStyles.Text>
+                    </CoachReusableStyles.TextBold>
                 </DescriptionLayout2>
             </DescriptionWrapper>
         </CoachReusableStyles.BorderContainer>

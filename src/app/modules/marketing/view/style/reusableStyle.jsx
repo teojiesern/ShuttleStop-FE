@@ -11,6 +11,27 @@ export default class CompReusableStyles {
         padding-top: 2rem;
     `;
 
+    static BorderContainerRow = styled.div`
+        display: flex;
+        flex-direction: row;
+        border: 1px solid ${COLORS.grey};
+        padding: 2rem;
+        gap: 7rem;
+    `;
+
+    static ContainerRow = styled.div`
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        padding-bottom: 1rem;
+    `;
+
+    static ContainerColumn = styled.div`
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+    `;
+
     static Line = styled.div`
         position: flex;
         bottom: -1rem;
@@ -21,6 +42,12 @@ export default class CompReusableStyles {
     static Text = styled.p`
         font-size: ${FONTSIZE.small};
         font-weight: ${FONTWEIGHT.REGULAR};
+        color: ${COLORS.black};
+    `;
+
+    static TextBold = styled.p`
+        font-size: ${FONTSIZE.small};
+        font-weight: ${FONTWEIGHT.BOLD};
         color: ${COLORS.black};
     `;
 

@@ -7,6 +7,7 @@ import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import CompetitionLinkModal from './Modal/CompetitionLink';
+import arrowRight from './assets/arrowRight.png';
 import HeadImage from './assets/image.png';
 import Line from './component/Border';
 import Dropdown from './component/DropDownYear';
@@ -27,22 +28,6 @@ const DropDownContainer = styled.div`
     padding: 0.2rem;
 `;
 
-// const NavLinkContainer = styled.div`
-//     display: flex;
-//     gap: 4rem;
-//     position: absolute; /* Add absolute positioning */
-//     bottom: 0; /* Position at the bottom */
-//     left: 50%; /* Align center horizontally */
-//     transform: translateX(-50%); /* Center horizontally */
-//     padding: 0rem; /* Add padding for better visibility */
-// `;
-
-// const StyledNavLink = styled(NavLink)`
-//     font-size: ${FONTSIZE.small};
-//     font-weight: ${FONTWEIGHT.SEMI_BOLD};
-//     color: ${COLORS.black};
-//     text-decoration: none;
-// `;
 const Sort = styled.div`
     text-align: left;
     padding-left: 2rem;
@@ -52,9 +37,7 @@ const Sort = styled.div`
 
 const CompLink = styled.div`
     text-align: right;
-    padding-right: 2rem;
-    font-size: ${FONTSIZE['x-small']};
-    color: ${COLORS.darkGrey};
+    padding-right: 0.5rem;
     cursor: pointer;
 `;
 
@@ -91,7 +74,7 @@ const Title = styled.h1`
     text-align: left;
     margin-bottom: 1rem;
     padding-left: 2rem;
-    padding-top: 2rem;
+    padding-top: 1rem;
 `;
 
 export default function CompetitionLayout() {
@@ -217,7 +200,7 @@ export default function CompetitionLayout() {
             <HeaderRow>
                 <HeaderLeft>
                     <Sort>
-                        <p>Sort By</p>
+                        <CompReusableStyles.TextDescription>Sort By</CompReusableStyles.TextDescription>
                     </Sort>
                     <DropDownContainer>
                         <Dropdown
@@ -226,10 +209,16 @@ export default function CompetitionLayout() {
                         />
                     </DropDownContainer>
                 </HeaderLeft>
-                <HeaderRight>
-                    <CompLink onClick={pressLink}>
-                        <p>Promote Competition</p>
+                <HeaderRight onClick={pressLink}>
+                    <CompLink>
+                        <CompReusableStyles.TextDescription>Promote Competition</CompReusableStyles.TextDescription>
                     </CompLink>
+                    <img
+                        src={arrowRight}
+                        alt="arrow"
+                        width="20px"
+                        height="20px"
+                    />
                 </HeaderRight>
             </HeaderRow>
 
@@ -242,7 +231,6 @@ export default function CompetitionLayout() {
                 <CompReusableStyles.TextDescription>Prize</CompReusableStyles.TextDescription>
                 <CompReusableStyles.TextDescription>Register</CompReusableStyles.TextDescription>
             </Layout>
-            <Line />
 
             <ContentContainer>{renderCompetitionDetailsByMonth()}</ContentContainer>
         </ContentContainer>

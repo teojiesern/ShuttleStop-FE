@@ -1,5 +1,6 @@
 import { Route } from 'react-router-dom';
 import MarketingTestScreenTwo from '../view/MarketingTestScreenTwo';
+import CoachProfile from '../view/component/CoachProfile';
 
 import MarketingCoachRegistrationScreen from '../view/MarketingCoachRegistrationScreen';
 import CompetitionScreen from './CompetitionScreen';
@@ -31,6 +32,10 @@ const MarketingScreens = (
         <Route
             path="/marketing/coach-registration"
             element={<MarketingCoachRegistrationScreen />}
+        />
+        <Route
+            path="/marketing/coach-profile"
+            element={<CoachProfile />}
         />
     </>
 );
