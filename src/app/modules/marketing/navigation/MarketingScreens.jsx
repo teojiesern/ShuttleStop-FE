@@ -11,20 +11,6 @@ const MarketingScreens = (
             path="/marketing/competitions"
             element={<CompetitionScreen />}
         />
-
-        {/* <Route
-
-            <Route
-
-                index
-                element={<MarketingTestScreen />}
-            />
-            <Route
-                path="senior"
-                element={<SeniorCompetitionScreen />}
-
-            /> */}
-
         <Route
             path="/marketing/coaches"
             element={<MarketingTestScreenTwo />}
