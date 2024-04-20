@@ -16,6 +16,7 @@ const ModalView = forwardRef((_, ref) => {
     const children = useRef(<></>);
 
     const [open, setOpen] = useState(false);
+    const [maxWidth, setMaxWidth] = useState('md');
 
     const handleClose = useCallback((__, reason) => {
         if (!allowBackdropClick.current && reason && reason === 'backdropClick') {
@@ -25,8 +26,9 @@ const ModalView = forwardRef((_, ref) => {
         setOpen(false);
     }, []);
 
-    const showModal = useCallback(({ modal, disableBackdropDismiss }) => {
+    const showModal = useCallback(({ modal, disableBackdropDismiss, cmaxWidth }) => {
         setOpen(true);
+        setMaxWidth(cmaxWidth || 'md');
         if (disableBackdropDismiss) {
             allowBackdropClick.current = false;
         }
@@ -54,7 +56,7 @@ const ModalView = forwardRef((_, ref) => {
             onClose={handleClose}
             TransitionComponent={Transition}
             fullWidth
-            maxWidth="md"
+            maxWidth={maxWidth}
             classes={{
                 paper: {
                     minHeight: '50vh',

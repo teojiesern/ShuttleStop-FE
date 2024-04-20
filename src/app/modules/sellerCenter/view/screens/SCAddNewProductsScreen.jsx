@@ -9,7 +9,7 @@ import {
     TableRow,
     TextField,
 } from '@mui/material';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import DropBox from '../../../../platform/components/dropbox/DropBox';
@@ -22,6 +22,8 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    width: 100%;
+    height: 100%;
 `;
 
 const SectionTitle = styled.h2`
@@ -56,34 +58,107 @@ const ButtonContainer = styled.div`
     gap: 1rem;
 `;
 
-export default function SCAddNewProductsScreen() {
-    const [productName, setProductName] = useState('');
-    const [productCategory, setProductCategory] = useState('');
-    const [productBrand, setProductBrand] = useState('');
-    const [thumbnailFile, setThumbnailFile] = useState([]);
-    const [productImage1, setProductImage1] = useState([]);
-    const [productImage2, setProductImage2] = useState([]);
-    const [productImage3, setProductImage3] = useState([]);
-    const [productImage4, setProductImage4] = useState([]);
-    const [productDescription, setProductDescription] = useState('');
-    // eslint-disable-next-line no-unused-vars
-    const [variants, _setVariants] = useState([
-        {
-            color: 'Red',
-            totalStock: 200,
-            totalSales: 100,
-            price: 729,
-        },
-        {
-            color: 'Blue',
-            totalStock: 150,
-            totalSales: 80,
-            price: 349,
-        },
-    ]);
+export default function SCAddNewProductsScreen({
+    hideModal,
+    cproducts,
+    csetProducts,
+    cproductID,
+    cproductName,
+    cproductCategory,
+    cproductBrand,
+    cthumbnailFile,
+    cproductImage1,
+    cproductImage2,
+    cproductImage3,
+    cproductImage4,
+    cproductDescription,
+    cvariants,
+}) {
+    const [productName, setProductName] = useState(cproductName || '');
+    const [productCategory, setProductCategory] = useState(cproductCategory || '');
+    const [productBrand, setProductBrand] = useState(cproductBrand || '');
+    const [thumbnailFile, setThumbnailFile] = useState(cthumbnailFile || []);
+    const [productImage1, setProductImage1] = useState(cproductImage1 || []);
+    const [productImage2, setProductImage2] = useState(cproductImage2 || []);
+    const [productImage3, setProductImage3] = useState(cproductImage3 || []);
+    const [productImage4, setProductImage4] = useState(cproductImage4 || []);
+    const [productDescription, setProductDescription] = useState(cproductDescription || '');
+    const [variants, setVariants] = useState(
+        cvariants || [
+            {
+                color: '',
+                totalStock: 0,
+                totalSales: 0,
+                price: 0,
+            },
+        ],
+    );
     const [colors, setColors] = useState(variants.map((variant) => variant.color));
-    const [remainingStock, setRemainingStock] = useState(variants.map((variant) => variant.totalStock));
+    const [totalStock, setTotalStock] = useState(variants.map((variant) => variant.totalStock));
     const [price, setPrice] = useState(variants.map((variant) => variant.price));
+
+    const onAddNewVariant = useCallback(() => {
+        setVariants([
+            ...variants,
+            {
+                color: '',
+                totalStock: 0,
+                totalSales: 0,
+                price: 0,
+            },
+        ]);
+        setColors([...colors, '']);
+        setTotalStock([...totalStock, 0]);
+        setPrice([...price, 0]);
+    }, [colors, price, totalStock, variants]);
+
+    const onSave = useCallback(() => {
+        const finalVariants = variants.map((variant, i) => ({
+            color: colors[i],
+            totalStock: totalStock[i],
+            totalSales: variant.totalSales,
+            price: price[i],
+        }));
+
+        csetProducts(
+            cproducts.map((product) =>
+                product.productID === cproductID
+                    ? {
+                          productID: cproductID,
+                          productName,
+                          productCategory,
+                          productBrand,
+                          thumbnailFile,
+                          productImage1,
+                          productImage2,
+                          productImage3,
+                          productImage4,
+                          productDescription,
+                          variants: finalVariants,
+                      }
+                    : product,
+            ),
+        );
+        hideModal();
+    }, [
+        colors,
+        cproductID,
+        cproducts,
+        csetProducts,
+        hideModal,
+        price,
+        productBrand,
+        productCategory,
+        productDescription,
+        productImage1,
+        productImage2,
+        productImage3,
+        productImage4,
+        productName,
+        totalStock,
+        thumbnailFile,
+        variants,
+    ]);
 
     return (
         <Container>
@@ -192,7 +267,15 @@ export default function SCAddNewProductsScreen() {
 
             <Divider />
 
-            <SectionTitle>Sales Information</SectionTitle>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <SectionTitle>Sales Information</SectionTitle>
+                <Button
+                    style={PlatformReusableStyles.OutlineButtonStyles}
+                    onClick={onAddNewVariant}
+                >
+                    Add New Variant
+                </Button>
+            </div>
             <TableContainer>
                 <Table
                     sx={{
@@ -207,7 +290,7 @@ export default function SCAddNewProductsScreen() {
                         <TableRow>
                             <TableCell align="center">Colour</TableCell>
                             <TableCell align="center">Price</TableCell>
-                            <TableCell align="center">Remaining Stock</TableCell>
+                            <TableCell align="center">Total Stock</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -238,12 +321,12 @@ export default function SCAddNewProductsScreen() {
                                 </TableCell>
                                 <TableCell align="center">
                                     <TextField
-                                        value={remainingStock[i] - variant.totalSales}
+                                        value={totalStock[i] - variant.totalSales}
                                         type="number"
                                         onChange={(e) => {
-                                            const newTotalStock = [...remainingStock];
+                                            const newTotalStock = [...totalStock];
                                             newTotalStock[i] = e.target.value;
-                                            setRemainingStock(newTotalStock);
+                                            setTotalStock(newTotalStock);
                                         }}
                                         size="small"
                                     />
@@ -254,7 +337,12 @@ export default function SCAddNewProductsScreen() {
                 </Table>
             </TableContainer>
             <ButtonContainer>
-                <Button style={PlatformReusableStyles.PrimaryButtonStyles}>Save</Button>
+                <Button
+                    style={PlatformReusableStyles.PrimaryButtonStyles}
+                    onClick={onSave}
+                >
+                    Save
+                </Button>
             </ButtonContainer>
         </Container>
     );

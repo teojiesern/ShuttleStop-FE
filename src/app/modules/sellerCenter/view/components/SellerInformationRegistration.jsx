@@ -16,7 +16,7 @@ const Container = styled.div`
 
 const ContentContainer = styled.div`
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     min-width: 90%;
     gap: 2rem;
@@ -31,7 +31,7 @@ const FormLabel = styled.label`
     width: 300px;
 `;
 
-export default function SellerInformationRegistration({ registrationData }) {
+export default function SellerInformationRegistration({ registrationData, errors, setErrors }) {
     const [sellerName, setSellerName] = useState(registrationData.current.sellerName);
     const [sellerIC, setSellerIC] = useState(registrationData.current.sellerIC);
 
@@ -39,16 +39,18 @@ export default function SellerInformationRegistration({ registrationData }) {
         (event) => {
             setSellerName(event.target.value);
             registrationData.current.sellerName = event.target.value;
+            setErrors({ ...errors, sellerName: '' });
         },
-        [registrationData],
+        [errors, registrationData, setErrors],
     );
 
     const handleICChange = useCallback(
         (event) => {
             setSellerIC(event.target.value);
             registrationData.current.sellerIC = event.target.value;
+            setErrors({ ...errors, sellerIC: '' });
         },
-        [registrationData],
+        [errors, registrationData, setErrors],
     );
 
     return (
@@ -61,6 +63,8 @@ export default function SellerInformationRegistration({ registrationData }) {
                     style={{ minWidth: '50%' }}
                     value={sellerName}
                     onChange={handleNameChange}
+                    error={!!errors.sellerName}
+                    helperText={errors.sellerName}
                 />
             </ContentContainer>
             <ContentContainer>
@@ -68,10 +72,12 @@ export default function SellerInformationRegistration({ registrationData }) {
                 <TextField
                     label="Enter your IC/Passport Number..."
                     size="small"
-                    type="tel"
+                    type="number"
                     style={{ minWidth: '50%' }}
                     value={sellerIC}
                     onChange={handleICChange}
+                    error={!!errors.sellerIC}
+                    helperText={errors.sellerIC}
                 />
             </ContentContainer>
         </Container>

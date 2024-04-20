@@ -8,6 +8,7 @@ import SellerCenterRegisteredSuccessfully from '../components/SellerCenterRegist
 import SellerInformationRegistration from '../components/SellerInformationRegistration';
 import ShopInformationRegistration from '../components/ShopInformationRegistration';
 import StepperCTA from '../components/StepperCTA';
+import useSCFormValidation from '../hooks/useSCFormValidation';
 
 const Container = styled.div`
     display: flex;
@@ -30,6 +31,8 @@ const LineSeparator = styled.div`
 
 export default function SellerCenterRegistrationScreen() {
     const [activeStep, setActiveStep] = useState(0);
+    const [errors, setErrors] = useState({});
+    const { validateSellerInfo, validateShopInfo } = useSCFormValidation();
     const steps = Object.values(Steps);
 
     // cache
@@ -40,6 +43,7 @@ export default function SellerCenterRegistrationScreen() {
         pickupAddress: '',
         email: '',
         phoneNumber: '',
+        files: [],
     });
 
     return (
@@ -51,9 +55,17 @@ export default function SellerCenterRegistrationScreen() {
                 />
                 <LineSeparator />
                 {steps[activeStep] === Steps.SELLER_INFORMATION ? (
-                    <SellerInformationRegistration registrationData={registrationData} />
+                    <SellerInformationRegistration
+                        registrationData={registrationData}
+                        errors={errors}
+                        setErrors={setErrors}
+                    />
                 ) : steps[activeStep] === Steps.SHOP_INFORMATION ? (
-                    <ShopInformationRegistration registrationData={registrationData} />
+                    <ShopInformationRegistration
+                        registrationData={registrationData}
+                        errors={errors}
+                        setErrors={setErrors}
+                    />
                 ) : (
                     <SellerCenterRegisteredSuccessfully registrationData={registrationData} />
                 )}
@@ -63,6 +75,21 @@ export default function SellerCenterRegistrationScreen() {
                         <StepperCTA
                             activeStep={activeStep}
                             setActiveStep={setActiveStep}
+                            errors={errors}
+                            setErrors={setErrors}
+                            validateSellerInfo={validateSellerInfo}
+                            validateShopInfo={validateShopInfo}
+                            sellerInfo={{
+                                sellerName: registrationData.current.sellerName,
+                                sellerIC: registrationData.current.sellerIC,
+                            }}
+                            shopInfo={{
+                                shopName: registrationData.current.shopName,
+                                pickupAddress: registrationData.current.pickupAddress,
+                                email: registrationData.current.email,
+                                phoneNumber: registrationData.current.phoneNumber,
+                                files: registrationData.current.files,
+                            }}
                         />
                     </>
                 )}
