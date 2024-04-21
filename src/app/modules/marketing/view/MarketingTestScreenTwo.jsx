@@ -90,7 +90,10 @@ export default function MarketingTestScreenTwo() {
             />
             <LinkContainer>
                 {/* update action to profile link */}
-                <UpdateProfileLink>
+                <UpdateProfileLink
+                    onClick={() => navigate('/marketing/coach-registration')}
+                    style={{ cursor: 'pointer' }}
+                >
                     <CoachReusableStyle.Text>Update Coach Profile</CoachReusableStyle.Text>
                 </UpdateProfileLink>
                 <img

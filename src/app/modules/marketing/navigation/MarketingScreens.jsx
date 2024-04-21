@@ -3,13 +3,13 @@ import MarketingTestScreenTwo from '../view/MarketingTestScreenTwo';
 import CoachProfile from '../view/component/CoachProfile';
 
 import MarketingCoachRegistrationScreen from '../view/MarketingCoachRegistrationScreen';
-import CompetitionScreen from './CompetitionScreen';
+import MarketingTestScreen from '../view/MarketingTestScreen';
 
 const MarketingScreens = (
     <>
         <Route
             path="/marketing/competitions"
-            element={<CompetitionScreen />}
+            element={<MarketingTestScreen />}
         />
         <Route
             path="/marketing/coaches"

@@ -5,7 +5,7 @@ export default class CompetitionDetails {
             competitions: [
                 {
                     compID: 1,
-                    compName: 'Deans Cup',
+                    compName: 'MMBA',
                     date: '8 January 2024',
                     state: 'KED',
                     fee: 'Free',
@@ -25,7 +25,7 @@ export default class CompetitionDetails {
                 },
                 {
                     compID: 3,
-                    compName: 'Deans Cup',
+                    compName: 'BWF World Championships',
                     date: '8 January 2025',
                     state: 'KED',
                     fee: 'Free',
@@ -35,7 +35,7 @@ export default class CompetitionDetails {
                 },
                 {
                     compID: 4,
-                    compName: 'Deans Cup',
+                    compName: 'Olympic Badminton Tournament',
                     date: '8 February 2024',
                     state: 'KED',
                     fee: 'Free',
@@ -45,7 +45,7 @@ export default class CompetitionDetails {
                 },
                 {
                     compID: 5,
-                    compName: 'Deans Cup',
+                    compName: 'Sudirman Cup',
                     date: '8 February 2024',
                     state: 'KED',
                     fee: 'Free',
@@ -55,7 +55,7 @@ export default class CompetitionDetails {
                 },
                 {
                     compID: 6,
-                    compName: 'Deans Cup',
+                    compName: 'Asian Badminton Championships',
                     date: '8 February 2025',
                     state: 'KED',
                     fee: 'Free',
@@ -65,7 +65,7 @@ export default class CompetitionDetails {
                 },
                 {
                     compID: 7,
-                    compName: 'Deans Cup',
+                    compName: 'Super 750 Tournaments',
                     date: '8 March 2024',
                     state: 'KED',
                     fee: 'Free',
@@ -75,7 +75,7 @@ export default class CompetitionDetails {
                 },
                 {
                     compID: 8,
-                    compName: 'Deans Cup',
+                    compName: 'European Championships',
                     date: '8 March 2024',
                     state: 'KED',
                     fee: 'Free',
@@ -85,7 +85,7 @@ export default class CompetitionDetails {
                 },
                 {
                     compID: 9,
-                    compName: 'Deans Cup',
+                    compName: 'American Championships',
                     date: '8 March 2025',
                     state: 'KED',
                     fee: 'Free',
