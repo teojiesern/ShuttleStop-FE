@@ -13,6 +13,7 @@ import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import CartContext from '../../customer/context/CartContext';
 import DeleteItemModal from '../modal/DeleteItemModal';
+import NoCheckedProductModal from '../modal/NoCheckedProductModal';
 import COReusableStyles from './styles/COReusableStyles';
 
 const Wrapper = styled.div`
@@ -197,6 +198,13 @@ export default function ShoppingCartScreen() {
         [setProductTotal, decreaseQty, showModal, hideModal, cart],
     );
 
+    const handleCheckoutClick = useCallback(() => {
+        showModal({ modal: <NoCheckedProductModal /> });
+        setTimeout(() => {
+            hideModal();
+        }, 2000);
+    }, [showModal, hideModal]);
+
     useEffect(() => {
         const updatedTotalPrice = calculateTotalPrice(productTotal, checkedProducts);
         setTotalPrice(updatedTotalPrice);
@@ -356,13 +364,25 @@ export default function ShoppingCartScreen() {
                     />
                     <COReusableStyles.Text>Total Item: {checkedProducts.length} item(s)</COReusableStyles.Text>
                     <TotalCheckout>RM{totalPrice.toFixed(2)}</TotalCheckout>
-                    <Button
-                        component={Link}
-                        to="checkoutScreen"
-                        style={{ ...PlatformReusableStyles.PrimaryButtonStyles }}
-                    >
-                        <p style={{ fontWeight: FONTWEIGHT.SEMI_BOLD }}>CHECK OUT</p>
-                    </Button>
+                    {checkedProducts.length === 0 ? (
+                        <Button
+                            onClick={handleCheckoutClick}
+                            style={{ ...PlatformReusableStyles.PrimaryButtonStyles }}
+                        >
+                            <p style={{ fontWeight: FONTWEIGHT.SEMI_BOLD }}>CHECK OUT</p>
+                        </Button>
+                    ) : (
+                        <Button
+                            component={Link}
+                            to={{
+                                pathname: 'checkoutScreen',
+                                search: `?from=cart&products=${encodeURIComponent(JSON.stringify(checkedProducts))}`,
+                            }}
+                            style={{ ...PlatformReusableStyles.PrimaryButtonStyles }}
+                        >
+                            <p style={{ fontWeight: FONTWEIGHT.SEMI_BOLD }}>CHECK OUT</p>
+                        </Button>
+                    )}
                 </BottomLayout>
             </BottomBar>
             {console.log('cart: ', cart)}

@@ -4,11 +4,11 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Button } from '@mui/material';
 import Rating from '@mui/material/Rating';
-import React, { useContext, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import CustomerStatusContext from '../../../platform/app/data/CustomerStatusContext';
 import COLORS from '../../../platform/Colors';
+import CustomerStatusContext from '../../../platform/app/data/CustomerStatusContext';
 import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
@@ -196,7 +196,7 @@ export default function ProductDetailScreen() {
     const [quantity, setQuantity] = useState(1);
     const [inputQuantity, setInputQuantity] = useState(quantity);
 
-    const { addToCart, buyNow } = useContext(CartContext);
+    const { addToCart, buyNow, buyNowProduct } = useContext(CartContext);
 
     const { showModal } = useModal();
 
@@ -219,6 +219,17 @@ export default function ProductDetailScreen() {
         }
     };
 
+    const navigateToCheckout = useCallback(
+        (item) => {
+            const queryString = `?from=buyNow&products=${encodeURIComponent(JSON.stringify(item))}`;
+            navigate({
+                pathname: '/checkout/checkoutScreen',
+                search: queryString,
+            });
+        },
+        [navigate],
+    );
+
     const handleBuyNow = () => {
         buyNow({
             id: product.id + JSON.stringify(selectedOptions),
@@ -229,6 +240,13 @@ export default function ProductDetailScreen() {
             options: selectedOptions,
         });
     };
+
+    useEffect(() => {
+        if (buyNowProduct) {
+            navigateToCheckout(buyNowProduct);
+            buyNow(null);
+        }
+    }, [buyNowProduct, navigateToCheckout, buyNow]);
 
     const description = product.description.split('\n').map((line) => (
         <React.Fragment key={line}>
@@ -471,20 +489,17 @@ export default function ProductDetailScreen() {
                                     <ShoppingCartOutlinedIcon />
                                     ADD TO CART
                                 </Button>
-
-                                <Link to="/checkoutScreen">
-                                    <Button
-                                        style={{
-                                            ...PlatformReusableStyles.PrimaryButtonStyles,
-                                            width: '130px',
-                                            fontWeight: `${FONTWEIGHT.SEMI_BOLD}`,
-                                            height: '50px',
-                                        }}
-                                        onClick={handleBuyNow}
-                                    >
-                                        BUY NOW
-                                    </Button>
-                                </Link>
+                                <Button
+                                    style={{
+                                        ...PlatformReusableStyles.PrimaryButtonStyles,
+                                        width: '130px',
+                                        fontWeight: `${FONTWEIGHT.SEMI_BOLD}`,
+                                        height: '50px',
+                                    }}
+                                    onClick={handleBuyNow}
+                                >
+                                    BUY NOW
+                                </Button>
                             </AllOptionBtns>
                         </WholeOption>
                     </Selectt>

@@ -4,34 +4,28 @@ import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import ShippingOptionModal from '../../modal/ShippingOptionModal';
+import COReusableStyles from '../styles/COReusableStyles';
 
-const Container2 = styled.div`
-    display: block;
-    padding: 1.5rem 2rem;
-    border: 1px solid ${COLORS.darkGrey};
-    margin-bottom: 1rem;
-    text-align: center;
-    align-items: center;
-`;
-const ShippingContainer = styled.div`
+const Wrapper = styled.div`
     display: flex;
+    flex-direction: column;
+    gap: 1rem;
+`;
+const ShippingLayout = styled.div`
+    width: 100%;
+    display: grid;
+    grid-template-columns: 6.5fr 1.5fr 1fr 1fr;
     align-items: center;
+    gap: 1rem;
 `;
-const ShippingMethodHead = styled.span`
-    flex: 5.5 5.5 55%;
-    color: ${COLORS.black};
-    font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.REGULAR};
-    text-align: right;
-`;
-const ShippingMethod = styled.span`
-    flex: 1.5 1.5 15%;
-    color: ${COLORS.black};
-    font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.SEMI_BOLD};
+const OrderTotalLayout = styled.div`
+    width: 100%;
+    display: grid;
+    grid-template-columns: 8fr 1fr 1fr;
+    align-items: center;
+    gap: 1rem;
 `;
 const ChangeShippingMethod = styled.button`
-    flex: 1 1 10%;
     background: none;
     color: #007ce0;
     border: none;
@@ -39,34 +33,15 @@ const ChangeShippingMethod = styled.button`
     font-weight: ${FONTWEIGHT.REGULAR};
     cursor: pointer;
 `;
-const ShippingPrice = styled.span`
-    flex: 1 1 10%;
-    color: ${COLORS.black};
-    font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.REGULAR};
-`;
-const OrderTotalContainer = styled.div`
-    display: flex;
-    margin-top: 1rem;
-    align-item: center;
-`;
-const OrderTotalHead = styled.span`
-    flex: 7 7 65%;
-    color: ${COLORS.black};
-    font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.REGULAR};
-    text-align: right;
-`;
 const TotalPrice = styled.span`
-    flex: 2 2 20%;
     color: ${COLORS.black};
     font-size: ${FONTSIZE.medium};
     font-weight: ${FONTWEIGHT.REGULAR};
     padding-right: 1.5rem;
-    text-align: right;
+    text-align: center;
 `;
 
-export default function TotalPriceBar({ shippingOption, updateShippingOption }) {
+export default function TotalPriceBar({ shippingOption, updateShippingOption, total, itemNum }) {
     const { showModal, hideModal } = useModal();
 
     const handleChangeClick = () => {
@@ -83,24 +58,30 @@ export default function TotalPriceBar({ shippingOption, updateShippingOption }) 
     };
 
     return (
-        <Container2>
-            <ShippingContainer>
-                <ShippingMethodHead>Shipping Method:</ShippingMethodHead>
+        <Wrapper>
+            <ShippingLayout>
+                <COReusableStyles.Text style={{ textAlign: 'right' }}>Shipping Method:</COReusableStyles.Text>
                 {shippingOption === 'standardDelivery' ? (
-                    <ShippingMethod>Standard Delivery</ShippingMethod>
+                    <COReusableStyles.Title style={{ textAlign: 'center' }}>Standard Delivery</COReusableStyles.Title>
                 ) : (
-                    <ShippingMethod>Self Collection</ShippingMethod>
+                    <COReusableStyles.Title style={{ textAlign: 'center' }}>Self Collection</COReusableStyles.Title>
                 )}
-
                 <ChangeShippingMethod onClick={handleChangeClick}>
                     <p>Change</p>
                 </ChangeShippingMethod>
-                <ShippingPrice>RM5.90</ShippingPrice>
-            </ShippingContainer>
-            <OrderTotalContainer>
-                <OrderTotalHead>Order Total (1 item):</OrderTotalHead>
-                <TotalPrice>RM734.90</TotalPrice>
-            </OrderTotalContainer>
-        </Container2>
+                <COReusableStyles.Text>RM5.90</COReusableStyles.Text>
+            </ShippingLayout>
+            <OrderTotalLayout>
+                {itemNum === 1 ? (
+                    <COReusableStyles.Text style={{ textAlign: 'right' }}>Order Total (1 item):</COReusableStyles.Text>
+                ) : (
+                    <COReusableStyles.Text style={{ textAlign: 'right' }}>
+                        Order Total ({itemNum} items):
+                    </COReusableStyles.Text>
+                )}
+                <div />
+                <TotalPrice>RM{total.toFixed(2)}</TotalPrice>
+            </OrderTotalLayout>
+        </Wrapper>
     );
 }

@@ -8,7 +8,7 @@ export default class COReusableStyles {
         display: flex;
         flex-direction: column;
         border: 1px solid ${COLORS.grey};
-        padding: 0.5rem 2rem;
+        padding: 1rem 3rem;
     `;
 
     static Label = styled.span`
@@ -25,9 +25,15 @@ export default class COReusableStyles {
         text-align: center;
     `;
 
+    static Title = styled.span`
+        color: ${COLORS.black};
+        font-size: ${FONTSIZE.small};
+        font-weight: ${FONTWEIGHT.SEMI_BOLD};
+    `;
+
     static Divider = styled.div`
         height: 1px;
         background-color: ${COLORS.grey};
-        margin: 0.5rem -2rem;
+        margin: 1rem -3rem;
     `;
 }

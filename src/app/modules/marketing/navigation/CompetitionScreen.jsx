@@ -89,7 +89,6 @@ const Layout = styled.div`
     align-items: center;
 `;
 
-
 const Title = styled.h1`
     font-size: ${FONTSIZE.medium};
     text-align: left;
@@ -101,7 +100,6 @@ const Title = styled.h1`
     padding-top: 2rem;
 `;
 
-
 export default function CompetitionLayout() {
     const { showModal, hideModal } = useModal();
 
@@ -109,7 +107,6 @@ export default function CompetitionLayout() {
         showModal({
             modal: <CompetitionLinkModal hideModal={hideModal} />,
         });
-
     }, [showModal]);
 
     const years = Array.from({ length: 4 }, (_, index) => 2024 + index);
@@ -217,12 +214,10 @@ export default function CompetitionLayout() {
                     </ContentContainer>
                 </div>
             );
-
         });
     };
 
     return (
-
         <ContentContainer>
             <ContentContainer>
                 <HeadContainer
@@ -230,7 +225,6 @@ export default function CompetitionLayout() {
                     top="48%"
                     title="Competitions"
                 />
-
             </ContentContainer>
 
             <HeaderRow>
@@ -239,24 +233,20 @@ export default function CompetitionLayout() {
                         <p>Sort By</p>
                     </Sort>
                     <DropDownContainer>
-
                         <Dropdown
                             options={years}
                             onChange={handleYearChange}
                         />
-
                     </DropDownContainer>
                 </HeaderLeft>
                 <HeaderRight>
                     <CompLink onClick={pressLink}>
                         <p>Promote Competition</p>
                     </CompLink>
-
                 </HeaderRight>
             </HeaderRow>
 
             <Layout>
-
                 <CompReusableStyles.TextDescription>Competition</CompReusableStyles.TextDescription>
                 <CompReusableStyles.TextDescription>Dates</CompReusableStyles.TextDescription>
                 <CompReusableStyles.TextDescription>State</CompReusableStyles.TextDescription>
@@ -269,6 +259,5 @@ export default function CompetitionLayout() {
 
             <ContentContainer>{renderCompetitionDetailsByMonth()}</ContentContainer>
         </ContentContainer>
-
     );
 }
