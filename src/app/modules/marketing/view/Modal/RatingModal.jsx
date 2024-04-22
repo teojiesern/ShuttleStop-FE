@@ -47,6 +47,12 @@ const CenteredDiv = styled.div`
     min-height: 50vh;
 `;
 
+const BarContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: 15rem;
+`;
+
 export default function CompetitionLinkModal({ hideModal, coach }) {
     const [formData, setFormData] = useState();
     const [link, setLink] = useState(false);
@@ -83,7 +89,9 @@ export default function CompetitionLinkModal({ hideModal, coach }) {
                         />
 
                         <Description>Posting publicly</Description>
-                        <RatingBar />
+                        <BarContainer>
+                            <RatingBar />
+                        </BarContainer>
 
                         <ButtonContainer>
                             <Button
