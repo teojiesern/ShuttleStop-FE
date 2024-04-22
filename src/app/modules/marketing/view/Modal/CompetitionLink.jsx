@@ -44,26 +44,35 @@ export default function CompetitionLinkModal({ hideModal }) {
     // const handleDateChange = (date) => {
     //     setSelectedDate(date);
     // };
+    // function generateUniqueId() {
+    //     return `_${Math.random().toString(36).substr(2, 9)}`; // Generates a random string
+    // }
 
     const [formData, setFormData] = useState({
-        competitionName: '',
+        compID: '',
+        compName: '',
         date: '',
         state: '',
         fee: '',
         deadline: '',
         prize: '',
-        registrationLink: '',
-        eventBanner: null,
+        url: '',
     });
     const [link, setLink] = useState(false);
+    // const uniqueID = generateUniqueId();
 
-    const handleChange = useCallback((e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    }, []);
+    const handleChange = useCallback(
+        (e) => {
+            const { name, value } = e.target;
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+            // Pass formData to CompetitionLayout
+            // CompetitionLayout({ formData: { ...formData, [name]: value } });
+        },
+        [formData],
+    );
 
     // const handleFileUpload = useCallback((e) => {
     //     const file = e.target.files[0];
@@ -98,7 +107,7 @@ export default function CompetitionLinkModal({ hideModal }) {
                         <TextField
                             name="competitionName"
                             label="Competition Name"
-                            value={formData.competitionName}
+                            value={formData.compName}
                             onChange={handleChange}
                         />
                         <TextField
@@ -122,7 +131,7 @@ export default function CompetitionLinkModal({ hideModal }) {
                         <TextField
                             name="deadline"
                             label="Deadline"
-                            value={formData.dateline}
+                            value={formData.deadline}
                             onChange={handleChange}
                         />
                         <TextField
@@ -134,7 +143,7 @@ export default function CompetitionLinkModal({ hideModal }) {
                         <TextField
                             name="registerationLink"
                             label="Registeration Link"
-                            value={formData.registrationLink}
+                            value={formData.url}
                             onChange={handleChange}
                         />
                         <TextField
