@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import BankLists from '../../../sellerCenter/data/BankLists';
 import bankList from '../../data/bankList';
 import COReusableStyles from '../styles/COReusableStyles';
 
@@ -80,7 +81,27 @@ export default function SelectPaymentMethod() {
                     <p>Cash On Delivery</p>
                 </PaymentMethodButton>
             </ButtonContainer>
-            {paymentMethod === 'onlineBanking' && <RadioGroup>{mockData}</RadioGroup>}
+            {paymentMethod === 'onlineBanking' && (
+                <RadioGroup>
+                    {BankLists.map((bank) => (
+                        <StyledFormControlLabel
+                            key={bank.name}
+                            value={bank.name} // replace with actual bank value afterward
+                            control={<Radio />}
+                            label={
+                                <RadioButtonLabel>
+                                    <img
+                                        src={bank.icon}
+                                        alt={bank.name}
+                                        style={{ margin: '0 1rem' }}
+                                    />
+                                    <p>{bank.name}</p>
+                                </RadioButtonLabel>
+                            }
+                        />
+                    ))}
+                </RadioGroup>
+            )}
         </Container>
     );
 }
