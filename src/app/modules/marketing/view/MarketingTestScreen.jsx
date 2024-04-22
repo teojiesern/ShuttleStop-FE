@@ -1,11 +1,12 @@
 import { Button } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
+import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
+import CompetitionLinkModal from './Modal/CompetitionLink';
 import arrowRight from './assets/arrowRight.png';
 import HeadImage from './assets/image.png';
 import Line from './component/Border';
@@ -77,7 +78,13 @@ const Title = styled.h1`
 `;
 
 export default function CompetitionLayout() {
-    const navigate = useNavigate();
+    const { showModal, hideModal } = useModal();
+
+    const pressLink = useCallback(() => {
+        showModal({
+            modal: <CompetitionLinkModal hideModal={hideModal} />,
+        });
+    }, [showModal]);
 
     const years = Array.from({ length: 4 }, (_, index) => 2024 + index);
     const { getDetails } = useCompetitionDetail();
@@ -163,7 +170,7 @@ export default function CompetitionLayout() {
                                         <Button
                                             style={{ ...PlatformReusableStyles.PrimaryButtonStyles }}
                                             onClick={() => {
-                                                window.location.href = competitions.url;
+                                                window.open(competitions.url, '_blank');
                                             }}
                                         >
                                             Register
@@ -202,10 +209,7 @@ export default function CompetitionLayout() {
                         />
                     </DropDownContainer>
                 </HeaderLeft>
-                <HeaderRight
-                    onClick={() => navigate('/marketing/register-competition')}
-                    style={{ cursor: 'pointer' }}
-                >
+                <HeaderRight onClick={pressLink}>
                     <CompLink>
                         <CompReusableStyles.TextDescription>Promote Competition</CompReusableStyles.TextDescription>
                     </CompLink>
