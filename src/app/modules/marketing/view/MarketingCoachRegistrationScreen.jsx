@@ -282,9 +282,9 @@ export default function MarketingCoachRegistrationScreen() {
                         </StyledButton>
                     </InnerContainer>
                 </HorizontalContainer>
-                <div style={{ alignSelf: 'flex-end' }}>
+                <div style={{ alignSelf: 'flex-end', margin: '2rem' }}>
                     <Button
-                        style={PlatformReusableStyles.PrimaryButtonStyles}
+                        style={{ ...PlatformReusableStyles.PrimaryButtonStyles, width: '6rem' }}
                         onClick={handleSubmit}
                     >
                         Submit
