@@ -94,7 +94,7 @@ export default function MarketingTestScreenTwo() {
                     onClick={() => navigate('/marketing/coach-registration')}
                     style={{ cursor: 'pointer' }}
                 >
-                    <CoachReusableStyle.Text>Update Coach Profile</CoachReusableStyle.Text>
+                    <CoachReusableStyle.Text>Coach Registeration</CoachReusableStyle.Text>
                 </UpdateProfileLink>
                 <img
                     src={arrowRight}

@@ -4,6 +4,7 @@ import CoachProfile from '../view/component/CoachProfile';
 
 import MarketingCoachRegistrationScreen from '../view/MarketingCoachRegistrationScreen';
 import MarketingTestScreen from '../view/MarketingTestScreen';
+import RegisterCompetitionScreen from '../view/RegisterCompetitionScreen';
 
 const MarketingScreens = (
     <>
@@ -22,6 +23,11 @@ const MarketingScreens = (
         <Route
             path="/marketing/coach-profile"
             element={<CoachProfile />}
+        />
+
+        <Route
+            path="/marketing/register-competition"
+            element={<RegisterCompetitionScreen />}
         />
     </>
 );

@@ -73,14 +73,21 @@ export default function CompetitionLinkModal({ hideModal }) {
     //     }));
     // }, []);
 
+    const handleCancel = useCallback(() => {
+        hideModal();
+    }, [hideModal]);
+
     const onConfirm = useCallback(() => {
-        // Implement your logic to save the form data
-        console.log(formData);
+        console.log('New data', formData);
+
         setLink(true);
-        setTimeout(() => {
+
+        const timeoutId = setTimeout(() => {
             hideModal();
         }, 3500);
-    }, [formData, hideModal]);
+
+        return () => clearTimeout(timeoutId);
+    }, [formData, hideModal, setLink]);
 
     const getContent = useCallback(() => {
         if (!link) {
@@ -140,7 +147,7 @@ export default function CompetitionLinkModal({ hideModal }) {
                         <ButtonContainer>
                             <Button
                                 style={{ ...PlatformReusableStyles.SecondaryButtonStyles }}
-                                onClick={hideModal}
+                                onClick={handleCancel}
                             >
                                 CANCEL
                             </Button>
@@ -161,7 +168,7 @@ export default function CompetitionLinkModal({ hideModal }) {
                 description="You can now review your competition details in the website"
             />
         );
-    }, [formData, handleChange, hideModal, onConfirm, link]);
+    }, [formData, handleChange, handleCancel, onConfirm, link]);
 
     return getContent();
 }
