@@ -7,7 +7,6 @@ import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import BankLists from '../../../sellerCenter/data/BankLists';
-import bankList from '../../data/bankList';
 import COReusableStyles from '../styles/COReusableStyles';
 
 const Container = styled.div`
@@ -42,27 +41,6 @@ export default function SelectPaymentMethod() {
     const handlePaymentMethod = (newPaymentMethod) => {
         setPaymentMethod(newPaymentMethod);
     };
-
-    const mockData = [];
-    for (let i = 0; i < 6; i++) {
-        mockData.push(
-            <StyledFormControlLabel
-                key={i}
-                value={i} // replace with actual bank value afterward
-                control={<Radio />}
-                label={
-                    <RadioButtonLabel>
-                        <img
-                            src={bankList.image}
-                            alt={bankList.value}
-                            style={{ margin: '0 1rem' }}
-                        />
-                        <p>{bankList.bankName}</p>
-                    </RadioButtonLabel>
-                }
-            />,
-        );
-    }
 
     return (
         <Container>
