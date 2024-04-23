@@ -36,10 +36,13 @@ const RadioButtonLabel = styled.div`
     align-items: center;
 `;
 
-export default function SelectPaymentMethod() {
+export default function SelectPaymentMethod({ setIsPaymentSelected }) {
     const [paymentMethod, setPaymentMethod] = useState('onlineBanking');
     const handlePaymentMethod = (newPaymentMethod) => {
         setPaymentMethod(newPaymentMethod);
+    };
+    const handleRadioOnChange = () => {
+        setIsPaymentSelected(true);
     };
 
     return (
@@ -54,7 +57,10 @@ export default function SelectPaymentMethod() {
                 </PaymentMethodButton>
                 <PaymentMethodButton
                     isActive={paymentMethod === 'cod'}
-                    onClick={() => handlePaymentMethod('cod')}
+                    onClick={() => {
+                        handlePaymentMethod('cod');
+                        setIsPaymentSelected(true);
+                    }}
                 >
                     <p>Cash On Delivery</p>
                 </PaymentMethodButton>
@@ -64,8 +70,8 @@ export default function SelectPaymentMethod() {
                     {BankLists.map((bank) => (
                         <StyledFormControlLabel
                             key={bank.name}
-                            value={bank.name} // replace with actual bank value afterward
-                            control={<Radio />}
+                            value={bank.name}
+                            control={<Radio onChange={handleRadioOnChange} />}
                             label={
                                 <RadioButtonLabel>
                                     <img

@@ -1,9 +1,10 @@
 import Storefront from '@mui/icons-material/Storefront';
 import { Button } from '@mui/material';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
+import CrossedModal from '../../../platform/modal/CrossedModal';
 import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
@@ -106,6 +107,7 @@ export default function CheckoutScreen() {
     const from = searchParams.get('from');
     const checkedProducts = JSON.parse(searchParams.get('products'));
 
+    const [isPaymentSelected, setIsPaymentSelected] = useState(false);
     const { cart, removeFromCart } = useContext(CartContext);
     const { showModal, hideModal } = useModal();
     const { shippingOption, updateShippingOption } = useShipping();
@@ -119,15 +121,25 @@ export default function CheckoutScreen() {
     }, [checkedProducts, removeFromCart, navigate]);
 
     const handlePlaceOrderClick = useCallback(() => {
-        showModal({
-            modal: (
-                <OrderPlacedModal
-                    hideModal={hideModal}
-                    navigate={navigateWithCleanup}
-                />
-            ),
-        });
-    }, [showModal, hideModal, navigateWithCleanup]);
+        if (isPaymentSelected) {
+            showModal({
+                modal: (
+                    <OrderPlacedModal
+                        hideModal={hideModal}
+                        navigate={navigateWithCleanup}
+                    />
+                ),
+                disableBackdropDismiss: true,
+            });
+        } else {
+            showModal({
+                modal: <CrossedModal title="You have not selected any payment method" />,
+            });
+            setTimeout(() => {
+                hideModal();
+            }, 3000);
+        }
+    }, [showModal, hideModal, navigateWithCleanup, isPaymentSelected]);
 
     const handleChangeClick = () => {
         showModal({
@@ -223,7 +235,7 @@ export default function CheckoutScreen() {
                 </COReusableStyles.BorderConatiner>
 
                 <COReusableStyles.BorderConatiner>
-                    <SelectPaymentMethod />
+                    <SelectPaymentMethod setIsPaymentSelected={setIsPaymentSelected} />
                     <COReusableStyles.Divider />
 
                     <Container>
@@ -349,7 +361,7 @@ export default function CheckoutScreen() {
             </COReusableStyles.BorderConatiner>
 
             <COReusableStyles.BorderConatiner>
-                <SelectPaymentMethod />
+                <SelectPaymentMethod setIsPaymentSelected={setIsPaymentSelected} />
                 <COReusableStyles.Divider />
 
                 <Container>
