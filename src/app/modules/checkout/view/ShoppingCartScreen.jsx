@@ -148,12 +148,13 @@ export default function ShoppingCartScreen() {
                                 delete updatedTotal[productId];
                                 return updatedTotal;
                             });
+                            setCheckedProducts(checkedProducts.filter((itemId) => itemId !== productId));
                         }}
                     />
                 ),
             });
         },
-        [showModal, hideModal],
+        [showModal, hideModal, checkedProducts],
     );
 
     const handleIncrementChange = useCallback(
@@ -189,13 +190,14 @@ export default function ShoppingCartScreen() {
                                     delete updatedTotal[productId];
                                     return updatedTotal;
                                 });
+                                setCheckedProducts(checkedProducts.filter((itemId) => itemId !== productId));
                             }}
                         />
                     ),
                 });
             }
         },
-        [setProductTotal, decreaseQty, showModal, hideModal, cart],
+        [setProductTotal, decreaseQty, showModal, hideModal, cart, checkedProducts],
     );
 
     const handleCheckoutClick = useCallback(() => {
