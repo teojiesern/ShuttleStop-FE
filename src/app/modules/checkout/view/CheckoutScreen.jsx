@@ -104,22 +104,30 @@ export default function CheckoutScreen() {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const from = searchParams.get('from');
+    const checkedProducts = JSON.parse(searchParams.get('products'));
 
-    const { cart } = useContext(CartContext);
+    const { cart, removeFromCart } = useContext(CartContext);
     const { showModal, hideModal } = useModal();
     const { shippingOption, updateShippingOption } = useShipping();
     const navigate = useNavigate();
+
+    const navigateWithCleanup = useCallback(() => {
+        navigate('/');
+        if (Array.isArray(checkedProducts)) {
+            checkedProducts.forEach((itemId) => removeFromCart(itemId));
+        }
+    }, [checkedProducts, removeFromCart, navigate]);
 
     const handlePlaceOrderClick = useCallback(() => {
         showModal({
             modal: (
                 <OrderPlacedModal
                     hideModal={hideModal}
-                    navigate={navigate}
+                    navigate={navigateWithCleanup}
                 />
             ),
         });
-    }, [showModal, hideModal, navigate]);
+    }, [showModal, hideModal, navigateWithCleanup]);
 
     const handleChangeClick = () => {
         showModal({
@@ -248,7 +256,6 @@ export default function CheckoutScreen() {
         );
     }
 
-    const checkedProducts = JSON.parse(searchParams.get('products'));
     let totalPrice = 0;
 
     return (

@@ -31,7 +31,7 @@ export default function OrderPlacedModal({ hideModal, navigate }) {
         if (countDown === 0) {
             clearInterval(intervalId);
             hideModal();
-            navigate('/');
+            navigate();
         }
 
         return () => clearInterval(intervalId);
