@@ -1,5 +1,15 @@
 # ShuttleStop
 
+## Built With
+
+![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white)
+![Material-UI](https://img.shields.io/badge/-Material--UI-0081CB?logo=material-ui&logoColor=white)
+![React Router](https://img.shields.io/badge/-React_Router-CA4245?logo=react-router&logoColor=white)
+![React Dropzone](https://img.shields.io/badge/-React_Dropzone-4682B4)
+![React Lottie](https://img.shields.io/badge/-React_Lottie-FF4785)
+![Styled Components](https://img.shields.io/badge/-Styled_Components-DB7093?logo=styled-components&logoColor=white)
+![Vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white)
+
 ## Setup
 
 Before starting off, please download `VisualStudioCode` to be used for this project as we will be using extensions from `VisualStudioCode` for better DX, if you haven't already done so, for macOS users please follow [this guide](https://code.visualstudio.com/docs/setup/mac) while windows users can follow [this guide](https://code.visualstudio.com/docs/setup/windows)
