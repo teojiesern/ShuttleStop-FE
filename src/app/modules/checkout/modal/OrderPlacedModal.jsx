@@ -1,7 +1,7 @@
-import CheckCircle from '@mui/icons-material/CheckCircle';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
+import TickedModal from '../../../platform/modal/TickedModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 
@@ -11,21 +11,7 @@ const CenteredDiv = styled.div`
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    padding: 5rem 2rem;
-`;
-const IconContainer = styled.div`
-    color: ${COLORS.green};
-    font-size: 120px;
-`;
-const Title = styled.h1`
-    color: ${COLORS.black};
-    font-size: ${FONTSIZE.medium};
-    font-weight: ${FONTWEIGHT.SEMI_BOLD};
-`;
-const Desc = styled.h3`
-    color: ${COLORS.darkGrey};
-    font-size: ${FONTSIZE.small};
-    font-weight: ${FONTWEIGHT.REGULAR};
+    padding: 3rem;
 `;
 const CountDown = styled.p`
     color: ${COLORS.darkGrey};
@@ -45,7 +31,7 @@ export default function OrderPlacedModal({ hideModal, navigate }) {
         if (countDown === 0) {
             clearInterval(intervalId);
             hideModal();
-            navigate('/');
+            navigate();
         }
 
         return () => clearInterval(intervalId);
@@ -53,12 +39,10 @@ export default function OrderPlacedModal({ hideModal, navigate }) {
 
     return (
         <CenteredDiv>
-            <IconContainer>
-                <CheckCircle fontSize="120px" />
-            </IconContainer>
-            <Title>Your order has been successfully placed</Title>
-            <Desc>Thank you for shopping with us!</Desc>
-            <br />
+            <TickedModal
+                title="Your order has been successfully placed"
+                description="Thank you for shopping with us!"
+            />
             <CountDown>
                 <i>Navigate to Home in {countDown} second(s)</i>
             </CountDown>

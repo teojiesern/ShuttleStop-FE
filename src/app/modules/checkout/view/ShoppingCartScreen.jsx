@@ -7,13 +7,13 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
+import CrossedModal from '../../../platform/modal/CrossedModal';
 import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import CartContext from '../../customer/context/CartContext';
 import DeleteItemModal from '../modal/DeleteItemModal';
-import NoCheckedProductModal from '../modal/NoCheckedProductModal';
 import COReusableStyles from './styles/COReusableStyles';
 
 const Wrapper = styled.div`
@@ -148,12 +148,13 @@ export default function ShoppingCartScreen() {
                                 delete updatedTotal[productId];
                                 return updatedTotal;
                             });
+                            setCheckedProducts(checkedProducts.filter((itemId) => itemId !== productId));
                         }}
                     />
                 ),
             });
         },
-        [showModal, hideModal],
+        [showModal, hideModal, checkedProducts],
     );
 
     const handleIncrementChange = useCallback(
@@ -189,20 +190,21 @@ export default function ShoppingCartScreen() {
                                     delete updatedTotal[productId];
                                     return updatedTotal;
                                 });
+                                setCheckedProducts(checkedProducts.filter((itemId) => itemId !== productId));
                             }}
                         />
                     ),
                 });
             }
         },
-        [setProductTotal, decreaseQty, showModal, hideModal, cart],
+        [setProductTotal, decreaseQty, showModal, hideModal, cart, checkedProducts],
     );
 
     const handleCheckoutClick = useCallback(() => {
-        showModal({ modal: <NoCheckedProductModal /> });
+        showModal({ modal: <CrossedModal title="You have not selected any items for checkout" /> });
         setTimeout(() => {
             hideModal();
-        }, 2000);
+        }, 3000);
     }, [showModal, hideModal]);
 
     useEffect(() => {
