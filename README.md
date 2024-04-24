@@ -1,14 +1,23 @@
 # ShuttleStop
 
-## Built With
+## Tech Stack
 
-![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white)
-![Material-UI](https://img.shields.io/badge/-Material--UI-0081CB?logo=material-ui&logoColor=white)
-![React Router](https://img.shields.io/badge/-React_Router-CA4245?logo=react-router&logoColor=white)
-![React Dropzone](https://img.shields.io/badge/-React_Dropzone-4682B4)
-![React Lottie](https://img.shields.io/badge/-React_Lottie-FF4785)
-![Styled Components](https://img.shields.io/badge/-Styled_Components-DB7093?logo=styled-components&logoColor=white)
-![Vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white)
+Built with
+
+[![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
+[![Material-UI](https://img.shields.io/badge/-Material--UI-0081CB?logo=material-ui&logoColor=white)](https://mui.com/)
+[![React Router](https://img.shields.io/badge/-React_Router-CA4245?logo=react-router&logoColor=white)](https://reactrouter.com/)
+[![React Dropzone](https://img.shields.io/badge/-React_Dropzone-4682B4)](https://react-dropzone.js.org/)
+[![React Lottie](https://img.shields.io/badge/-React_Lottie-FF4785)](https://github.com/chenqingspring/react-lottie)
+[![Styled Components](https://img.shields.io/badge/-Styled_Components-DB7093?logo=styled-components&logoColor=white)](https://styled-components.com/)
+[![Vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+
+Developer Experience
+
+[![Vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![ESLint](https://img.shields.io/badge/-ESLint-4B32C3?logo=eslint&logoColor=white)](https://eslint.org/)
+[![Prettier](https://img.shields.io/badge/-Prettier-F7B93E?logo=prettier&logoColor=white)](https://prettier.io/)
+[![Husky](https://img.shields.io/badge/-Husky-FF7A59?logo=husky&logoColor=white)](https://typicode.github.io/husky/)
 
 ## Setup
 
