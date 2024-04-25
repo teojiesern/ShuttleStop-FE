@@ -32,7 +32,7 @@ git clone https://github.com/teojiesern/ShuttleStop-FE.git
 2. Make sure you are in the directory of the cloned project before proceeding
 
 ```sh
-cd ShuttleStop
+cd ShuttleStop-FE
 ```
 
 3. **Note** If you are using macOS, you might need to run the following script to grant execution access to run the setup script.
