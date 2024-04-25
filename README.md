@@ -35,34 +35,34 @@ git clone https://github.com/teojiesern/ShuttleStop-FE.git
 cd ShuttleStop-FE
 ```
 
-3. **Note** If you are using macOS, you might need to run the following script to grant execution access to run the setup script.
-
-```sh
-# This line will grant permission to run the script
-chmod +x ./scripts/setup.sh
-```
-
-4. After that, run the following script to install extensions that will be needed throughout the whole project
-
-```sh
-./scripts/setup.sh
-```
-
-## Run the web
-
-Remember to run the following command to make sure you have the latest packages
+3. Remember to run the following command to make sure you have the latest packages
 
 ```bash
 npm install
 ```
 
-To have a look at your app, simply run
+4. To have a look at your app, simply run
 
 ```bash
 npm run dev
 ```
 
 After that go to `http://localhost:5173/`, and you should see the website being developed
+
+## Developer Setup
+
+1. **Note** If you are using macOS, you might need to run the following script to grant execution access to run the setup script.
+
+```sh
+# This line will grant permission to run the script
+chmod +x ./scripts/setup.sh
+```
+
+2. After that, run the following script to install extensions that will be needed throughout the whole project
+
+```sh
+./scripts/setup.sh
+```
 
 ## Code Snippets
 
