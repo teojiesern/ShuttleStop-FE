@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import Lottie from 'react-lottie';
 import styled from 'styled-components';
-import lottieAddToCart from '../../../platform/animation/lottieAddToCart.json';
-import COLORS from '../../../platform/Colors';
-import useModal from '../../../platform/modal/useModal';
-import FONTSIZE from '../../../platform/style/FontSize';
-import FONTWEIGHT from '../../../platform/style/FontWeight';
+import COLORS from '../../../../platform/Colors';
+import lottieAddToCart from '../../../../platform/animation/lottieAddToCart.json';
+import useModal from '../../../../platform/modal/useModal';
+import FONTSIZE from '../../../../platform/style/FontSize';
+import FONTWEIGHT from '../../../../platform/style/FontWeight';
 
 const CenteredDiv = styled.div`
     display: flex;

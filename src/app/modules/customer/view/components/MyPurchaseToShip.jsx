@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import COLORS from '../../../platform/Colors';
-import FONTSIZE from '../../../platform/style/FontSize';
+import COLORS from '../../../../platform/Colors';
+import FONTSIZE from '../../../../platform/style/FontSize';
 import MyPurchaseItem from './MyPurchaseItem';
 
 const BorderContainer = styled.div`

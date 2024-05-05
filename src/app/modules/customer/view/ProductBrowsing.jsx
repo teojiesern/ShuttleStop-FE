@@ -6,9 +6,9 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
-import products from '../assets/ProductList2';
 import FilterContext from '../context/FilterContext';
 import Product from './Product';
+import products from './assets/ProductList2';
 
 const ProductGrid = styled.div`
     display: grid;

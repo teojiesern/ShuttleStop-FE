@@ -1,8 +1,8 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import COLORS from '../../../platform/Colors';
-import FONTSIZE from '../../../platform/style/FontSize';
-import FONTWEIGHT from '../../../platform/style/FontWeight';
+import COLORS from '../../../../platform/Colors';
+import FONTSIZE from '../../../../platform/style/FontSize';
+import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import SellerCenterSideNav from '../components/MyAccountSideNav';
 
 const Container = styled.div`

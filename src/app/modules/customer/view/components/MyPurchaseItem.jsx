@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import COLORS from '../../../platform/Colors';
-import FONTWEIGHT from '../../../platform/style/FontWeight';
-import ProductImage from '../../checkout/view/assets/product.png';
+import COLORS from '../../../../platform/Colors';
+import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import ProductImage from '../../../checkout/view/assets/product.png';
 import logoTitan from '../assets/logoTitan.png';
 
 const All = styled.div`

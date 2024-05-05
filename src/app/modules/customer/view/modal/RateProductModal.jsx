@@ -1,10 +1,10 @@
 import { Button } from '@mui/material';
 import styled from 'styled-components';
-import COLORS from '../../../platform/Colors';
-import useModal from '../../../platform/modal/useModal';
-import FONTSIZE from '../../../platform/style/FontSize';
-import FONTWEIGHT from '../../../platform/style/FontWeight';
-import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
+import COLORS from '../../../../platform/Colors';
+import useModal from '../../../../platform/modal/useModal';
+import FONTSIZE from '../../../../platform/style/FontSize';
+import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
 import logoTitan from '../assets/logoTitan.png';
 import racquet from '../assets/racquet.png';
 import RatingBar from '../components/RatingBar';

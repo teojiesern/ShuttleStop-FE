@@ -1,11 +1,11 @@
 import Rating from '@mui/material/Rating';
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 export default function RatingBar(props) {
     const { rating, setRating } = props;
-    const [localRating, setLocalRating] = React.useState(rating);
+    const [localRating, setLocalRating] = useState(rating);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setLocalRating(rating);
     }, [rating]);
 

@@ -7,7 +7,7 @@ import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
-import UploadImage from '../../customer/assets/upload-image.svg';
+import UploadImage from '../../customer/view/assets/upload-image.svg';
 import CompReusableStyles from './style/reusableStyle';
 
 const Container = styled.div`

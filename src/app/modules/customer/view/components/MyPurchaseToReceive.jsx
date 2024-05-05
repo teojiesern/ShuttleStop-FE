@@ -1,9 +1,9 @@
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import COLORS from '../../../platform/Colors';
-import FONTSIZE from '../../../platform/style/FontSize';
-import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
+import COLORS from '../../../../platform/Colors';
+import FONTSIZE from '../../../../platform/style/FontSize';
+import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
 import MyPurchaseItem from './MyPurchaseItem';
 
 const BorderContainer = styled.div`

@@ -8,7 +8,7 @@ import COLORS from '../../../platform/Colors';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
-import UploadImage from '../assets/upload-image.svg';
+import UploadImage from './assets/upload-image.svg';
 
 const OuterContainer = styled.div`
     display: flex;

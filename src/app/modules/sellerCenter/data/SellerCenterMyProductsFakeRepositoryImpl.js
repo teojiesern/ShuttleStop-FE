@@ -1,6 +1,6 @@
 import { ProductBrands, ProductCategories } from '../../../platform/constants/PlatformConstants';
-import FootwearApacs1 from '../../customer/assets/footwearApacs1.webp';
-import RacquetImage from '../../customer/assets/racquet.png';
+import FootwearApacs1 from '../../customer/view/assets/footwearApacs1.webp';
+import RacquetImage from '../../customer/view/assets/racquet.png';
 
 const RacquetImageObject = {
     path: 'RacquetYonex.png',

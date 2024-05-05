@@ -13,9 +13,9 @@ import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
-import products from '../assets/ProductList2';
 import CartContext from '../context/CartContext';
-import AddCartModal from '../modal/AddCartModal';
+import products from './assets/ProductList2';
+import AddCartModal from './modal/AddCartModal';
 
 const AllDetails = styled.div`
     display: flex;

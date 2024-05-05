@@ -1,4 +1,4 @@
-import RacquetImage from '../../customer/assets/racquet.png';
+import RacquetImage from '../../customer/view/assets/racquet.png';
 import { ShippingStatus } from '../constants/SellerCenterConstants';
 
 export default class SellerCenterMyOrdersFakeRepositoryImpl {

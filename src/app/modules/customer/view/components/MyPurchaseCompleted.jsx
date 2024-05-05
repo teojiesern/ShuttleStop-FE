@@ -1,9 +1,9 @@
 import { Button, Rating } from '@mui/material';
 import { useState } from 'react';
 import styled from 'styled-components';
-import COLORS from '../../../platform/Colors';
-import useModal from '../../../platform/modal/useModal';
-import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
+import COLORS from '../../../../platform/Colors';
+import useModal from '../../../../platform/modal/useModal';
+import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
 import RateProductModal from '../modal/RateProductModal';
 import MyPurchaseItem from './MyPurchaseItem';
 

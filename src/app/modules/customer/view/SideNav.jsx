@@ -17,8 +17,8 @@ import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import FilterContext from '../context/FilterContext';
-import WarnModal1 from '../modal/WarnModal1';
-import WarnModal2 from '../modal/WarnModal2';
+import WarnModal1 from './modal/WarnModal1';
+import WarnModal2 from './modal/WarnModal2';
 
 const NavBar = styled.div`
     float: left;

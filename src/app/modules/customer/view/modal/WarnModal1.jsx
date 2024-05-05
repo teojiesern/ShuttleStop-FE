@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import COLORS from '../../../platform/Colors';
-import FONTSIZE from '../../../platform/style/FontSize';
-import FONTWEIGHT from '../../../platform/style/FontWeight';
+import COLORS from '../../../../platform/Colors';
+import FONTSIZE from '../../../../platform/style/FontSize';
+import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import warning from '../assets/warning.jpeg';
 
 export default function WarnModal1() {
