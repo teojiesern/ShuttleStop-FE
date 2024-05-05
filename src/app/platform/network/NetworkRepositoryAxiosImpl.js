@@ -11,6 +11,7 @@ export default class NetworkRepositoryAxiosImpl {
         this.#instance = axios.create({
             baseURL,
             timeout: NetworkConstants.TIMEOUT,
+            withCredentials: true,
         });
     }
 

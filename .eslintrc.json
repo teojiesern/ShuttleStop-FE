@@ -56,6 +56,7 @@
         ],
         "react/button-has-type": "off",
         "class-methods-use-this": 0,
-        "jsx-a11y/alt-text": "off"
+        "jsx-a11y/alt-text": "off",
+        "consistent-return": "off"
     }
 }

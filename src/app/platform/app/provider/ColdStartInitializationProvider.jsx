@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import useCustomer from '../../../modules/customer/view/hooks/useCustomer';
 import CustomerStatusContext from '../data/CustomerStatusContext';
 import ShopSettingsContext from '../data/ShopSettingsContext';
 import useCustomerStatus from '../domain/useCase/useCustomerStatus';
@@ -11,28 +12,28 @@ export default function ColdStartInitializationProvider({ children }) {
     const [shopSettings, setShopSettings] = useState(null);
     const { getCustomerStatus } = useCustomerStatus();
     const { getShopSettings } = useShopSettings();
+    const { getCustomer } = useCustomer();
 
     useEffect(() => {
-        // async function fakeEndpointCallDelay() {
-        //     return new Promise((resolve) => {
-        //         setTimeout(resolve, 3000);
-        //     });
-        // }
-
         async function fetchData() {
-            // await fakeEndpointCallDelay();
-            // Pass in customerId to fetch all these things
-            const newCustomerStatus = await getCustomerStatus();
-            setCustomerStatus({ ...newCustomerStatus, setCustomerStatus });
+            try {
+                const customer = await getCustomer();
+                console.log(customer);
 
-            const newShopSettings = await getShopSettings();
-            setShopSettings({ ...newShopSettings, setShopSettings });
+                const newCustomerStatus = await getCustomerStatus();
+                setCustomerStatus({ ...newCustomerStatus });
 
-            setLoading(false);
+                const newShopSettings = await getShopSettings();
+                setShopSettings({ ...newShopSettings });
+
+                setLoading(false);
+            } catch (error) {
+                console.log(error);
+            }
         }
 
         fetchData();
-    }, [getCustomerStatus, getShopSettings]);
+    }, [getCustomer, getCustomerStatus, getShopSettings]);
 
     if (loading) {
         return <ColdStartPendingScreen />;

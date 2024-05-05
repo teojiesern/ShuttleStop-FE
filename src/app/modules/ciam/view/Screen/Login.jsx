@@ -11,6 +11,7 @@ import COLORS from '../../../../platform/Colors';
 import CustomerStatusContext from '../../../../platform/app/data/CustomerStatusContext';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import useLogin from '../hook/useLogin';
 import FormValidation from '../utils/FormValidation';
 
 const ContainerBox = styled(Box)`
@@ -57,13 +58,13 @@ const RowContainer = styled.div`
 `;
 
 export default function Login() {
-    const navigate = useNavigate();
-
     const [submitted, setSubmitted] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
+    const navigate = useNavigate();
     const { setCustomerStatus, isLogin } = useContext(CustomerStatusContext);
 
-    const [showPassword, setShowPassword] = useState(false);
+    const { login } = useLogin();
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -85,7 +86,7 @@ export default function Login() {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitted(true);
         const formErrors = FormValidation(values);
@@ -99,6 +100,12 @@ export default function Login() {
         } else {
             setErrors(formErrors);
         }
+        // try {
+        //     const data = await login();
+        //     console.log(data);
+        // } catch (error) {
+        //     console.log(error);
+        // }
     };
 
     useEffect(() => {
