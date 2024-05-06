@@ -99,8 +99,7 @@ export default function Login() {
                     isLogin: true,
                     registeredSeller: data.seller,
                 }));
-                // navigate('/');
-                console.log('asdf', isLogin);
+                navigate('/');
             } catch (error) {
                 console.log(error);
             }
