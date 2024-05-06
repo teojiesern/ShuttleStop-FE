@@ -7,8 +7,8 @@ export default class CIAMRepositoryImpl {
         LOGIN: `${this.#BASE_URL}/login`,
     };
 
-    login = async () => {
-        const { status, data } = await Network.getInstance().post(this.#ROUTES.LOGIN);
+    login = async (payload) => {
+        const { status, data } = await Network.getInstance().post(this.#ROUTES.LOGIN, payload);
 
         return { status, data };
     };

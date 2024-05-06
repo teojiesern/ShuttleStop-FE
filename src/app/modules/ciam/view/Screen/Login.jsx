@@ -71,7 +71,7 @@ export default function Login() {
     };
 
     const [values, setValues] = useState({
-        emailTel: '',
+        email: '',
         password: '',
     });
 
@@ -92,20 +92,21 @@ export default function Login() {
         const formErrors = FormValidation(values);
 
         if (Object.keys(formErrors).length === 0) {
-            setCustomerStatus((prevStatus) => ({
-                ...prevStatus,
-                isLogin: true,
-            }));
-            navigate('/');
+            try {
+                const data = await login({ email: values.email, password: values.password });
+                setCustomerStatus((prevStatus) => ({
+                    ...prevStatus,
+                    isLogin: true,
+                    registeredSeller: data.seller,
+                }));
+                // navigate('/');
+                console.log('asdf', isLogin);
+            } catch (error) {
+                console.log(error);
+            }
         } else {
             setErrors(formErrors);
         }
-        // try {
-        //     const data = await login();
-        //     console.log(data);
-        // } catch (error) {
-        //     console.log(error);
-        // }
     };
 
     useEffect(() => {
@@ -127,9 +128,9 @@ export default function Login() {
                         margin="normal"
                         required
                         fullWidth
-                        id="emailTel"
+                        id="email"
                         label="Email Address/Mobile Number"
-                        name="emailTel"
+                        name="email"
                         autoComplete="email tel"
                         autoFocus
                         onChange={handleInput}

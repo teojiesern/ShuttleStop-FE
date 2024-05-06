@@ -21,10 +21,10 @@ export default function ColdStartInitializationProvider({ children }) {
                 console.log(customer);
 
                 const newCustomerStatus = await getCustomerStatus();
-                setCustomerStatus({ ...newCustomerStatus });
+                setCustomerStatus({ ...newCustomerStatus, setCustomerStatus });
 
                 const newShopSettings = await getShopSettings();
-                setShopSettings({ ...newShopSettings });
+                setShopSettings({ ...newShopSettings, setShopSettings });
 
                 setLoading(false);
             } catch (error) {
