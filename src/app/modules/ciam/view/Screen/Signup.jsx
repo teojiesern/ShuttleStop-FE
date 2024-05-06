@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import useSignup from '../hook/useSignup';
 import FormValidation from '../utils/FormValidation';
 
 const ContainerBox = styled(Box)`
@@ -56,23 +57,21 @@ const RowContainer = styled.div`
 `;
 
 export default function Signup() {
-    const navigate = useNavigate();
-
     const [submitted, setSubmitted] = useState(false);
-
     const [showPassword, setShowPassword] = useState(false);
+    const [values, setValues] = useState({
+        username: '',
+        email: '',
+        password: '',
+    });
+    const [errors, setErrors] = useState({});
+
+    const navigate = useNavigate();
+    const { signup } = useSignup();
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
-
-    const [values, setValues] = useState({
-        username: '',
-        emailTel: '',
-        password: '',
-    });
-
-    const [errors, setErrors] = useState({});
 
     const handleInput = (e) => {
         const { name, value } = e.target;
@@ -84,11 +83,18 @@ export default function Signup() {
         }
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         setSubmitted(true);
         const formErrors = FormValidation(values);
         if (Object.keys(formErrors).length === 0) {
+            const user = {
+                name: values.username,
+                email: values.email,
+                password: values.password,
+            };
+
+            await signup(user);
             navigate('../login');
         } else {
             setErrors(formErrors);
