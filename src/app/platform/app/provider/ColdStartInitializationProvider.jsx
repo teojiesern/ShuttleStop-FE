@@ -24,7 +24,7 @@ export default function ColdStartInitializationProvider({ children }) {
 
                 setLoading(false);
             } catch (error) {
-                setCustomerStatus({ isLogin: true, registeredSeller: false, setCustomerStatus });
+                setCustomerStatus({ isLogin: false, registeredSeller: false, setCustomerStatus });
 
                 // TODO: remove all this when the real API is ready
                 const newShopSettings = await getShopSettings();
