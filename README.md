@@ -1,4 +1,4 @@
-# ShuttleStop
+# ShuttleStop-FE
 
 ## Tech Stack
 
