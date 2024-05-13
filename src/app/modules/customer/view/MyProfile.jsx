@@ -186,18 +186,6 @@ export default function MyProfile() {
                 </ContentContainer>
 
                 <ContentContainer>
-                    <FormLabel>Name</FormLabel>
-                    <TextField
-                        name="name"
-                        label="Enter your name"
-                        size="small"
-                        style={{ minWidth: '60%' }}
-                        onChange={handleInput}
-                        defaultValue={customerInfo.name}
-                    />
-                </ContentContainer>
-
-                <ContentContainer>
                     <FormLabel>Email</FormLabel>
                     <TextField
                         name="email"

@@ -4,7 +4,6 @@ const CustomerInfoContext = createContext({
     customerInfo: {
         customerID: '',
         username: '',
-        name: '',
         email: '',
         phoneNo: '',
         gender: '',
