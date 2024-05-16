@@ -37,7 +37,7 @@ export default function ShopInformationRegistration({ registrationData, errors, 
     const [pickupAddress, setPickupAddress] = useState(registrationData.current.pickupAddress);
     const [email, setEmail] = useState(registrationData.current.email);
     const [phoneNumber, setPhoneNumber] = useState(registrationData.current.phoneNumber);
-    const [files, setFiles] = useState([]);
+    const [files, setFiles] = useState(registrationData.current.files);
 
     const handleShopNameChange = useCallback(
         (event) => {

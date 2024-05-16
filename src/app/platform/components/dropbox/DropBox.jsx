@@ -2,7 +2,7 @@
 /* eslint-disable no-shadow */
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Button } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 import COLORS from '../../Colors';
@@ -65,19 +65,15 @@ export default function DropBox({ style, files, setFiles, consumerError }) {
         noClick: files.length > 0,
     });
 
-    useEffect(
-        () =>
-            // Revoke the data uris to avoid memory leaks
-            () =>
-                files.forEach((file) => URL.revokeObjectURL(file.preview)),
-        [files],
-    );
-
     const removeFile = useCallback(
         (name) => {
-            setFiles((files) => files.filter((file) => file.name !== name));
+            const file = files.find((file) => file.name === name);
+            URL.revokeObjectURL(file.preview);
+
+            const newFiles = files.filter((file) => file.name !== name);
+            setFiles(newFiles);
         },
-        [setFiles],
+        [files, setFiles],
     );
 
     return (
@@ -120,9 +116,6 @@ export default function DropBox({ style, files, setFiles, consumerError }) {
                                     alt={file.name}
                                     width={100}
                                     height={100}
-                                    onLoad={() => {
-                                        URL.revokeObjectURL(file.preview);
-                                    }}
                                     style={{
                                         height: '100%',
                                         width: '100%',
