@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ShopSettingsContext from '../../../../platform/app/data/ShopSettingsContext';
+import ShopInfoContext from '../../../../platform/app/data/ShopInfoContext';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
@@ -45,7 +45,7 @@ export default function SCMyOrdersToShipScreen() {
     const [checkedOrders, setCheckedOrders] = useState([]);
     const { getToShipOrders, shipOrders } = useSCMyOrdersToShip();
     const { showModal, hideModal } = useModal();
-    const { activeCourierOptions } = useContext(ShopSettingsContext);
+    const { shopSupportedCourierOption } = useContext(ShopInfoContext);
 
     const handleOrderClick = useCallback((orderId) => {
         setCheckedOrders((prevCheckedOrders) => {
@@ -81,11 +81,11 @@ export default function SCMyOrdersToShipScreen() {
                 <CourierSelectionModal
                     hideModal={hideModal}
                     shipOrders={shipOrders}
-                    activeCourierOptions={activeCourierOptions}
+                    activeCourierOptions={shopSupportedCourierOption}
                 />
             ),
         });
-    }, [activeCourierOptions, checkedOrders.length, hideModal, shipOrders, showModal]);
+    }, [shopSupportedCourierOption, checkedOrders.length, hideModal, shipOrders, showModal]);
 
     useEffect(() => {
         getToShipOrders().then((data) => {
