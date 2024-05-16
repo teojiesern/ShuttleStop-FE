@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
-import ShopSettingsContext from '../../../../platform/app/data/ShopSettingsContext';
+import ShopInfoContext from '../../../../platform/app/data/ShopInfoContext';
 import CustomSwitch from '../../../../platform/components/control/CustomSwitch';
 import TickedModal from '../../../../platform/modal/TickedModal';
 import useModal from '../../../../platform/modal/useModal';
@@ -48,10 +48,14 @@ const Divider = styled.div`
 `;
 
 export default function SCShippingSettingsScreen() {
-    const { activeCourierOptions, activePaymentOptions, activeShippingOptions } = useContext(ShopSettingsContext);
-    const [courierOptions, setCourierOptions] = useState(activeCourierOptions);
-    const [shippingOptions, setShippingOptions] = useState(activeShippingOptions);
-    const [paymentOptions, setPaymentOptions] = useState(activePaymentOptions);
+    const { shopSupportedCourierOption, shopSupportedPaymentOption, shopSupportedShippingOption } =
+        useContext(ShopInfoContext);
+    const [courierOptions, setCourierOptions] = useState(shopSupportedCourierOption);
+    const [shippingOptions, setShippingOptions] = useState(shopSupportedPaymentOption);
+    const [paymentOptions, setPaymentOptions] = useState(shopSupportedShippingOption);
+    console.log('shopSupportedCourierOption', shopSupportedCourierOption);
+    console.log('shopSupportedPaymentOption', shopSupportedPaymentOption);
+    console.log('shopSupportedShippingOption', shopSupportedShippingOption);
     const { updateShippingSettings } = useSCShippingSettings({ courierOptions, paymentOptions, shippingOptions });
     const { showModal, hideModal } = useModal();
 
