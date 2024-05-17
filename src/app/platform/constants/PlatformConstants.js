@@ -16,3 +16,9 @@ export const ProductBrands = Object.freeze({
     FZ_FORZA: 'FZ_FORZA',
     KAWASAKI: 'KAWASAKI',
 });
+
+export const SubFolder = Object.freeze({
+    SELLER: 'seller',
+    CUSTOMER: 'customer',
+    PRODUCT: 'product',
+});
