@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import useCustomer from '../../../modules/customer/view/hooks/useCustomer';
-import { PaymentOptions } from '../../../modules/sellerCenter/constants/SellerCenterConstants';
 import useSeller from '../../../modules/sellerCenter/view/hooks/useSeller';
 import CustomerStatusContext from '../data/CustomerStatusContext';
 import SellerInfoContext from '../data/SellerInfoContext';
@@ -25,56 +24,42 @@ export default function ColdStartInitializationProvider({ children }) {
 
                 // From here on out just put empty even if failed to fetch and dont throw any errors
 
-                const seller = await getSellerInformation();
-                setSellerInfo({
-                    ...seller,
-                    setSellerInfo,
-                });
+                if (customer.seller) {
+                    const seller = await getSellerInformation();
+                    setSellerInfo({
+                        ...seller,
+                        setSellerInfo,
+                    });
 
-                // const shopInfo = await getShopInfo();
-                setShopInfo({
-                    shopName: '',
-                    shopPickupAddress: '',
-                    shopEmail: '',
-                    shopPhoneNumber: '',
-                    shopLogoPath: '',
-                    shopSupportedCourierOption: [],
-                    shopSupportedShippingOption: [],
-                    shopSupportedPaymentOption: [],
-                    shopProducts: [],
-                    shopOwner: '',
-                    setShopInfo,
-                });
+                    // const shopInfo = await getShopInfo();
+                    setShopInfo({
+                        shopName: '',
+                        shopPickupAddress: '',
+                        shopEmail: '',
+                        shopPhoneNumber: '',
+                        shopLogoPath: '',
+                        shopSupportedCourierOption: [],
+                        shopSupportedShippingOption: [],
+                        shopSupportedPaymentOption: [],
+                        shopProducts: [],
+                        shopOwner: '',
+                        setShopInfo,
+                    });
+                } else {
+                    setSellerInfo(null);
+                    setShopInfo(null);
+                }
             } catch (error) {
                 setCustomerStatus({ isLogin: false, registeredSeller: false, setCustomerStatus });
 
-                setSellerInfo({
-                    sellerName: '',
-                    sellerIcNumber: '',
-                    sellerTotalIncome: 0,
-                    sellerId: '',
-                    setSellerInfo,
-                });
-
-                setShopInfo({
-                    shopName: '',
-                    shopPickupAddress: '',
-                    shopEmail: '',
-                    shopPhoneNumber: '',
-                    shopLogoPath: '',
-                    shopSupportedCourierOption: [],
-                    shopSupportedShippingOption: [],
-                    shopSupportedPaymentOption: [],
-                    shopProducts: [PaymentOptions.ONLINE_BANKING],
-                    shopOwner: '',
-                    setShopInfo,
-                });
+                setSellerInfo(null);
+                setShopInfo(null);
             }
             setLoading(false);
         }
 
         fetchData();
-    }, [getCustomer]);
+    }, [getCustomer, getSellerInformation]);
 
     if (loading) {
         return <ColdStartPendingScreen />;
