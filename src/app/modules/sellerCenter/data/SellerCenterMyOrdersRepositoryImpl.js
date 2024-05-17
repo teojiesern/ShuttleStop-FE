@@ -1,7 +1,7 @@
 import Network from '../../../platform/network/Network';
 
 export default class SellerCenterMyOrdersRepositoryImpl {
-    #BASE_URL = '/seller-center-service';
+    #BASE_URL = '/seller-service';
 
     #ROUTES = {
         // TODO: Update with actual route when BE is ready

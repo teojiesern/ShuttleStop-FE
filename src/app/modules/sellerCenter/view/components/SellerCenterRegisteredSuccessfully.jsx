@@ -58,8 +58,8 @@ export default function SellerCenterRegisteredSuccessfully({ registrationData })
             </ContentContainer>
             <Button
                 style={{ ...PlatformReusableStyles.PrimaryButtonStyles, padding: '1rem' }}
-                onClick={() => {
-                    registerSeller();
+                onClick={async () => {
+                    await registerSeller();
                     navigate('/seller-center', { replace: true });
                 }}
             >
