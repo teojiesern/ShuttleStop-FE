@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import useCustomer from '../../../modules/customer/view/hooks/useCustomer';
 import { PaymentOptions } from '../../../modules/sellerCenter/constants/SellerCenterConstants';
+import useSeller from '../../../modules/sellerCenter/view/hooks/useSeller';
 import CustomerStatusContext from '../data/CustomerStatusContext';
 import SellerInfoContext from '../data/SellerInfoContext';
 import ShopInfoContext from '../data/ShopInfoContext';
@@ -14,6 +15,7 @@ export default function ColdStartInitializationProvider({ children }) {
 
     // const { getShopSettings } = useShopSettings();
     const { getCustomer } = useCustomer();
+    const { getSellerInformation } = useSeller();
 
     useEffect(() => {
         async function fetchData() {
@@ -23,12 +25,9 @@ export default function ColdStartInitializationProvider({ children }) {
 
                 // From here on out just put empty even if failed to fetch and dont throw any errors
 
-                // const seller = await getSellerInfo()
+                const seller = await getSellerInformation();
                 setSellerInfo({
-                    sellerName: '',
-                    sellerIcNumber: '',
-                    sellerTotalIncome: 0,
-                    sellerId: '',
+                    ...seller,
                     setSellerInfo,
                 });
 
