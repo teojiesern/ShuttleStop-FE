@@ -25,10 +25,11 @@ export default class SellerRepositoryImpl {
 
         const mappedData = {
             shopName: data.shop.name,
+            shopDescription: data.shop.description || '',
             shopPickupAddress: data.shop.pickupAddress,
             shopEmail: data.shop.email,
             shopPhoneNumber: data.shop.phoneNumber,
-            shopLogoPath: data.shop.logoPath,
+            shopLogoPath: `http://localhost:3000/${data.shop.logoPath}`,
             shopSupportedCourierOption: data.shop.shopSupportedCourierOption,
             shopSupportedShippingOption: data.shop.shopSupportedShippingOption,
             shopSupportedPaymentOption: data.shop.shopSupportedPaymentOption,

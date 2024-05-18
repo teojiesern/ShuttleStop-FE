@@ -2,6 +2,7 @@ import { createContext } from 'react';
 
 const ShopInfoContext = createContext({
     shopName: '',
+    shopDescription: '',
     shopPickupAddress: '',
     shopEmail: '',
     shopPhoneNumber: '',
