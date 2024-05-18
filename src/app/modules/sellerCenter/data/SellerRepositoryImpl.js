@@ -5,6 +5,7 @@ export default class SellerRepositoryImpl {
 
     #ROUTES = {
         SELLER: `${this.#BASE_URL}/information`,
+        SHOP: (sellerId) => `${this.#BASE_URL}/shop/${sellerId}`,
     };
 
     getSellerInformation = async () => {
@@ -14,6 +15,25 @@ export default class SellerRepositoryImpl {
             sellerName: data.seller.name,
             sellerIcNumber: data.seller.icNumber,
             sellerTotalIncome: data.seller.totalIncome,
+        };
+
+        return { status, data: mappedData };
+    };
+
+    getShopInformation = async (sellerId) => {
+        const { status, data } = await Network.getInstance().get(this.#ROUTES.SHOP(sellerId));
+
+        const mappedData = {
+            shopName: data.shop.name,
+            shopPickupAddress: data.shop.pickupAddress,
+            shopEmail: data.shop.email,
+            shopPhoneNumber: data.shop.phoneNumber,
+            shopLogoPath: data.shop.logoPath,
+            shopSupportedCourierOption: data.shop.shopSupportedCourierOption,
+            shopSupportedShippingOption: data.shop.shopSupportedShippingOption,
+            shopSupportedPaymentOption: data.shop.shopSupportedPaymentOption,
+            shopProducts: data.shop.products,
+            shopOwner: data.shop.owner,
         };
 
         return { status, data: mappedData };

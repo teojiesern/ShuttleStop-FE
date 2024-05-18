@@ -51,8 +51,8 @@ export default function SCShippingSettingsScreen() {
     const { shopSupportedCourierOption, shopSupportedPaymentOption, shopSupportedShippingOption } =
         useContext(ShopInfoContext);
     const [courierOptions, setCourierOptions] = useState(shopSupportedCourierOption);
-    const [shippingOptions, setShippingOptions] = useState(shopSupportedPaymentOption);
-    const [paymentOptions, setPaymentOptions] = useState(shopSupportedShippingOption);
+    const [shippingOptions, setShippingOptions] = useState(shopSupportedShippingOption);
+    const [paymentOptions, setPaymentOptions] = useState(shopSupportedPaymentOption);
     const { updateShippingSettings } = useSCShippingSettings({ courierOptions, paymentOptions, shippingOptions });
     const { showModal, hideModal } = useModal();
 
