@@ -1,7 +1,8 @@
 import { Button, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import ShopInfoContext from '../../../../platform/app/data/ShopInfoContext';
 import DropBox from '../../../../platform/components/dropbox/DropBox';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
@@ -30,7 +31,8 @@ const FormLabel = styled.label`
 `;
 
 export default function SCShopProfileScreen() {
-    const [files, setFiles] = useState([]);
+    const { shopName, shopDescription, shopLogoPath } = useContext(ShopInfoContext);
+    const [files, setFiles] = useState([{ name: '', preview: shopLogoPath }]);
 
     return (
         <Container>
@@ -40,6 +42,7 @@ export default function SCShopProfileScreen() {
                     label="Enter your shop name"
                     size="small"
                     style={{ minWidth: '50%' }}
+                    defaultValue={shopName}
                 />
             </ContentContainer>
             <ContentContainer>
@@ -56,6 +59,7 @@ export default function SCShopProfileScreen() {
                 <TextField
                     size="small"
                     style={{ minWidth: '50%' }}
+                    defaultValue={shopDescription}
                     multiline
                     rows={4}
                 />
