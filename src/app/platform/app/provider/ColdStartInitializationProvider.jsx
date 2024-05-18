@@ -14,7 +14,7 @@ export default function ColdStartInitializationProvider({ children }) {
 
     // const { getShopSettings } = useShopSettings();
     const { getCustomer } = useCustomer();
-    const { getSellerInformation } = useSeller();
+    const { getSellerInformation, getShopInformation } = useSeller();
 
     useEffect(() => {
         async function fetchData() {
@@ -31,18 +31,9 @@ export default function ColdStartInitializationProvider({ children }) {
                         setSellerInfo,
                     });
 
-                    // const shopInfo = await getShopInfo();
+                    const shop = await getShopInformation(seller.sellerId);
                     setShopInfo({
-                        shopName: '',
-                        shopPickupAddress: '',
-                        shopEmail: '',
-                        shopPhoneNumber: '',
-                        shopLogoPath: '',
-                        shopSupportedCourierOption: [],
-                        shopSupportedShippingOption: [],
-                        shopSupportedPaymentOption: [],
-                        shopProducts: [],
-                        shopOwner: '',
+                        ...shop,
                         setShopInfo,
                     });
                 } else {
@@ -59,7 +50,7 @@ export default function ColdStartInitializationProvider({ children }) {
         }
 
         fetchData();
-    }, [getCustomer, getSellerInformation]);
+    }, [getCustomer, getSellerInformation, getShopInformation]);
 
     if (loading) {
         return <ColdStartPendingScreen />;
