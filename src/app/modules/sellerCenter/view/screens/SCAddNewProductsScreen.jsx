@@ -113,33 +113,40 @@ export default function SCAddNewProductsScreen({
     }, [colors, price, totalStock, variants]);
 
     const onSave = useCallback(() => {
-        const finalVariants = variants.map((variant, i) => ({
-            color: colors[i],
-            totalStock: totalStock[i],
-            totalSales: variant.totalSales,
-            price: price[i],
-        }));
+        // Entry point is through modal
+        if (hideModal) {
+            const finalVariants = variants.map((variant, i) => ({
+                color: colors[i],
+                totalStock: totalStock[i],
+                totalSales: variant.totalSales,
+                price: price[i],
+            }));
 
-        csetProducts(
-            cproducts.map((product) =>
-                product.productID === cproductID
-                    ? {
-                          productID: cproductID,
-                          productName,
-                          productCategory,
-                          productBrand,
-                          thumbnailFile,
-                          productImage1,
-                          productImage2,
-                          productImage3,
-                          productImage4,
-                          productDescription,
-                          variants: finalVariants,
-                      }
-                    : product,
-            ),
-        );
-        hideModal();
+            csetProducts(
+                cproducts.map((product) =>
+                    product.productID === cproductID
+                        ? {
+                              productID: cproductID,
+                              productName,
+                              productCategory,
+                              productBrand,
+                              thumbnailFile,
+                              productImage1,
+                              productImage2,
+                              productImage3,
+                              productImage4,
+                              productDescription,
+                              variants: finalVariants,
+                          }
+                        : product,
+                ),
+            );
+            hideModal();
+            return;
+        }
+
+        // Entry point is screen navigation
+        console.log('hello');
     }, [
         colors,
         cproductID,
@@ -280,14 +287,12 @@ export default function SCAddNewProductsScreen({
                 <Table
                     sx={{
                         '& .MuiTableCell-root': {
-                            borderLeft: '1px solid rgba(224, 224, 224, 1)',
+                            border: `2px solid ${COLORS.grey}`,
                         },
-                        borderTop: '1px solid rgba(224, 224, 224, 1)',
-                        borderRight: '1px solid rgba(224, 224, 224, 1)',
                     }}
                 >
                     <TableHead>
-                        <TableRow>
+                        <TableRow style={{ backgroundColor: COLORS['light-grey'] }}>
                             <TableCell align="center">Colour</TableCell>
                             <TableCell align="center">Price</TableCell>
                             <TableCell align="center">Total Stock</TableCell>
