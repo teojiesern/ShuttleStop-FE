@@ -1,10 +1,13 @@
-import { useCallback } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { CustomerInfoContext } from '../../../platform/app/data/CustomerInfoContext';
+import ColdStartPendingScreen from '../../../platform/app/screen/ColdStartPendingScreen';
 import COLORS from '../../../platform/Colors';
 import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import EditAddressModal from '../../checkout/modal/EditAddressModal';
+import useCustomer from './hooks/useCustomer';
 
 const OuterContainer = styled.div`
     display: flex;
@@ -53,28 +56,75 @@ const StyledButton = styled.button`
 export default function MyAddress() {
     const { showModal, hideModal } = useModal();
 
+    const [loading, setLoading] = useState(false);
+    const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
+    const { getCustomer } = useCustomer();
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const customer = await getCustomer();
+
+                setCustomerInfo({
+                    customerID: customer.customerID,
+                    username: customer.username,
+                    name: customer.name,
+                    email: customer.email,
+                    phoneNo: customer.phoneNo,
+                    gender: customer.gender,
+                    birthday: customer.birthday,
+                    address: {
+                        street: customer.address.street,
+                        city: customer.address.city,
+                        postcode: customer.address.postcode,
+                        country: customer.address.country,
+                        state: customer.address.state,
+                    },
+                });
+                setLoading(false);
+            } catch (error) {
+                setLoading(false);
+            }
+        }
+        if (!customerInfo) {
+            setLoading(true);
+            fetchData();
+        }
+    }, [setCustomerInfo, getCustomer]);
+
+    let fullAddress = '-';
+    if (customerInfo && customerInfo.address.street !== '') {
+        fullAddress = `${[customerInfo.address.street, customerInfo.address.city, customerInfo.address.postcode]
+            .filter(Boolean)
+            .join(', ')} ${[customerInfo.address.country, customerInfo.address.state].filter(Boolean).join(', ')}`;
+    }
+
     const handleEditAddress = useCallback(() => {
         showModal({
             modal: <EditAddressModal hideModal={hideModal} />,
         });
     }, [hideModal, showModal]);
 
+    if (loading) {
+        return <ColdStartPendingScreen />;
+    }
+
     return (
         <OuterContainer>
             <InnerContainer style={{ width: '90%' }}>
                 <ContentContainer>
-                    <FormLabel>Name</FormLabel>
-                    <AddressText>Aaron Chia</AddressText>
+                    <FormLabel>Username</FormLabel>
+                    <AddressText>{customerInfo && customerInfo.username}</AddressText>
                 </ContentContainer>
 
                 <ContentContainer>
                     <FormLabel>Mobile Number</FormLabel>
-                    <AddressText>(+60)12-345 6789</AddressText>
+                    <AddressText>{customerInfo && customerInfo.phoneNo}</AddressText>
                 </ContentContainer>
 
                 <ContentContainer>
                     <FormLabel>Address</FormLabel>
-                    <AddressText>1, Jalan 17/7, 46100 Petaling Jaya, Selangor</AddressText>
+                    <AddressText>{fullAddress}</AddressText>
                 </ContentContainer>
             </InnerContainer>
 

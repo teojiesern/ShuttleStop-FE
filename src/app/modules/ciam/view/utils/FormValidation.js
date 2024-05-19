@@ -43,5 +43,36 @@ export default function Validation(values) {
         }
     }
 
+    // phoneNo
+    if ('phoneNo' in values) {
+        const phoneNoPattern = /^01[0-9]{8,9}$/;
+        if (values.phoneNo === '') {
+            errors.phoneNo = 'Phone number is required';
+        } else if (!phoneNoPattern.test(values.phoneNo)) {
+            errors.phoneNo = 'Phone number must be in the format 01XXXXXXXXX';
+        }
+    }
+
+    // address
+    if ('address' in values) {
+        if (!values.address.street || values.address.street === '') {
+            errors.address = { ...errors.address, street: 'Street is required' };
+        }
+        if (!values.address.city || values.address.city === '') {
+            errors.address = { ...errors.address, city: 'City is required' };
+        }
+        if (!values.address.country || values.address.country === '') {
+            errors.address = { ...errors.address, country: 'Country is required' };
+        }
+        if (!values.address.state || values.address.state === '') {
+            errors.address = { ...errors.address, state: 'State is required' };
+        }
+        if (!values.address.postcode || values.address.postcode.length === 0) {
+            errors.address = { ...errors.address, postcode: 'Postcode is required' };
+        } else if (values.address.postcode.length !== 5) {
+            errors.address = { ...errors.address, postcode: 'Postcode must be exactly 5 digits' };
+        }
+    }
+
     return errors;
 }
