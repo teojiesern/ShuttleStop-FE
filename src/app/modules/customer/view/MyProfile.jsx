@@ -3,8 +3,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { CustomerInfoContext } from '../../../platform/app/data/CustomerInfoContext';
 import ColdStartPendingScreen from '../../../platform/app/screen/ColdStartPendingScreen';
 import COLORS from '../../../platform/Colors';
 import useModal from '../../../platform/modal/useModal';
@@ -71,10 +72,10 @@ const DisplayImageAfter = styled.img`
 `;
 
 export default function MyProfile() {
-    const [loading, setLoading] = useState(true);
-    const [customerInfo, setCustomerInfo] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
     const [gender, setGender] = useState('');
-    const { getCustomer } = useCustomer();
+    const { getCustomer, updateCustomer } = useCustomer();
 
     useEffect(() => {
         async function fetchData() {
@@ -89,24 +90,34 @@ export default function MyProfile() {
                     phoneNo: customer.phoneNo,
                     gender: customer.gender,
                     birthday: customer.birthday,
-                    address: customer.address,
+                    address: {
+                        street: customer.address.street,
+                        city: customer.address.city,
+                        postcode: customer.address.postcode,
+                        country: customer.address.country,
+                        state: customer.address.state,
+                    },
                 });
-
-                setGender(customer.gender);
-
                 setLoading(false);
             } catch (error) {
                 setLoading(false);
             }
         }
+        if (!customerInfo) {
+            setLoading(true);
+            fetchData();
+        }
+    }, [getCustomer, setCustomerInfo]);
 
-        fetchData();
-    }, [getCustomer]);
+    useEffect(() => {
+        if (customerInfo && customerInfo.gender) {
+            setGender(customerInfo.gender);
+        }
+    }, [customerInfo, setGender]);
 
     const inputRef = useRef(null);
 
     const [image, setImage] = useState('');
-    const { updateCustomer } = useCustomer();
     const [updatedValue, setUpdatedValue] = useState({});
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
@@ -132,7 +143,7 @@ export default function MyProfile() {
         const { name, value } = e.target;
         setUpdatedValue({ ...updatedValue, [name]: value });
         if (submitted) {
-            const fieldErrors = FormValidation({ ...updatedValue, [name]: value });
+            const fieldErrors = FormValidation(updatedValue);
             setErrors((prevErrors) => ({ ...prevErrors, [name]: fieldErrors[name] }));
         }
     };
@@ -179,7 +190,7 @@ export default function MyProfile() {
                         size="small"
                         style={{ minWidth: '60%' }}
                         onChange={handleInput}
-                        defaultValue={customerInfo.username}
+                        defaultValue={customerInfo && customerInfo.username}
                         error={!!errors.username}
                         helperText={errors.username}
                     />
@@ -193,7 +204,7 @@ export default function MyProfile() {
                         size="small"
                         style={{ minWidth: '60%' }}
                         onChange={handleInput}
-                        defaultValue={customerInfo.email}
+                        defaultValue={customerInfo && customerInfo.email}
                         disabled
                     />
                 </ContentContainer>
@@ -206,7 +217,9 @@ export default function MyProfile() {
                         size="small"
                         style={{ minWidth: '60%' }}
                         onChange={handleInput}
-                        defaultValue={customerInfo.phoneNo}
+                        defaultValue={customerInfo && customerInfo.phoneNo}
+                        error={!!errors.phoneNo}
+                        helperText={errors.phoneNo}
                     />
                 </ContentContainer>
 
@@ -237,7 +250,7 @@ export default function MyProfile() {
                         <DatePicker
                             name="birthday"
                             onChange={handleDateChange}
-                            defaultValue={customerInfo.birthday ? dayjs(customerInfo.birthday) : null}
+                            defaultValue={customerInfo && customerInfo.birthday ? dayjs(customerInfo.birthday) : null}
                         />
                     </LocalizationProvider>
                 </ContentContainer>
