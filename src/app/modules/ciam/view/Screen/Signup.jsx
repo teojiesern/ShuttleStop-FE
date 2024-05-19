@@ -89,7 +89,7 @@ export default function Signup() {
         const formErrors = FormValidation(values);
         if (Object.keys(formErrors).length === 0) {
             const user = {
-                name: values.username,
+                username: values.username,
                 email: values.email,
                 password: values.password,
             };
