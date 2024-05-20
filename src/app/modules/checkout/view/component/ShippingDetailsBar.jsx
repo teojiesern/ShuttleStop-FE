@@ -8,6 +8,7 @@ import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import useCustomer from '../../../customer/view/hooks/useCustomer';
 import EditAddressModal from '../../modal/EditAddressModal';
+import COReusableStyles from '../styles/COReusableStyles';
 
 const Wrapper = styled.div`
     display: flex;
@@ -41,6 +42,13 @@ const EditAddressButton = styled.button`
     background: none;
     color: #007ce0;
     cursor: pointer;
+`;
+const HintText = styled.span`
+    color: ${COLORS.darkGrey};
+    font-size: ${FONTSIZE.small};
+    font-weight: ${FONTWEIGHT.REGULAR};
+    font-style: italic;
+    text-align: center;
 `;
 
 export default function ShippingDetailsBar({ shippingOption }) {
@@ -99,8 +107,27 @@ export default function ShippingDetailsBar({ shippingOption }) {
                 );
             }
         }
-        console.log(cusPhoneNo);
     }, [cusPhoneNo, customerInfo, loading]);
+
+    const getAddress = () => {
+        if (shippingOption === 'standardDelivery') {
+            return customerInfo && customerInfo.address.street !== '' ? (
+                <COReusableStyles.Text>
+                    {`${[
+                        customerInfo.address.street,
+                        `${customerInfo.address.postcode} ${customerInfo.address.city}`,
+                        customerInfo.address.state,
+                        customerInfo.address.country,
+                    ]
+                        .filter(Boolean)
+                        .join(', ')}`}
+                </COReusableStyles.Text>
+            ) : (
+                <HintText>No address record</HintText>
+            );
+        }
+        return <COReusableStyles.Text>CollectCo JustPrint Penang</COReusableStyles.Text>;
+    };
 
     if (loading) {
         return <div>Loading</div>;
@@ -116,7 +143,7 @@ export default function ShippingDetailsBar({ shippingOption }) {
                 <CustomerNameContainer>
                     {customerInfo && customerInfo.username} {cusPhoneNo}
                 </CustomerNameContainer>
-                address
+                {getAddress()}
                 {shippingOption === 'standardDelivery' && (
                     <EditAddressButton onClick={handleEditAddressClick}>
                         <p>Edit</p>
