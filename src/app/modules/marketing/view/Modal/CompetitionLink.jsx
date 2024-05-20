@@ -49,7 +49,6 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
     // }
 
     const [formData, setFormData] = useState({
-        compID: '',
         compName: '',
         date: '',
         state: '',
