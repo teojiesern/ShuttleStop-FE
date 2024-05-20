@@ -165,10 +165,14 @@ export default function CompetitionScreen() {
                                 <ContentContainer>
                                     <Layout>
                                         <CompReusableStyles.Text>{competitions.compName}</CompReusableStyles.Text>
-                                        <CompReusableStyles.Text>{competitions.date}</CompReusableStyles.Text>
+                                        <CompReusableStyles.Text>
+                                            {new Date(competitions.date).toLocaleDateString('en-GB')}
+                                        </CompReusableStyles.Text>
                                         <CompReusableStyles.Text>{competitions.state}</CompReusableStyles.Text>
                                         <CompReusableStyles.Text>{competitions.fee}</CompReusableStyles.Text>
-                                        <CompReusableStyles.Text>{competitions.deadline}</CompReusableStyles.Text>
+                                        <CompReusableStyles.Text>
+                                            {new Date(competitions.deadline).toLocaleDateString('en-GB')}
+                                        </CompReusableStyles.Text>
                                         <CompReusableStyles.Text>{competitions.prize}</CompReusableStyles.Text>
                                         <Button
                                             style={{ ...PlatformReusableStyles.PrimaryButtonStyles }}
