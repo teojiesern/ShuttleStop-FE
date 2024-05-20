@@ -30,7 +30,6 @@ const DropDownContainer = styled.div`
 
 const Sort = styled.div`
     text-align: left;
-    padding-left: 2rem;
     font-size: ${FONTSIZE['x-small']};
     color: ${COLORS.darkGrey};
 `;
@@ -59,7 +58,6 @@ const HeaderRight = styled.div`
 const Layout = styled.div`
     width: 100%;
     padding-top: 1rem;
-    padding-left: 2rem;
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: 2rem;
@@ -73,7 +71,6 @@ const Title = styled.h1`
     color: ${COLORS.black};
     text-align: left;
     margin-bottom: 1rem;
-    padding-left: 2rem;
     padding-top: 1rem;
 `;
 
