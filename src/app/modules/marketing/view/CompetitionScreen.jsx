@@ -77,7 +77,7 @@ const Title = styled.h1`
     padding-top: 1rem;
 `;
 
-export default function CompetitionLayout() {
+export default function CompetitionScreen() {
     const { showModal, hideModal } = useModal();
 
     const years = Array.from({ length: 4 }, (_, index) => 2024 + index);
@@ -163,7 +163,8 @@ export default function CompetitionLayout() {
                     <Title>{month}</Title>
                     <ContentContainer>
                         {filteredDetails.map((competitions) => (
-                            <div key={competitions.compID}>
+                            // eslint-disable-next-line no-underscore-dangle
+                            <div key={competitions._id}>
                                 <ContentContainer>
                                     <Layout>
                                         <CompReusableStyles.Text>{competitions.compName}</CompReusableStyles.Text>
