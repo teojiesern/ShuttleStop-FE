@@ -6,7 +6,7 @@ export default class CompetitionDetails {
                 {
                     compID: 1,
                     compName: 'MMBA',
-                    date: '8 January 2024',
+                    date: '1 January 2024',
                     state: 'KED',
                     fee: 'Free',
                     deadline: '1 January 2024',

@@ -61,18 +61,15 @@ export default function CompetitionLinkModal({ hideModal }) {
     const [link, setLink] = useState(false);
     // const uniqueID = generateUniqueId();
 
-    const handleChange = useCallback(
-        (e) => {
-            const { name, value } = e.target;
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
-            // Pass formData to CompetitionLayout
-            // CompetitionLayout({ formData: { ...formData, [name]: value } });
-        },
-        [formData],
-    );
+    const handleChange = useCallback((e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+        // Pass formData to CompetitionLayout
+        // CompetitionLayout({ formData: { ...formData, [name]: value } });
+    }, []);
 
     // const handleFileUpload = useCallback((e) => {
     //     const file = e.target.files[0];
@@ -86,17 +83,41 @@ export default function CompetitionLinkModal({ hideModal }) {
         hideModal();
     }, [hideModal]);
 
-    const onConfirm = useCallback(() => {
-        console.log('New data', formData);
+    // const onConfirm = useCallback(() => {
+    //     console.log('New data', formData);
 
-        setLink(true);
+    //     setLink(true);
 
-        const timeoutId = setTimeout(() => {
-            hideModal();
-        }, 3500);
+    //     const timeoutId = setTimeout(() => {
+    //         hideModal();
+    //     }, 3500);
 
-        return () => clearTimeout(timeoutId);
-    }, [formData, hideModal, setLink]);
+    //     return () => clearTimeout(timeoutId);
+    // }, [formData, hideModal, setLink]);
+
+    const saveCompetition = useCallback(async () => {
+        try {
+            const response = await fetch('http://localhost:3000/marketing-service/competitions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            if (!response.ok) {
+                throw new Error('Failed to save competition');
+            }
+            setLink(true);
+
+            const timeoutId = setTimeout(() => {
+                hideModal();
+            }, 3500);
+
+            return () => clearTimeout(timeoutId);
+        } catch (error) {
+            console.error('Error saving competition:', error.message);
+        }
+    }, [formData, hideModal]);
 
     const getContent = useCallback(() => {
         if (!link) {
@@ -105,7 +126,7 @@ export default function CompetitionLinkModal({ hideModal }) {
                     <Container>
                         <Title>Promote Competition</Title>
                         <TextField
-                            name="competitionName"
+                            name="compName"
                             label="Competition Name"
                             value={formData.compName}
                             onChange={handleChange}
@@ -141,15 +162,9 @@ export default function CompetitionLinkModal({ hideModal }) {
                             onChange={handleChange}
                         />
                         <TextField
-                            name="registerationLink"
-                            label="Registeration Link"
+                            name="url"
+                            label="Registration Link"
                             value={formData.url}
-                            onChange={handleChange}
-                        />
-                        <TextField
-                            name="eventBanner"
-                            label="Event Banner"
-                            value={formData.eventBanner}
                             onChange={handleChange}
                         />
 
@@ -162,7 +177,7 @@ export default function CompetitionLinkModal({ hideModal }) {
                             </Button>
                             <Button
                                 style={{ ...PlatformReusableStyles.PrimaryButtonStyles }}
-                                onClick={onConfirm}
+                                onClick={saveCompetition}
                             >
                                 SAVE
                             </Button>
@@ -177,7 +192,7 @@ export default function CompetitionLinkModal({ hideModal }) {
                 description="You can now review your competition details in the website"
             />
         );
-    }, [formData, handleChange, handleCancel, onConfirm, link]);
+    }, [formData, handleChange, handleCancel, saveCompetition, link]);
 
     return getContent();
 }

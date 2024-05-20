@@ -118,12 +118,10 @@ export default function CompetitionLayout() {
 
     useEffect(() => {
         getDetails().then((data) => {
-            console.log('Original competitions:', data.competitions);
-
             const shouldFilterByYear = selectedYear !== undefined && selectedYear !== null;
 
             const filteredCompetitions = shouldFilterByYear
-                ? data.competitions.filter((competition) => {
+                ? data.filter((competition) => {
                       const competitionYear = new Date(competition.date).getFullYear();
                       const selectedYearNum = Number(selectedYear);
 
@@ -133,10 +131,9 @@ export default function CompetitionLayout() {
 
                       return competitionYear === selectedYearNum;
                   })
-                : data.competitions; // If no year is provided, return all competitions
+                : data; // If no year is provided, return all competitions
 
             setFiltered(filteredCompetitions);
-            console.log('Filtered competitions:', filteredCompetitions);
         });
     }, [getDetails, selectedYear]);
 
