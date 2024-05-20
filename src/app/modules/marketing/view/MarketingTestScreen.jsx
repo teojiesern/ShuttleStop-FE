@@ -80,12 +80,6 @@ const Title = styled.h1`
 export default function CompetitionLayout() {
     const { showModal, hideModal } = useModal();
 
-    const pressLink = useCallback(() => {
-        showModal({
-            modal: <CompetitionLinkModal hideModal={hideModal} />,
-        });
-    }, [showModal]);
-
     const years = Array.from({ length: 4 }, (_, index) => 2024 + index);
     const { getDetails } = useCompetitionDetail();
     const [filtered, setFiltered] = useState(null);
@@ -137,6 +131,21 @@ export default function CompetitionLayout() {
         });
     }, [getDetails, selectedYear]);
 
+    const addNewCompetition = useCallback((newCompetition) => {
+        setFiltered((prevFiltered) => [...prevFiltered, newCompetition]);
+    }, []);
+
+    const pressLink = useCallback(() => {
+        showModal({
+            modal: (
+                <CompetitionLinkModal
+                    hideModal={hideModal}
+                    onSave={addNewCompetition}
+                />
+            ),
+        });
+    }, [showModal, hideModal, addNewCompetition]);
+
     const renderCompetitionDetailsByMonth = () => {
         if (filtered === null || filtered === undefined) {
             return <p>There are no competitions yet...</p>;
@@ -145,7 +154,6 @@ export default function CompetitionLayout() {
         return months.map((month, index) => {
             // Filter competition details by month
             const filteredDetails = filtered.filter((competition) => new Date(competition.date).getMonth() === index);
-            console.log(filteredDetails);
             if (filteredDetails.length === 0) {
                 return null;
             }

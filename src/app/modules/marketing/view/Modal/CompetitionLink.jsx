@@ -37,7 +37,7 @@ const CenteredDiv = styled.div`
     min-height: 50vh;
 `;
 
-export default function CompetitionLinkModal({ hideModal }) {
+export default function CompetitionLinkModal({ hideModal, onSave }) {
     // const [setSelectedDate] = useState(null);
 
     // Inside handleChange function
@@ -107,6 +107,9 @@ export default function CompetitionLinkModal({ hideModal }) {
             if (!response.ok) {
                 throw new Error('Failed to save competition');
             }
+            const savedCompetition = await response.json();
+            onSave(savedCompetition);
+
             setLink(true);
 
             const timeoutId = setTimeout(() => {
