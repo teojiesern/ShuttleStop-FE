@@ -52,7 +52,7 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
     // }
 
     const [formData, setFormData] = useState({
-        compName: '',
+        name: '',
         date: null,
         state: '',
         fee: '',
@@ -152,9 +152,9 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
                     <Container>
                         <Title>Promote Competition</Title>
                         <TextField
-                            name="compName"
-                            label="Competition Name"
-                            value={formData.compName}
+                            name="name"
+                            label="Name"
+                            value={formData.name}
                             onChange={handleChange}
                         />
                         <LocalizationProvider dateAdapter={AdapterDayjs}>

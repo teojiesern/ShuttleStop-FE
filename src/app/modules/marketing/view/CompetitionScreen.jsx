@@ -164,7 +164,7 @@ export default function CompetitionScreen() {
                             <div key={competitions._id}>
                                 <ContentContainer>
                                     <Layout>
-                                        <CompReusableStyles.Text>{competitions.compName}</CompReusableStyles.Text>
+                                        <CompReusableStyles.Text>{competitions.name}</CompReusableStyles.Text>
                                         <CompReusableStyles.Text>
                                             {new Date(competitions.date).toLocaleDateString('en-GB')}
                                         </CompReusableStyles.Text>
