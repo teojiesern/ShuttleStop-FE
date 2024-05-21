@@ -99,7 +99,9 @@ export default function Login() {
                     isLogin: true,
                     registeredSeller: data.seller,
                 }));
-                navigate('/');
+
+                // force a page reload while navigating
+                window.location.href = '/';
             } catch (error) {
                 console.log(error);
             }
