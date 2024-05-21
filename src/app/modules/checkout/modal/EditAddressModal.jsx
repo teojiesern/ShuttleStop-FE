@@ -1,7 +1,6 @@
 import { Button, TextField } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-import { CustomerInfoContext } from '../../../platform/app/data/CustomerInfoContext';
 import COLORS from '../../../platform/Colors';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
@@ -32,10 +31,9 @@ const Title = styled.p`
     font-weight: ${FONTWEIGHT.BOLD};
 `;
 
-export default function EditAddressModal({ hideModal }) {
+export default function EditAddressModal({ hideModal, customerInfo, setCustomerInfo }) {
     const [updatedValue, setUpdatedValue] = useState({});
     const [errors, setErrors] = useState({});
-    const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
     const [submitted, setSubmitted] = useState(false);
 
     const { updateCustomer } = useCustomer();

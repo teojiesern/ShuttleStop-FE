@@ -1,11 +1,22 @@
-import { createContext, useMemo, useState } from 'react';
+import { createContext } from 'react';
 
-export const CustomerInfoContext = createContext();
+const CustomerInfoContext = createContext({
+    customerInfo: {
+        customerID: '',
+        username: '',
+        email: '',
+        phoneNo: '',
+        gender: '',
+        birthday: '',
+        address: {
+            street: '',
+            city: '',
+            postcode: '',
+            country: '',
+            state: '',
+        },
+    },
+    setCustomerInfo: () => {},
+});
 
-export function CustomerInfoProvider({ children }) {
-    const [customerInfo, setCustomerInfo] = useState();
-
-    const value = useMemo(() => ({ customerInfo, setCustomerInfo }), [customerInfo, setCustomerInfo]);
-
-    return <CustomerInfoContext.Provider value={value}>{children}</CustomerInfoContext.Provider>;
-}
+export default CustomerInfoContext;
