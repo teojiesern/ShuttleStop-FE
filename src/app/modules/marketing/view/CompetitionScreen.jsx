@@ -160,7 +160,6 @@ export default function CompetitionScreen() {
                     <Title>{month}</Title>
                     <ContentContainer>
                         {filteredDetails.map((competitions) => (
-                            // eslint-disable-next-line no-underscore-dangle
                             <div key={competitions.competitionId}>
                                 <ContentContainer>
                                     <Layout>
