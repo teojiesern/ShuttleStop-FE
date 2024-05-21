@@ -161,7 +161,7 @@ export default function CompetitionScreen() {
                     <ContentContainer>
                         {filteredDetails.map((competitions) => (
                             // eslint-disable-next-line no-underscore-dangle
-                            <div key={competitions._id}>
+                            <div key={competitions.competitionId}>
                                 <ContentContainer>
                                     <Layout>
                                         <CompReusableStyles.Text>{competitions.name}</CompReusableStyles.Text>
