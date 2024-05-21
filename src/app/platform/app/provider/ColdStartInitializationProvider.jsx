@@ -27,7 +27,6 @@ export default function ColdStartInitializationProvider({ children }) {
                     ...customer,
                     setCustomerInfo,
                 });
-                console.log(customer);
                 // From here on out just put empty even if failed to fetch and dont throw any errors
 
                 if (customer.seller) {
