@@ -2,8 +2,8 @@ import { Route } from 'react-router-dom';
 import MarketingTestScreenTwo from '../view/MarketingTestScreenTwo';
 import CoachProfile from '../view/component/CoachProfile';
 
+import MarketingTestScreen from '../view/CompetitionScreen';
 import MarketingCoachRegistrationScreen from '../view/MarketingCoachRegistrationScreen';
-import MarketingTestScreen from '../view/MarketingTestScreen';
 
 const MarketingScreens = (
     <>
