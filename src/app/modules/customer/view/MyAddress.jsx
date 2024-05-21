@@ -1,13 +1,11 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext } from 'react';
 import styled from 'styled-components';
-import { CustomerInfoContext } from '../../../platform/app/data/CustomerInfoContext';
-import ColdStartPendingScreen from '../../../platform/app/screen/ColdStartPendingScreen';
+import CustomerInfoContext from '../../../platform/app/data/CustomerInfoContext';
 import COLORS from '../../../platform/Colors';
 import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import EditAddressModal from '../../checkout/modal/EditAddressModal';
-import useCustomer from './hooks/useCustomer';
 
 const OuterContainer = styled.div`
     display: flex;
@@ -56,41 +54,7 @@ const StyledButton = styled.button`
 export default function MyAddress() {
     const { showModal, hideModal } = useModal();
 
-    const [loading, setLoading] = useState(false);
     const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
-    const { getCustomer } = useCustomer();
-
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const customer = await getCustomer();
-
-                setCustomerInfo({
-                    customerID: customer.customerID,
-                    username: customer.username,
-                    name: customer.name,
-                    email: customer.email,
-                    phoneNo: customer.phoneNo,
-                    gender: customer.gender,
-                    birthday: customer.birthday,
-                    address: {
-                        street: customer.address.street,
-                        city: customer.address.city,
-                        postcode: customer.address.postcode,
-                        country: customer.address.country,
-                        state: customer.address.state,
-                    },
-                });
-                setLoading(false);
-            } catch (error) {
-                setLoading(false);
-            }
-        }
-        if (!customerInfo) {
-            setLoading(true);
-            fetchData();
-        }
-    }, [setCustomerInfo, getCustomer]);
 
     let fullAddress = '-';
     if (customerInfo && customerInfo.address.street !== '') {
@@ -101,13 +65,15 @@ export default function MyAddress() {
 
     const handleEditAddress = useCallback(() => {
         showModal({
-            modal: <EditAddressModal hideModal={hideModal} />,
+            modal: (
+                <EditAddressModal
+                    hideModal={hideModal}
+                    customerInfo={customerInfo}
+                    setCustomerInfo={setCustomerInfo}
+                />
+            ),
         });
     }, [hideModal, showModal]);
-
-    if (loading) {
-        return <ColdStartPendingScreen />;
-    }
 
     return (
         <OuterContainer>
