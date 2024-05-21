@@ -8,12 +8,7 @@ export default class CompetitionRepositoryImp {
     };
 
     getDetails = async () => {
-        const { status, data } = await Network.getInstance().get(this.#ROUTES.COMPETITIONS);
-
-        if (status !== 200) {
-            throw new Error('Failed to fetch competition details');
-        }
-
-        return data;
+        const response = await Network.getInstance().get(this.#ROUTES.COMPETITIONS);
+        return response.data;
     };
 }
