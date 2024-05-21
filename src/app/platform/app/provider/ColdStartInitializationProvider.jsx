@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useCustomer from '../../../modules/customer/view/hooks/useCustomer';
 import useSeller from '../../../modules/sellerCenter/view/hooks/useSeller';
 import CustomerInfoContext from '../data/CustomerInfoContext';
@@ -24,7 +24,15 @@ export default function ColdStartInitializationProvider({ children }) {
                 const customer = await getCustomer();
                 setCustomerStatus({ isLogin: true, registeredSeller: customer.seller, setCustomerStatus });
                 setCustomerInfo({
-                    ...customer,
+                    customerInfo: {
+                        customerID: customer.customerId,
+                        username: customer.username,
+                        email: customer.email,
+                        phoneNo: customer.phoneNo,
+                        gender: customer.gender,
+                        birthday: customer.birthday,
+                        address: customer.address,
+                    },
                     setCustomerInfo,
                 });
                 // From here on out just put empty even if failed to fetch and dont throw any errors
@@ -57,15 +65,13 @@ export default function ColdStartInitializationProvider({ children }) {
         fetchData();
     }, [getCustomer, getSellerInformation, getShopInformation]);
 
-    const customerValue = useMemo(() => ({ customerInfo, setCustomerInfo }), [customerInfo, setCustomerInfo]);
-
     if (loading) {
         return <ColdStartPendingScreen />;
     }
 
     return (
         <CustomerStatusContext.Provider value={customerStatus}>
-            <CustomerInfoContext.Provider value={customerValue}>
+            <CustomerInfoContext.Provider value={customerInfo}>
                 <SellerInfoContext.Provider value={sellerInfo}>
                     <ShopInfoContext.Provider value={shopInfo}>{children}</ShopInfoContext.Provider>
                 </SellerInfoContext.Provider>
