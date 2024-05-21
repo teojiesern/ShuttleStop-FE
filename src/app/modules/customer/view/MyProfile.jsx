@@ -5,8 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { CustomerInfoContext } from '../../../platform/app/data/CustomerInfoContext';
-import ColdStartPendingScreen from '../../../platform/app/screen/ColdStartPendingScreen';
+import CustomerInfoContext from '../../../platform/app/data/CustomerInfoContext';
 import COLORS from '../../../platform/Colors';
 import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
@@ -72,42 +71,9 @@ const DisplayImageAfter = styled.img`
 `;
 
 export default function MyProfile() {
-    const [loading, setLoading] = useState(false);
     const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
     const [gender, setGender] = useState('');
-    const { getCustomer, updateCustomer } = useCustomer();
-
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const customer = await getCustomer();
-
-                setCustomerInfo({
-                    customerID: customer.customerID,
-                    username: customer.username,
-                    name: customer.name,
-                    email: customer.email,
-                    phoneNo: customer.phoneNo,
-                    gender: customer.gender,
-                    birthday: customer.birthday,
-                    address: {
-                        street: customer.address.street,
-                        city: customer.address.city,
-                        postcode: customer.address.postcode,
-                        country: customer.address.country,
-                        state: customer.address.state,
-                    },
-                });
-                setLoading(false);
-            } catch (error) {
-                setLoading(false);
-            }
-        }
-        if (!customerInfo) {
-            setLoading(true);
-            fetchData();
-        }
-    }, [getCustomer, setCustomerInfo]);
+    const { updateCustomer } = useCustomer();
 
     useEffect(() => {
         if (customerInfo && customerInfo.gender) {
@@ -174,10 +140,6 @@ export default function MyProfile() {
             setErrors(formErrors);
         }
     };
-
-    if (loading) {
-        return <ColdStartPendingScreen />;
-    }
 
     return (
         <OuterContainer>
