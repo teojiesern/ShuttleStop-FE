@@ -2,7 +2,7 @@ import Place from '@mui/icons-material/Place';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
-import { CustomerInfoContext } from '../../../../platform/app/data/CustomerInfoContext';
+import CustomerInfoContext from '../../../../platform/app/data/CustomerInfoContext';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';

@@ -75,14 +75,13 @@ export default function EditAddressModal({ hideModal, customerInfo, setCustomerI
         const formErrors = FormValidation(updatedValue);
         if (Object.keys(formErrors).length === 0) {
             await updateCustomer(updatedValue);
-            setCustomerInfo({
-                ...customerInfo,
-                ...updatedValue,
-                address: {
-                    ...customerInfo.address,
-                    ...(updatedValue.address || {}),
+            setCustomerInfo((prevState) => ({
+                ...prevState,
+                customerInfo: {
+                    ...prevState.customerInfo,
+                    ...updatedValue,
                 },
-            });
+            }));
             setUpdatedValue({});
             setErrors({});
             setSubmitted(true);
