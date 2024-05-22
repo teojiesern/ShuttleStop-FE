@@ -1,10 +1,12 @@
 import Place from '@mui/icons-material/Place';
-import { useCallback } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import { CustomerInfoContext } from '../../../../platform/app/data/CustomerInfoContext';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import useCustomer from '../../../customer/view/hooks/useCustomer';
 import EditAddressModal from '../../modal/EditAddressModal';
 import COReusableStyles from '../styles/COReusableStyles';
 
@@ -41,13 +43,95 @@ const EditAddressButton = styled.button`
     color: #007ce0;
     cursor: pointer;
 `;
+const HintText = styled.span`
+    color: ${COLORS.darkGrey};
+    font-size: ${FONTSIZE.small};
+    font-weight: ${FONTWEIGHT.REGULAR};
+    font-style: italic;
+    text-align: center;
+`;
 
 export default function ShippingDetailsBar({ shippingOption }) {
+    const [loading, setLoading] = useState(false);
+    const [cusPhoneNo, setCusPhoneNo] = useState(null);
+    const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
+    const { getCustomer } = useCustomer();
     const { showModal, hideModal } = useModal();
 
     const handleEditAddressClick = useCallback(() => {
         showModal({ modal: <EditAddressModal hideModal={hideModal} /> });
     }, [showModal, hideModal]);
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const customer = await getCustomer();
+
+                setCustomerInfo({
+                    customerID: customer.customerID,
+                    username: customer.username,
+                    name: customer.name,
+                    email: customer.email,
+                    phoneNo: customer.phoneNo,
+                    gender: customer.gender,
+                    birthday: customer.birthday,
+                    address: {
+                        street: customer.address.street,
+                        city: customer.address.city,
+                        postcode: customer.address.postcode,
+                        country: customer.address.country,
+                        state: customer.address.state,
+                    },
+                });
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        if (!customerInfo) {
+            setLoading(true);
+            fetchData();
+        }
+    }, [getCustomer, setCustomerInfo, customerInfo]);
+
+    useEffect(() => {
+        if (customerInfo) {
+            const cleanPhoneNo = (customerInfo && customerInfo.phoneNo).replace(/\D/g, '');
+            if (cleanPhoneNo.length === 10) {
+                setCusPhoneNo(`(+60) ${cleanPhoneNo.slice(1, 3)} ${cleanPhoneNo.slice(3, 6)} ${cleanPhoneNo.slice(6)}`);
+            } else {
+                setCusPhoneNo(
+                    `(+60) ${cleanPhoneNo.slice(1, 3)} ${cleanPhoneNo.slice(3, 5)} ${cleanPhoneNo.slice(5, 8)} ${cleanPhoneNo.slice(8)}`,
+                );
+            }
+        }
+    }, [cusPhoneNo, customerInfo, loading]);
+
+    const getAddress = () => {
+        if (shippingOption === 'standardDelivery') {
+            return customerInfo && customerInfo.address.street !== '' ? (
+                <COReusableStyles.Text>
+                    {`${[
+                        customerInfo.address.street,
+                        `${customerInfo.address.postcode} ${customerInfo.address.city}`,
+                        customerInfo.address.state,
+                        customerInfo.address.country,
+                    ]
+                        .filter(Boolean)
+                        .join(', ')}`}
+                </COReusableStyles.Text>
+            ) : (
+                <HintText>No address record</HintText>
+            );
+        }
+        return <COReusableStyles.Text>CollectCo JustPrint Penang</COReusableStyles.Text>;
+    };
+
+    if (loading) {
+        return <div>Loading</div>;
+    }
 
     return (
         <Wrapper>
@@ -56,12 +140,10 @@ export default function ShippingDetailsBar({ shippingOption }) {
                 {shippingOption === 'standardDelivery' ? 'Standard Delivery' : 'Self Collection Point'}
             </AddressHead>
             <CustomerDetailsContainer>
-                <CustomerNameContainer>Aron Chia (+60) 12 345 6789</CustomerNameContainer>
-                {shippingOption === 'standardDelivery' ? (
-                    <COReusableStyles.Text>1, Jalan Penang, 10400 Georgetown, Penang</COReusableStyles.Text>
-                ) : (
-                    <COReusableStyles.Text>CollectCo JustPrint Penang</COReusableStyles.Text>
-                )}
+                <CustomerNameContainer>
+                    {customerInfo && customerInfo.username} {cusPhoneNo}
+                </CustomerNameContainer>
+                {getAddress()}
                 {shippingOption === 'standardDelivery' && (
                     <EditAddressButton onClick={handleEditAddressClick}>
                         <p>Edit</p>
