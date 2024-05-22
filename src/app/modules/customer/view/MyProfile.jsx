@@ -127,7 +127,13 @@ export default function MyProfile() {
         const formErrors = FormValidation(updatedValue);
         if (Object.keys(formErrors).length === 0) {
             await updateCustomer(updatedValue);
-            setCustomerInfo({ ...customerInfo, ...updatedValue });
+            setCustomerInfo((prevState) => ({
+                ...prevState,
+                customerInfo: {
+                    ...prevState.customerInfo,
+                    ...updatedValue,
+                },
+            }));
             setUpdatedValue({});
             showModal({
                 modal: <SavedModal />,
