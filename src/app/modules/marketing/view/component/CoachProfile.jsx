@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import useModal from '../../../../platform/modal/useModal';
@@ -10,9 +10,10 @@ import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import ReusableStyle from '../../../../platform/style/PlatformReusableStyles';
 import RatingModal from '../Modal/RatingModal';
 import ageIcon from '../assets/ageIcon.png';
-import coachPic from '../assets/coach.jpeg';
+import editIcon from '../assets/editIcon.png';
 import levelIcon from '../assets/levelIcon.png';
 import locationIcon from '../assets/location.png';
+import useCoachById from '../hooks/useCoachById';
 import CoachReusableStyle from '../style/reusableStyle';
 
 const ContainerCol = styled.div`
@@ -51,17 +52,32 @@ const Title = styled.p`
 `;
 
 export default function CoachProfile() {
-    const location = useLocation();
-    const coach = location.state?.coach;
-    const [value, setValue] = useState(0);
+    const { coachId } = useParams();
+    const { getCoachDetails } = useCoachById(coachId);
+    const [coach, setCoach] = useState([]);
+
+    useEffect(() => {
+        getCoachDetails().then((data) => {
+            setCoach(data);
+        });
+    }, [getCoachDetails]);
+
+    const [value, setValue] = useState();
     const { showModal, hideModal } = useModal();
+    const navigate = useNavigate();
 
     const rateNow = useCallback(() => {
+        const handleModalClose = (latestRating) => {
+            setValue(latestRating);
+            console.log('latestrating', value);
+        };
+
         showModal({
             modal: (
                 <RatingModal
                     hideModal={hideModal}
                     coach={coach}
+                    onClose={handleModalClose}
                 />
             ),
         });
@@ -78,13 +94,27 @@ export default function CoachProfile() {
             <CoachReusableStyle.ContainerRow>
                 <GridContainer>
                     <img
-                        src={coachPic}
+                        src={coach.file}
                         alt="coach"
                         width="200px"
                         height="200px"
                     />
                     <ContainerCol>
-                        <Title>{coach.coachName}</Title>
+                        <Title>
+                            {coach.coachName}
+                            <button
+                                onClick={() => navigate(`/marketing/coach-edit/${coach.coachId}`, { state: { coach } })}
+                                style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}
+                            >
+                                <img
+                                    src={editIcon}
+                                    alt="location"
+                                    width="20px"
+                                    height="20px"
+                                    style={{ marginLeft: '10px' }}
+                                />
+                            </button>
+                        </Title>
                         <br />
                         <CoachReusableStyle.ContainerRow style={{ paddingBottom: '40px', paddingTop: '20px' }}>
                             <img
@@ -93,7 +123,9 @@ export default function CoachProfile() {
                                 width="20px"
                                 height="20px"
                             />
-                            <CoachReusableStyle.TextDescription>{coach.state}</CoachReusableStyle.TextDescription>
+                            <CoachReusableStyle.TextDescription>
+                                {coach.area},{coach.state}
+                            </CoachReusableStyle.TextDescription>
                         </CoachReusableStyle.ContainerRow>
                         <CoachReusableStyle.ContainerRow style={{ paddingBottom: '40px' }}>
                             <img
@@ -117,15 +149,19 @@ export default function CoachProfile() {
                     <br />
 
                     <CoachReusableStyle.ContainerRow>
-                        <CoachReusableStyle.TextDescription style={{ paddingTop: '4px' }}>
-                            {coach.rating.toFixed(1)}
-                        </CoachReusableStyle.TextDescription>
-                        <Rating
-                            name="read-only"
-                            value={value}
-                            readOnly
-                            padding="none"
-                        />
+                        {value !== undefined && (
+                            <>
+                                <CoachReusableStyle.TextDescription style={{ paddingTop: '4px' }}>
+                                    {value.toFixed(2)}
+                                </CoachReusableStyle.TextDescription>
+                                <Rating
+                                    name="read-only"
+                                    value={value.toFixed(2)}
+                                    readOnly
+                                    padding="none"
+                                />
+                            </>
+                        )}
                     </CoachReusableStyle.ContainerRow>
                     <BorderContainer>
                         <CoachReusableStyle.TextDescription style={{ paddingBottom: '20px' }}>
@@ -173,14 +209,7 @@ export default function CoachProfile() {
                 <CoachReusableStyle.BorderContainerRow>
                     <CoachReusableStyle.TextDescription>Time slots</CoachReusableStyle.TextDescription>
                     <CoachReusableStyle.Text style={{ paddingLeft: '50px', lineHeight: '1.5' }}>
-                        {coach.timeslot.split('\n').map((slot) => (
-                            <p
-                                key={slot}
-                                style={{ marginBottom: '20px' }}
-                            >
-                                {slot}
-                            </p>
-                        ))}
+                        {coach.timeslot}
                     </CoachReusableStyle.Text>
                 </CoachReusableStyle.BorderContainerRow>
                 <CoachReusableStyle.BorderContainerRow>
@@ -193,14 +222,19 @@ export default function CoachProfile() {
                 <CoachReusableStyle.BorderContainerRow>
                     <RateContainer>
                         <CoachReusableStyle.ContainerRow>
-                            <CoachReusableStyle.TextDescription style={{ paddingTop: '4px' }}>
-                                {coach.rating.toFixed(1)}
-                            </CoachReusableStyle.TextDescription>
-                            <Rating
-                                name="read-only"
-                                value={value}
-                                readOnly
-                            />
+                            {value !== undefined && (
+                                <>
+                                    <CoachReusableStyle.TextDescription style={{ paddingTop: '4px' }}>
+                                        {value.toFixed(2)}
+                                    </CoachReusableStyle.TextDescription>
+                                    <Rating
+                                        name="read-only"
+                                        value={value.toFixed(2)}
+                                        readOnly
+                                        padding="none"
+                                    />
+                                </>
+                            )}
                         </CoachReusableStyle.ContainerRow>
 
                         <Button

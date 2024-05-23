@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
-import coachPhoto from '../assets/coachPhoto.png';
 import star from '../assets/star.png';
 import CoachReusableStyles from '../style/reusableStyle';
 
@@ -35,12 +34,12 @@ const Container = styled.div`
     justify-content: center;
 `;
 
-export default function CoachView({ coachName, state, level, targetAge, rating }) {
+export default function CoachView({ coachImage, coachName, state, level, targetAge, rating }) {
     return (
         <CoachReusableStyles.BorderContainer>
             <Container>
                 <img
-                    src={coachPhoto}
+                    src={coachImage}
                     alt="HeadImage"
                     style={{ width: '150px', height: '150px' }}
                 />
@@ -63,14 +62,14 @@ export default function CoachView({ coachName, state, level, targetAge, rating }
                     </DescriptionLayout>
                 </DescriptionContainer>
                 <DescriptionLayout2>
-                    <CoachReusableStyles.TextBold style={{ paddingBottom: '20px', paddingLeft: '10px' }}>
+                    <CoachReusableStyles.TextBold style={{ paddingBottom: '20px' }}>
                         {level}
                     </CoachReusableStyles.TextBold>
                     <CoachReusableStyles.TextBold style={{ paddingBottom: '20px' }}>
                         {targetAge}
                     </CoachReusableStyles.TextBold>
                     <CoachReusableStyles.TextBold style={{ paddingBottom: '20px' }}>
-                        {rating}
+                        {rating.toFixed(2)}
                         <img
                             src={star}
                             alt="HeadImage"

@@ -38,16 +38,6 @@ const CenteredDiv = styled.div`
 `;
 
 export default function CompetitionLinkModal({ hideModal }) {
-    // const [setSelectedDate] = useState(null);
-
-    // Inside handleChange function
-    // const handleDateChange = (date) => {
-    //     setSelectedDate(date);
-    // };
-    // function generateUniqueId() {
-    //     return `_${Math.random().toString(36).substr(2, 9)}`; // Generates a random string
-    // }
-
     const [formData, setFormData] = useState({
         compID: '',
         compName: '',
@@ -74,14 +64,6 @@ export default function CompetitionLinkModal({ hideModal }) {
         [formData],
     );
 
-    // const handleFileUpload = useCallback((e) => {
-    //     const file = e.target.files[0];
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         eventBanner: file,
-    //     }));
-    // }, []);
-
     const handleCancel = useCallback(() => {
         hideModal();
     }, [hideModal]);
@@ -93,7 +75,7 @@ export default function CompetitionLinkModal({ hideModal }) {
 
         const timeoutId = setTimeout(() => {
             hideModal();
-        }, 3500);
+        }, 10);
 
         return () => clearTimeout(timeoutId);
     }, [formData, hideModal, setLink]);
@@ -105,7 +87,7 @@ export default function CompetitionLinkModal({ hideModal }) {
                     <Container>
                         <Title>Promote Competition</Title>
                         <TextField
-                            name="competitionName"
+                            name="compName"
                             label="Competition Name"
                             value={formData.compName}
                             onChange={handleChange}
@@ -141,15 +123,9 @@ export default function CompetitionLinkModal({ hideModal }) {
                             onChange={handleChange}
                         />
                         <TextField
-                            name="registerationLink"
+                            name="url"
                             label="Registeration Link"
                             value={formData.url}
-                            onChange={handleChange}
-                        />
-                        <TextField
-                            name="eventBanner"
-                            label="Event Banner"
-                            value={formData.eventBanner}
                             onChange={handleChange}
                         />
 

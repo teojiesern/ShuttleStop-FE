@@ -1,9 +1,9 @@
 import { Route } from 'react-router-dom';
-import MarketingTestScreenTwo from '../view/MarketingTestScreenTwo';
-import CoachProfile from '../view/component/CoachProfile';
-
+import MarketingCoachEditScreen from '../view/MarketingCoachEditScreen';
 import MarketingCoachRegistrationScreen from '../view/MarketingCoachRegistrationScreen';
 import MarketingTestScreen from '../view/MarketingTestScreen';
+import MarketingTestScreenTwo from '../view/MarketingTestScreenTwo';
+import CoachProfile from '../view/component/CoachProfile';
 
 const MarketingScreens = (
     <>
@@ -20,7 +20,11 @@ const MarketingScreens = (
             element={<MarketingCoachRegistrationScreen />}
         />
         <Route
-            path="/marketing/coach-profile"
+            path="/marketing/coach-edit/:coachId"
+            element={<MarketingCoachEditScreen />}
+        />
+        <Route
+            path="/marketing/coach-profile/:coachId"
             element={<CoachProfile />}
         />
     </>
