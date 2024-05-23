@@ -13,7 +13,23 @@ export default class CustomerRepositoryImpl {
     getCustomer = async () => {
         const { status, data } = await Network.getInstance().get(this.#ROUTES.CUSTOMER);
 
-        return { status, data };
+        const mappedData = {
+            customerID: data.customerId,
+            username: data.username,
+            email: data.email,
+            phoneNo: data.phoneNo,
+            gender: data.gender,
+            birthday: data.birthday,
+            profileImgPath: `http://localhost:3000/${data.profileImgPath}`,
+            address: {
+                street: data.address.street,
+                city: data.address.city,
+                postcode: data.address.postcode,
+                country: data.address.country,
+                state: data.address.state,
+            },
+        };
+        return { status, data: mappedData };
     };
 
     registerCustomer = async (user) => {

@@ -15,6 +15,7 @@ const CustomerInfoContext = createContext({
             country: '',
             state: '',
         },
+        profileImgPath: '',
     },
     setCustomerInfo: () => {},
 });

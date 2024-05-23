@@ -129,11 +129,6 @@ export default function EditAddressModal({ hideModal, customerInfo, setCustomerI
                 error={Boolean(errors.address?.street)}
                 helperText={errors.address?.street}
             />
-            <TextField
-                fullWidth
-                label={<span>Address 2</span>}
-                size="small"
-            />
             <HrContainer>
                 <TextField
                     fullWidth
