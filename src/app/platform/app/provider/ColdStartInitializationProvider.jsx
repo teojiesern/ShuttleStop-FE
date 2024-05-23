@@ -32,6 +32,7 @@ export default function ColdStartInitializationProvider({ children }) {
                         gender: customer.gender,
                         birthday: customer.birthday,
                         address: customer.address,
+                        profileImgPath: customer.profileImgPath,
                     },
                     setCustomerInfo,
                 });

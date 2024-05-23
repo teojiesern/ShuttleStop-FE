@@ -73,7 +73,7 @@ const DisplayImageAfter = styled.img`
 export default function MyProfile() {
     const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
     const [gender, setGender] = useState('');
-    const { updateCustomer } = useCustomer();
+    const { getCustomer, updateCustomer } = useCustomer();
 
     useEffect(() => {
         if (customerInfo && customerInfo.gender) {
@@ -83,20 +83,22 @@ export default function MyProfile() {
 
     const inputRef = useRef(null);
 
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState(null);
+    const [files, setFiles] = useState([{ name: '', preview: customerInfo.profileImgPath }]);
     const [updatedValue, setUpdatedValue] = useState({});
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
     const { showModal } = useModal();
-
     const handleSelectImage = () => {
         inputRef.current.click();
     };
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
-        console.log(file);
-        setImage(event.target.files[0]);
+        if (file) {
+            setImage(file);
+            setFiles([{ name: file.name, preview: URL.createObjectURL(file) }]);
+        }
     };
 
     const handleGenderChange = (e) => {
@@ -115,25 +117,41 @@ export default function MyProfile() {
     };
 
     const handleDateChange = (date) => {
-        const updatedObj = { ...updatedValue, birthday: date };
+        const formattedDate = new Date(date).toISOString();
+        const updatedObj = { ...updatedValue, birthday: formattedDate };
         setUpdatedValue(updatedObj);
     };
 
+    async function fetchData() {
+        try {
+            const customer = await getCustomer();
+            setCustomerInfo({
+                customerInfo: {
+                    customerID: customer.customerId,
+                    username: customer.username,
+                    email: customer.email,
+                    phoneNo: customer.phoneNo,
+                    gender: customer.gender,
+                    birthday: customer.birthday,
+                    address: customer.address,
+                    profileImgPath: customer.profileImgPath,
+                },
+                setCustomerInfo,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (Object.keys(updatedValue).length === 0) {
+        if (Object.keys(updatedValue).length === 0 && !image) {
             return;
         }
         const formErrors = FormValidation(updatedValue);
         if (Object.keys(formErrors).length === 0) {
-            await updateCustomer(updatedValue);
-            setCustomerInfo((prevState) => ({
-                ...prevState,
-                customerInfo: {
-                    ...prevState.customerInfo,
-                    ...updatedValue,
-                },
-            }));
+            await updateCustomer(updatedValue, image);
+            setTimeout(fetchData, 1000);
             setUpdatedValue({});
             showModal({
                 modal: <SavedModal />,
@@ -158,7 +176,7 @@ export default function MyProfile() {
                         size="small"
                         style={{ minWidth: '60%' }}
                         onChange={handleInput}
-                        defaultValue={customerInfo && customerInfo.username}
+                        defaultValue={customerInfo.username}
                         error={!!errors.username}
                         helperText={errors.username}
                     />
@@ -172,7 +190,7 @@ export default function MyProfile() {
                         size="small"
                         style={{ minWidth: '60%' }}
                         onChange={handleInput}
-                        defaultValue={customerInfo && customerInfo.email}
+                        defaultValue={customerInfo.email}
                         disabled
                     />
                 </ContentContainer>
@@ -185,7 +203,7 @@ export default function MyProfile() {
                         size="small"
                         style={{ minWidth: '60%' }}
                         onChange={handleInput}
-                        defaultValue={customerInfo && customerInfo.phoneNo}
+                        defaultValue={customerInfo.phoneNo}
                         error={!!errors.phoneNo}
                         helperText={errors.phoneNo}
                     />
@@ -218,7 +236,7 @@ export default function MyProfile() {
                         <DatePicker
                             name="birthday"
                             onChange={handleDateChange}
-                            defaultValue={customerInfo && customerInfo.birthday ? dayjs(customerInfo.birthday) : null}
+                            defaultValue={customerInfo.birthday ? dayjs(customerInfo.birthday) : null}
                         />
                     </LocalizationProvider>
                 </ContentContainer>
@@ -235,9 +253,9 @@ export default function MyProfile() {
             </InnerContainer>
 
             <InnerContainer style={{ width: '20%' }}>
-                {image ? (
+                {files[0].preview.length > 'http://localhost:3000/'.length ? (
                     <DisplayImageAfter
-                        src={URL.createObjectURL(image)}
+                        src={files[0].preview}
                         alt="uploadimage"
                     />
                 ) : (

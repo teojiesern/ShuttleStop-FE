@@ -1,5 +1,6 @@
 import { isAxiosError } from 'axios';
 import { useCallback, useRef } from 'react';
+import { SubFolder } from '../../../../platform/constants/PlatformConstants';
 import CustomerRepositoryImpl from '../../data/repository/CustomerRepositoryImpl';
 
 export default function useCustomer() {
@@ -18,14 +19,29 @@ export default function useCustomer() {
     }, []);
 
     const updateCustomer = useCallback(
-        async (updatedInfo) => {
+        async (updatedInfo, profileImgPath) => {
             try {
                 const currentCustomer = await getCustomer();
                 if (!currentCustomer) {
                     throw new Error('No customer is currently logged in');
                 }
 
-                const { status, data } = await repositoryRef.current.updateCustomer(updatedInfo);
+                const formData = new FormData();
+                formData.append('subfolder', SubFolder.CUSTOMER);
+
+                Object.keys(updatedInfo).forEach((key) => {
+                    if (typeof updatedInfo[key] === 'object' && updatedInfo[key] !== null) {
+                        formData.append(key, JSON.stringify(updatedInfo[key]));
+                    } else {
+                        formData.append(key, updatedInfo[key]);
+                    }
+                });
+
+                if (profileImgPath) {
+                    formData.append('file', profileImgPath);
+                }
+
+                const { status, data } = await repositoryRef.current.updateCustomer(formData);
                 return { status, data };
             } catch (error) {
                 if (isAxiosError(error)) {
