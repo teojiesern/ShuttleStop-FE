@@ -30,7 +30,6 @@ const DropDownContainer = styled.div`
 
 const Sort = styled.div`
     text-align: left;
-    padding-left: 2rem;
     font-size: ${FONTSIZE['x-small']};
     color: ${COLORS.darkGrey};
 `;
@@ -59,7 +58,6 @@ const HeaderRight = styled.div`
 const Layout = styled.div`
     width: 100%;
     padding-top: 1rem;
-    padding-left: 2rem;
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: 2rem;
@@ -73,18 +71,11 @@ const Title = styled.h1`
     color: ${COLORS.black};
     text-align: left;
     margin-bottom: 1rem;
-    padding-left: 2rem;
     padding-top: 1rem;
 `;
 
-export default function CompetitionLayout() {
+export default function CompetitionScreen() {
     const { showModal, hideModal } = useModal();
-
-    const pressLink = useCallback(() => {
-        showModal({
-            modal: <CompetitionLinkModal hideModal={hideModal} />,
-        });
-    }, [showModal]);
 
     const years = Array.from({ length: 4 }, (_, index) => 2024 + index);
     const { getDetails } = useCompetitionDetail();
@@ -118,12 +109,10 @@ export default function CompetitionLayout() {
 
     useEffect(() => {
         getDetails().then((data) => {
-            console.log('Original competitions:', data.competitions);
-
             const shouldFilterByYear = selectedYear !== undefined && selectedYear !== null;
 
             const filteredCompetitions = shouldFilterByYear
-                ? data.competitions.filter((competition) => {
+                ? data.filter((competition) => {
                       const competitionYear = new Date(competition.date).getFullYear();
                       const selectedYearNum = Number(selectedYear);
 
@@ -133,12 +122,26 @@ export default function CompetitionLayout() {
 
                       return competitionYear === selectedYearNum;
                   })
-                : data.competitions; // If no year is provided, return all competitions
+                : data; // If no year is provided, return all competitions
 
             setFiltered(filteredCompetitions);
-            console.log('Filtered competitions:', filteredCompetitions);
         });
     }, [getDetails, selectedYear]);
+
+    const addNewCompetition = useCallback((newCompetition) => {
+        setFiltered((prevFiltered) => [...prevFiltered, newCompetition]);
+    }, []);
+
+    const pressLink = useCallback(() => {
+        showModal({
+            modal: (
+                <CompetitionLinkModal
+                    hideModal={hideModal}
+                    onSave={addNewCompetition}
+                />
+            ),
+        });
+    }, [showModal, hideModal, addNewCompetition]);
 
     const renderCompetitionDetailsByMonth = () => {
         if (filtered === null || filtered === undefined) {
@@ -148,7 +151,6 @@ export default function CompetitionLayout() {
         return months.map((month, index) => {
             // Filter competition details by month
             const filteredDetails = filtered.filter((competition) => new Date(competition.date).getMonth() === index);
-            console.log(filteredDetails);
             if (filteredDetails.length === 0) {
                 return null;
             }
@@ -158,14 +160,18 @@ export default function CompetitionLayout() {
                     <Title>{month}</Title>
                     <ContentContainer>
                         {filteredDetails.map((competitions) => (
-                            <div key={competitions.compID}>
+                            <div key={competitions.competitionId}>
                                 <ContentContainer>
                                     <Layout>
-                                        <CompReusableStyles.Text>{competitions.compName}</CompReusableStyles.Text>
-                                        <CompReusableStyles.Text>{competitions.date}</CompReusableStyles.Text>
+                                        <CompReusableStyles.Text>{competitions.name}</CompReusableStyles.Text>
+                                        <CompReusableStyles.Text>
+                                            {new Date(competitions.date).toLocaleDateString('en-GB')}
+                                        </CompReusableStyles.Text>
                                         <CompReusableStyles.Text>{competitions.state}</CompReusableStyles.Text>
                                         <CompReusableStyles.Text>{competitions.fee}</CompReusableStyles.Text>
-                                        <CompReusableStyles.Text>{competitions.deadline}</CompReusableStyles.Text>
+                                        <CompReusableStyles.Text>
+                                            {new Date(competitions.deadline).toLocaleDateString('en-GB')}
+                                        </CompReusableStyles.Text>
                                         <CompReusableStyles.Text>{competitions.prize}</CompReusableStyles.Text>
                                         <Button
                                             style={{ ...PlatformReusableStyles.PrimaryButtonStyles }}

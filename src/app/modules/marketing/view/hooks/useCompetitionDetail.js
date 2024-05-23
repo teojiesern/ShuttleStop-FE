@@ -1,18 +1,20 @@
-import { useMemo, useRef } from 'react';
-import CompetitionsDetail from '../data/competitionsDetail';
+import { useRef } from 'react';
+import CompetitionRepositoryImp from '../data/CompetitionRepositoryImp';
 
 export default function useCompetitionDetail() {
-    const repositoryRef = useRef(new CompetitionsDetail());
+    const repositoryRef = useRef(new CompetitionRepositoryImp());
 
     const getDetails = async () => {
-        const response = await repositoryRef.current.getDetais();
-        return response.data;
+        // eslint-disable-next-line no-useless-catch
+        try {
+            const response = await repositoryRef.current.getDetails();
+            return response;
+        } catch (error) {
+            throw error;
+        }
     };
 
-    return useMemo(
-        () => ({
-            getDetails,
-        }),
-        [],
-    );
+    return {
+        getDetails,
+    };
 }

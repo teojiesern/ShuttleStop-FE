@@ -2,13 +2,19 @@ import { Button, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/mat
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { useRef, useState } from 'react';
+import dayjs from 'dayjs';
+import { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import CustomerInfoContext from '../../../platform/app/data/CustomerInfoContext';
 import COLORS from '../../../platform/Colors';
+import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
+import FormValidation from '../../ciam/view/utils/FormValidation';
 import UploadImage from './assets/upload-image.svg';
+import useCustomer from './hooks/useCustomer';
+import SavedModal from './modal/SavedModal';
 
 const OuterContainer = styled.div`
     display: flex;
@@ -65,8 +71,23 @@ const DisplayImageAfter = styled.img`
 `;
 
 export default function MyProfile() {
+    const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
+    const [gender, setGender] = useState('');
+    const { updateCustomer } = useCustomer();
+
+    useEffect(() => {
+        if (customerInfo && customerInfo.gender) {
+            setGender(customerInfo.gender);
+        }
+    }, [customerInfo, setGender]);
+
     const inputRef = useRef(null);
+
     const [image, setImage] = useState('');
+    const [updatedValue, setUpdatedValue] = useState({});
+    const [errors, setErrors] = useState({});
+    const [submitted, setSubmitted] = useState(false);
+    const { showModal } = useModal();
 
     const handleSelectImage = () => {
         inputRef.current.click();
@@ -77,11 +98,54 @@ export default function MyProfile() {
         console.log(file);
         setImage(event.target.files[0]);
     };
-    // const [gender, setGender] = useState('');
 
-    // const handleGenderChange = (event) => {
-    //     setGender(event.target.value);
-    // };
+    const handleGenderChange = (e) => {
+        setGender(e.target.value);
+        const { name, value } = e.target;
+        setUpdatedValue({ ...updatedValue, [name]: value });
+    };
+
+    const handleInput = (e) => {
+        const { name, value } = e.target;
+        setUpdatedValue({ ...updatedValue, [name]: value });
+        if (submitted) {
+            const fieldErrors = FormValidation(updatedValue);
+            setErrors((prevErrors) => ({ ...prevErrors, [name]: fieldErrors[name] }));
+        }
+    };
+
+    const handleDateChange = (date) => {
+        const updatedObj = { ...updatedValue, birthday: date };
+        setUpdatedValue(updatedObj);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (Object.keys(updatedValue).length === 0) {
+            return;
+        }
+        const formErrors = FormValidation(updatedValue);
+        if (Object.keys(formErrors).length === 0) {
+            await updateCustomer(updatedValue);
+            setCustomerInfo((prevState) => ({
+                ...prevState,
+                customerInfo: {
+                    ...prevState.customerInfo,
+                    ...updatedValue,
+                },
+            }));
+            setUpdatedValue({});
+            showModal({
+                modal: <SavedModal />,
+                disableBackdropDismiss: false,
+                cmaxWidth: 'sm',
+            });
+            setErrors({});
+            setSubmitted(true);
+        } else {
+            setErrors(formErrors);
+        }
+    };
 
     return (
         <OuterContainer>
@@ -89,45 +153,51 @@ export default function MyProfile() {
                 <ContentContainer>
                     <FormLabel>Username</FormLabel>
                     <TextField
+                        name="username"
                         label="Enter your username"
                         size="small"
                         style={{ minWidth: '60%' }}
-                    />
-                </ContentContainer>
-
-                <ContentContainer>
-                    <FormLabel>Name</FormLabel>
-                    <TextField
-                        label="Enter your name"
-                        size="small"
-                        style={{ minWidth: '60%' }}
+                        onChange={handleInput}
+                        defaultValue={customerInfo && customerInfo.username}
+                        error={!!errors.username}
+                        helperText={errors.username}
                     />
                 </ContentContainer>
 
                 <ContentContainer>
                     <FormLabel>Email</FormLabel>
                     <TextField
+                        name="email"
                         label="Enter your email"
                         size="small"
                         style={{ minWidth: '60%' }}
+                        onChange={handleInput}
+                        defaultValue={customerInfo && customerInfo.email}
+                        disabled
                     />
                 </ContentContainer>
 
                 <ContentContainer>
                     <FormLabel>Phone number</FormLabel>
                     <TextField
+                        name="phoneNo"
                         label="Enter your phone number"
                         size="small"
                         style={{ minWidth: '60%' }}
+                        onChange={handleInput}
+                        defaultValue={customerInfo && customerInfo.phoneNo}
+                        error={!!errors.phoneNo}
+                        helperText={errors.phoneNo}
                     />
                 </ContentContainer>
 
                 <ContentContainer>
                     <FormLabel>Gender</FormLabel>
                     <RadioGroup
-                        // value={gender}
-                        // onChange={handleGenderChange}
+                        value={gender}
+                        name="gender"
                         style={{ display: 'flex', flexDirection: 'row' }}
+                        onChange={handleGenderChange}
                     >
                         <FormControlLabel
                             value="male"
@@ -145,13 +215,20 @@ export default function MyProfile() {
                 <ContentContainer>
                     <FormLabel>Birthday</FormLabel>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker />
+                        <DatePicker
+                            name="birthday"
+                            onChange={handleDateChange}
+                            defaultValue={customerInfo && customerInfo.birthday ? dayjs(customerInfo.birthday) : null}
+                        />
                     </LocalizationProvider>
                 </ContentContainer>
 
                 <ContentContainer>
                     <FormLabel />
-                    <Button style={{ ...PlatformReusableStyles.PrimaryButtonStyles, padding: '.5rem 1rem' }}>
+                    <Button
+                        style={{ ...PlatformReusableStyles.PrimaryButtonStyles, padding: '.5rem 1rem' }}
+                        onClick={handleSubmit}
+                    >
                         Save
                     </Button>
                 </ContentContainer>

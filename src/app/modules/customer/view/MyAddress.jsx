@@ -1,5 +1,6 @@
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import styled from 'styled-components';
+import CustomerInfoContext from '../../../platform/app/data/CustomerInfoContext';
 import COLORS from '../../../platform/Colors';
 import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
@@ -53,9 +54,24 @@ const StyledButton = styled.button`
 export default function MyAddress() {
     const { showModal, hideModal } = useModal();
 
+    const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
+
+    let fullAddress = '-';
+    if (customerInfo && customerInfo.address.street !== '') {
+        fullAddress = `${[customerInfo.address.street, customerInfo.address.city, customerInfo.address.postcode]
+            .filter(Boolean)
+            .join(', ')} ${[customerInfo.address.country, customerInfo.address.state].filter(Boolean).join(', ')}`;
+    }
+
     const handleEditAddress = useCallback(() => {
         showModal({
-            modal: <EditAddressModal hideModal={hideModal} />,
+            modal: (
+                <EditAddressModal
+                    hideModal={hideModal}
+                    customerInfo={customerInfo}
+                    setCustomerInfo={setCustomerInfo}
+                />
+            ),
         });
     }, [hideModal, showModal]);
 
@@ -63,18 +79,18 @@ export default function MyAddress() {
         <OuterContainer>
             <InnerContainer style={{ width: '90%' }}>
                 <ContentContainer>
-                    <FormLabel>Name</FormLabel>
-                    <AddressText>Aaron Chia</AddressText>
+                    <FormLabel>Username</FormLabel>
+                    <AddressText>{customerInfo && customerInfo.username}</AddressText>
                 </ContentContainer>
 
                 <ContentContainer>
                     <FormLabel>Mobile Number</FormLabel>
-                    <AddressText>(+60)12-345 6789</AddressText>
+                    <AddressText>{customerInfo && customerInfo.phoneNo}</AddressText>
                 </ContentContainer>
 
                 <ContentContainer>
                     <FormLabel>Address</FormLabel>
-                    <AddressText>1, Jalan 17/7, 46100 Petaling Jaya, Selangor</AddressText>
+                    <AddressText>{fullAddress}</AddressText>
                 </ContentContainer>
             </InnerContainer>
 

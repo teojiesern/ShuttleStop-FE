@@ -14,9 +14,13 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import DropBox from '../../../../platform/components/dropbox/DropBox';
 import { ProductBrands, ProductCategories } from '../../../../platform/constants/PlatformConstants';
+import TickedModal from '../../../../platform/modal/TickedModal';
+import useLoadingModal from '../../../../platform/modal/useLoadingModal';
+import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
+import useSCAddNewProducts from '../hooks/useSCAddNewProducts';
 
 const Container = styled.div`
     display: flex;
@@ -97,6 +101,10 @@ export default function SCAddNewProductsScreen({
     const [totalStock, setTotalStock] = useState(variants.map((variant) => variant.totalStock));
     const [price, setPrice] = useState(variants.map((variant) => variant.price));
 
+    const { addNewProducts } = useSCAddNewProducts();
+    const { showLoadingModal, hideLoadingModal } = useLoadingModal();
+    const { showModal: showInternalModal } = useModal();
+
     const onAddNewVariant = useCallback(() => {
         setVariants([
             ...variants,
@@ -112,7 +120,7 @@ export default function SCAddNewProductsScreen({
         setPrice([...price, 0]);
     }, [colors, price, totalStock, variants]);
 
-    const onSave = useCallback(() => {
+    const onSave = useCallback(async () => {
         // Entry point is through modal
         if (hideModal) {
             const finalVariants = variants.map((variant, i) => ({
@@ -146,25 +154,76 @@ export default function SCAddNewProductsScreen({
         }
 
         // Entry point is screen navigation
-        console.log('hello');
+        const newVariants = colors.map((color, index) => ({
+            color,
+            totalStock: totalStock[index],
+            price: price[index],
+        }));
+        try {
+            showLoadingModal();
+            await addNewProducts({
+                productName,
+                productCategory,
+                productBrand,
+                thumbnailFile,
+                productImage1,
+                productImage2,
+                productImage3,
+                productImage4,
+                productDescription,
+                variants: newVariants,
+            });
+
+            // set everything back to empty state
+            setProductName('');
+            setProductCategory(null);
+            setProductBrand(null);
+            setThumbnailFile([]);
+            setProductImage1([]);
+            setProductImage2([]);
+            setProductImage3([]);
+            setProductImage4([]);
+            setProductDescription('');
+            setVariants([
+                {
+                    color: '',
+                    totalStock: 0,
+                    totalSales: 0,
+                    price: 0,
+                },
+            ]);
+            setColors(['']);
+            setTotalStock([0]);
+            setPrice([0]);
+
+            hideLoadingModal();
+
+            showInternalModal({ modal: <TickedModal title="Product added successfully!" /> });
+        } catch (error) {
+            console.log(error.message);
+        }
     }, [
-        colors,
-        cproductID,
-        cproducts,
-        csetProducts,
         hideModal,
+        colors,
+        variants,
+        csetProducts,
+        cproducts,
+        totalStock,
         price,
-        productBrand,
+        cproductID,
+        productName,
         productCategory,
-        productDescription,
+        productBrand,
+        thumbnailFile,
         productImage1,
         productImage2,
         productImage3,
         productImage4,
-        productName,
-        totalStock,
-        thumbnailFile,
-        variants,
+        productDescription,
+        showLoadingModal,
+        addNewProducts,
+        hideLoadingModal,
+        showInternalModal,
     ]);
 
     return (

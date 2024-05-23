@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import useCustomer from '../../../modules/customer/view/hooks/useCustomer';
 import useSeller from '../../../modules/sellerCenter/view/hooks/useSeller';
+import CustomerInfoContext from '../data/CustomerInfoContext';
 import CustomerStatusContext from '../data/CustomerStatusContext';
 import SellerInfoContext from '../data/SellerInfoContext';
 import ShopInfoContext from '../data/ShopInfoContext';
@@ -11,6 +12,7 @@ export default function ColdStartInitializationProvider({ children }) {
     const [customerStatus, setCustomerStatus] = useState(null);
     const [sellerInfo, setSellerInfo] = useState(null);
     const [shopInfo, setShopInfo] = useState(null);
+    const [customerInfo, setCustomerInfo] = useState(null);
 
     // const { getShopSettings } = useShopSettings();
     const { getCustomer } = useCustomer();
@@ -21,7 +23,18 @@ export default function ColdStartInitializationProvider({ children }) {
             try {
                 const customer = await getCustomer();
                 setCustomerStatus({ isLogin: true, registeredSeller: customer.seller, setCustomerStatus });
-
+                setCustomerInfo({
+                    customerInfo: {
+                        customerID: customer.customerId,
+                        username: customer.username,
+                        email: customer.email,
+                        phoneNo: customer.phoneNo,
+                        gender: customer.gender,
+                        birthday: customer.birthday,
+                        address: customer.address,
+                    },
+                    setCustomerInfo,
+                });
                 // From here on out just put empty even if failed to fetch and dont throw any errors
 
                 if (customer.seller) {
@@ -42,7 +55,7 @@ export default function ColdStartInitializationProvider({ children }) {
                 }
             } catch (error) {
                 setCustomerStatus({ isLogin: false, registeredSeller: false, setCustomerStatus });
-
+                setCustomerInfo(null);
                 setSellerInfo(null);
                 setShopInfo(null);
             }
@@ -58,9 +71,11 @@ export default function ColdStartInitializationProvider({ children }) {
 
     return (
         <CustomerStatusContext.Provider value={customerStatus}>
-            <SellerInfoContext.Provider value={sellerInfo}>
-                <ShopInfoContext.Provider value={shopInfo}>{children}</ShopInfoContext.Provider>
-            </SellerInfoContext.Provider>
+            <CustomerInfoContext.Provider value={customerInfo}>
+                <SellerInfoContext.Provider value={sellerInfo}>
+                    <ShopInfoContext.Provider value={shopInfo}>{children}</ShopInfoContext.Provider>
+                </SellerInfoContext.Provider>
+            </CustomerInfoContext.Provider>
         </CustomerStatusContext.Provider>
     );
 }
