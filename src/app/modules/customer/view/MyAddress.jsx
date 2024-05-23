@@ -57,7 +57,7 @@ export default function MyAddress() {
     const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
 
     let fullAddress = '-';
-    if (customerInfo && customerInfo.address.street !== '') {
+    if (customerInfo.address.street !== '') {
         fullAddress = `${[customerInfo.address.street, customerInfo.address.city, customerInfo.address.postcode]
             .filter(Boolean)
             .join(', ')} ${[customerInfo.address.country, customerInfo.address.state].filter(Boolean).join(', ')}`;
@@ -80,12 +80,12 @@ export default function MyAddress() {
             <InnerContainer style={{ width: '90%' }}>
                 <ContentContainer>
                     <FormLabel>Username</FormLabel>
-                    <AddressText>{customerInfo && customerInfo.username}</AddressText>
+                    <AddressText>{customerInfo.username}</AddressText>
                 </ContentContainer>
 
                 <ContentContainer>
                     <FormLabel>Mobile Number</FormLabel>
-                    <AddressText>{customerInfo && customerInfo.phoneNo}</AddressText>
+                    <AddressText>{customerInfo.phoneNo === '' ? '-' : customerInfo.phoneNo}</AddressText>
                 </ContentContainer>
 
                 <ContentContainer>
