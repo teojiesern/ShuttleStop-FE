@@ -1,5 +1,6 @@
 import { Button, InputAdornment, TextField } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import { SubFolder } from '../../../platform/constants/PlatformConstants';
@@ -8,8 +9,8 @@ import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
-import UploadImage from '../../customer/view/assets/upload-image.svg';
-import UseCoachRegistration from './hooks/useCoachregistration';
+import UseCoachEdit from './hooks/useCoachEdit';
+
 import CompReusableStyles from './style/reusableStyle';
 
 const Container = styled.div`
@@ -61,12 +62,15 @@ const StyledButton = styled.button`
 const DisplayImageBefore = styled.img`
     height: 100px;
     width: 100px;
+    border-radius: 50%;
+    object-fit: cover; /* Ensures the image fits within the round shape */
 `;
 
 const DisplayImageAfter = styled.img`
     height: 100px;
     width: 100px;
-    border-radius: 100%;
+    border-radius: 50%;
+    object-fit: cover; /* Ensures the image fits within the round shape */
 `;
 
 const FormContainer = styled.div`
@@ -83,7 +87,7 @@ const FormLabel = styled.label`
     width: 200px;
 `;
 
-export default function MarketingCoachRegistrationScreen() {
+export default function MarketingCoachEditScreen() {
     const [image, setImage] = useState('');
     const [username, setUsername] = useState('');
     const [state, setState] = useState('');
@@ -93,10 +97,13 @@ export default function MarketingCoachRegistrationScreen() {
     const [targetAge, setTargetAge] = useState('');
     const [qualification, setQualification] = useState('');
     const [experience, setExperience] = useState('');
-    const [archivement, setAchievement] = useState('');
+    const [achievement, setAchievement] = useState('');
     const [timeslot, setTimeslot] = useState('');
     const [location, setLocation] = useState('');
     const [feePerSession, setFeePerSession] = useState('');
+    const locations = useLocation();
+    const coach = locations.state?.coach;
+    const navigate = useNavigate();
 
     const inputRef = useRef(null);
     const { showModal, hideModal } = useModal();
@@ -109,17 +116,16 @@ export default function MarketingCoachRegistrationScreen() {
         const file = event.target.files[0];
         setImage(file);
     };
-    const { registerCoach } = UseCoachRegistration();
+    const { editCoach } = new UseCoachEdit();
 
     const handleSubmit = async () => {
         const formData = new FormData();
-
         formData.append('coachName', username);
         formData.append('level', targetLevel);
         formData.append('targetAge', targetAge);
         formData.append('qualification', qualification);
         formData.append('experience', experience);
-        formData.append('archivement', archivement);
+        formData.append('archivement', achievement);
         formData.append('timeslot', timeslot);
         formData.append('location', location);
         formData.append('state', state);
@@ -135,14 +141,21 @@ export default function MarketingCoachRegistrationScreen() {
             console.log(`${pair[0]}, ${pair[1]}`);
         });
         try {
-            const response = await registerCoach(formData);
+            const response = await editCoach(formData, coach.coachId);
             console.log('response', response);
 
-            if (response !== 200) {
-                throw new Error('Failed to save coach registration');
+            if (response.status !== 200) {
+                throw new Error('Failed to edit coach registration');
             }
 
-            showModal({ modal: <TickedModal title="Your coach information has been registered" /> });
+            const entrie = Array.from(response);
+
+            entrie.forEach((pair) => {
+                console.log(`${pair[0]}, ${pair[1]}`);
+            });
+
+            navigate(`/marketing/coach-profile/${coach.coachId}`);
+            showModal({ modal: <TickedModal title="Your coach information has been edited" /> });
             setTimeout(() => {
                 hideModal();
             }, 3500);
@@ -151,6 +164,24 @@ export default function MarketingCoachRegistrationScreen() {
             alert('There was an error submitting the form. Please try again.');
         }
     };
+    useEffect(() => {
+        if (coach) {
+            setUsername(coach.coachName || '');
+            setState(coach.state || '');
+            setArea(coach.area || '');
+            setAchievement(coach.archivement || '');
+            setExperience(coach.experience || '');
+            setFeePerSession(coach.feePerSession);
+            setQualification(coach.qualification || '');
+            setImage(coach.image || '');
+            setMobileNo(coach.contact || '');
+            setTargetAge(coach.targetAge || '');
+            setTargetLevel(coach.level || '');
+            setTimeslot(coach.timeslot || '');
+            setLocation(coach.location || '');
+            setImage(coach.file || '');
+        }
+    }, [coach]);
 
     return (
         <Container>
@@ -252,7 +283,7 @@ export default function MarketingCoachRegistrationScreen() {
                                 size="small"
                                 multiline
                                 rows={6}
-                                value={archivement}
+                                value={achievement}
                                 onChange={(e) => setAchievement(e.target.value)}
                                 style={{ minWidth: '50%' }}
                             />
@@ -295,12 +326,12 @@ export default function MarketingCoachRegistrationScreen() {
                     <InnerContainer>
                         {image ? (
                             <DisplayImageAfter
-                                src={URL.createObjectURL(image)}
+                                src={image}
                                 alt="uploadimage"
                             />
                         ) : (
                             <DisplayImageBefore
-                                src={UploadImage}
+                                src={coach.file}
                                 alt="uploadimage"
                             />
                         )}
@@ -319,9 +350,9 @@ export default function MarketingCoachRegistrationScreen() {
                         </StyledButton>
                     </InnerContainer>
                 </HorizontalContainer>
-                <div style={{ alignSelf: 'flex-end', margin: '2rem' }}>
+                <div style={{ alignSelf: 'flex-end' }}>
                     <Button
-                        style={{ ...PlatformReusableStyles.PrimaryButtonStyles, width: '6rem' }}
+                        style={PlatformReusableStyles.PrimaryButtonStyles}
                         onClick={handleSubmit}
                     >
                         Submit

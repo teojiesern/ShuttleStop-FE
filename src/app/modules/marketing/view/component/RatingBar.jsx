@@ -1,12 +1,15 @@
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 
-export default function RatingBar() {
+export default function RatingBar({ value, onChange }) {
     return (
         <Stack spacing={1}>
             <Rating
-                name="size-large"
-                defaultValue={0}
+                name="rating"
+                value={value}
+                onChange={(event, newValue) => {
+                    onChange({ target: { name: 'rating', value: Number(newValue) } });
+                }}
                 size="large"
             />
         </Stack>

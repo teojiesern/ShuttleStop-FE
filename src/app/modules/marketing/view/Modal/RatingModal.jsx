@@ -7,8 +7,8 @@ import lottieTicked from '../../../../platform/animation/lottieTicked.json';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
-import coachPic from '../assets/coachPhoto.png';
 import RatingBar from '../component/RatingBar';
+import UseCoachRating from '../hooks/useCoachRating';
 
 const Container = styled.div`
     padding: 2rem 1rem;
@@ -53,26 +53,43 @@ const BarContainer = styled.div`
     gap: 15rem;
 `;
 
-export default function CompetitionLinkModal({ hideModal, coach }) {
-    const [formData, setFormData] = useState();
+export default function CompetitionLinkModal({ hideModal, coach, onClose }) {
+    const [formData, setFormData] = useState({ rating: 0 });
     const [link, setLink] = useState(false);
+    const { coachRating } = new UseCoachRating();
 
     const handleChange = useCallback((e) => {
-        const { name, values } = e.target;
+        const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
-            [name]: values,
+            [name]: value,
         }));
     }, []);
 
-    const onConfirm = useCallback(() => {
-        // Implement your logic to save the form data
-        console.log(formData);
-        setLink(true);
-        setTimeout(() => {
-            hideModal();
-        }, 3500);
-    }, [formData, hideModal]);
+    const onConfirm = useCallback(async () => {
+        try {
+            const response = await coachRating(coach.coachId, formData);
+
+            if (response.coachRating.currentStatus !== 200) {
+                throw new Error('Failed to save coach registration');
+            }
+
+            setFormData((prevData) => ({
+                ...prevData,
+                rating: response.coachRating.rating,
+            }));
+
+            setLink(true);
+            const timeoutId = setTimeout(() => {
+                hideModal();
+                onClose(response.coachRating.rating);
+            }, 3500);
+
+            return () => clearTimeout(timeoutId);
+        } catch (error) {
+            console.error('Error saving rating:', error.message);
+        }
+    }, [formData, hideModal, coach.coachId]);
 
     const getContent = useCallback(() => {
         if (!link) {
@@ -82,7 +99,7 @@ export default function CompetitionLinkModal({ hideModal, coach }) {
                         <Title>{coach.coachName}</Title>
 
                         <img
-                            src={coachPic}
+                            src={coach.file}
                             alt="coach"
                             width="200px"
                             height="200px"
@@ -90,7 +107,10 @@ export default function CompetitionLinkModal({ hideModal, coach }) {
 
                         <Description>Posting publicly</Description>
                         <BarContainer>
-                            <RatingBar />
+                            <RatingBar
+                                value={formData.rating}
+                                onChange={handleChange}
+                            />
                         </BarContainer>
 
                         <ButtonContainer>

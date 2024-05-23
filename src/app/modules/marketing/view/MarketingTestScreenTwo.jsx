@@ -62,7 +62,7 @@ export default function MarketingTestScreenTwo() {
 
     useEffect(() => {
         getCoachDetails().then((data) => {
-            setCoach(data.coach);
+            setCoach(data);
         });
     }, [getCoachDetails]);
     console.log(coaches);
@@ -110,12 +110,16 @@ export default function MarketingTestScreenTwo() {
                         <p>No coach available</p>
                     ) : (
                         coaches.slice(currentIndex * 6, currentIndex * 6 + 6).map((coach) => (
-                            <div key={coach.coachID}>
+                            <div key={coach.coachId}>
                                 <ContentContainer
-                                    onClick={() => navigate('/marketing/coach-profile', { state: { coach } })}
+                                    onClick={() => {
+                                        console.log(`id: ${coach.coachId}`);
+                                        navigate(`/marketing/coach-profile/${coach.coachId}`);
+                                    }}
                                     style={{ cursor: 'pointer' }}
                                 >
                                     <CoachView
+                                        coachImage={coach.file}
                                         coachName={coach.coachName}
                                         state={coach.state}
                                         level={coach.level}

@@ -51,6 +51,7 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
     //     return `_${Math.random().toString(36).substr(2, 9)}`; // Generates a random string
     // }
 
+
     const [formData, setFormData] = useState({
         name: '',
         date: null,
@@ -73,13 +74,7 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
         // CompetitionLayout({ formData: { ...formData, [name]: value } });
     }, []);
 
-    // const handleFileUpload = useCallback((e) => {
-    //     const file = e.target.files[0];
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         eventBanner: file,
-    //     }));
-    // }, []);
+
 
     const handleDateChange = useCallback((name, date) => {
         setFormData((prevData) => ({
@@ -92,17 +87,7 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
         hideModal();
     }, [hideModal]);
 
-    // const onConfirm = useCallback(() => {
-    //     console.log('New data', formData);
 
-    //     setLink(true);
-
-    //     const timeoutId = setTimeout(() => {
-    //         hideModal();
-    //     }, 3500);
-
-    //     return () => clearTimeout(timeoutId);
-    // }, [formData, hideModal, setLink]);
 
     const saveCompetition = useCallback(async () => {
         try {
@@ -145,6 +130,7 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
         }
     }, [formData, hideModal, onSave]);
 
+
     const getContent = useCallback(() => {
         if (!link) {
             return (
@@ -152,9 +138,11 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
                     <Container>
                         <Title>Promote Competition</Title>
                         <TextField
+
                             name="name"
                             label="Name"
                             value={formData.name}
+
                             onChange={handleChange}
                         />
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -196,7 +184,9 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
                         />
                         <TextField
                             name="url"
+
                             label="Registration Link"
+
                             value={formData.url}
                             onChange={handleChange}
                         />
