@@ -6,7 +6,6 @@ import CustomerInfoContext from '../../../../platform/app/data/CustomerInfoConte
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
-import useCustomer from '../../../customer/view/hooks/useCustomer';
 import EditAddressModal from '../../modal/EditAddressModal';
 import COReusableStyles from '../styles/COReusableStyles';
 
@@ -52,49 +51,21 @@ const HintText = styled.span`
 `;
 
 export default function ShippingDetailsBar({ shippingOption }) {
-    const [loading, setLoading] = useState(false);
     const [cusPhoneNo, setCusPhoneNo] = useState(null);
     const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
-    const { getCustomer } = useCustomer();
     const { showModal, hideModal } = useModal();
 
     const handleEditAddressClick = useCallback(() => {
-        showModal({ modal: <EditAddressModal hideModal={hideModal} /> });
+        showModal({
+            modal: (
+                <EditAddressModal
+                    hideModal={hideModal}
+                    customerInfo={customerInfo}
+                    setCustomerInfo={setCustomerInfo}
+                />
+            ),
+        });
     }, [showModal, hideModal]);
-
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const customer = await getCustomer();
-
-                setCustomerInfo({
-                    customerID: customer.customerID,
-                    username: customer.username,
-                    name: customer.name,
-                    email: customer.email,
-                    phoneNo: customer.phoneNo,
-                    gender: customer.gender,
-                    birthday: customer.birthday,
-                    address: {
-                        street: customer.address.street,
-                        city: customer.address.city,
-                        postcode: customer.address.postcode,
-                        country: customer.address.country,
-                        state: customer.address.state,
-                    },
-                });
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        if (!customerInfo) {
-            setLoading(true);
-            fetchData();
-        }
-    }, [getCustomer, setCustomerInfo, customerInfo]);
 
     useEffect(() => {
         if (customerInfo) {
@@ -107,7 +78,7 @@ export default function ShippingDetailsBar({ shippingOption }) {
                 );
             }
         }
-    }, [cusPhoneNo, customerInfo, loading]);
+    }, [cusPhoneNo, customerInfo]);
 
     const getAddress = () => {
         if (shippingOption === 'standardDelivery') {
@@ -128,10 +99,6 @@ export default function ShippingDetailsBar({ shippingOption }) {
         }
         return <COReusableStyles.Text>CollectCo JustPrint Penang</COReusableStyles.Text>;
     };
-
-    if (loading) {
-        return <div>Loading</div>;
-    }
 
     return (
         <Wrapper>
