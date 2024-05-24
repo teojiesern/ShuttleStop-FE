@@ -111,6 +111,7 @@ export default function CheckoutScreen() {
     const [isPaymentSelected, setIsPaymentSelected] = useState(false);
     const [groupedProduct, setGroupedProducts] = useState({});
     const [availablePaymentOption, setAvailablePaymentOption] = useState([true, true]);
+    const [availableShippingOption, setAvailableShippingOption] = useState([true, true]);
     const { cart, removeFromCart } = useContext(CartContext);
     const { showModal, hideModal } = useModal();
     const { getShop } = useShop();
@@ -152,6 +153,7 @@ export default function CheckoutScreen() {
                     hideModal={hideModal}
                     shippingOption={shippingOption}
                     updateShippingOption={updateShippingOption}
+                    availableShippingOption={availableShippingOption}
                 />
             ),
             disableBackdropDismiss: true,
@@ -166,6 +168,13 @@ export default function CheckoutScreen() {
                 setAvailablePaymentOption((prevOptions) => [prevOptions[0], false]);
             }
         };
+        const setSupportedShippingOption = (shop) => {
+            if (!shop.shopSupportedShippingOption.includes('Standard Delivery') && availableShippingOption[0]) {
+                setAvailableShippingOption((prevOptions) => [false, prevOptions[1]]);
+            } else if (!shop.shopSupportedShippingOption.includes('Self Pickup') && availableShippingOption[1]) {
+                setAvailableShippingOption((prevOptions) => [prevOptions[0], false]);
+            }
+        };
         if (from !== 'buyNow') {
             const groupProducts = async () => {
                 const groups = {};
@@ -177,6 +186,7 @@ export default function CheckoutScreen() {
                             products: [],
                         };
                         setSupportedPaymentOption(shop);
+                        setSupportedShippingOption(shop);
                     }
                     groups[shop.name].products.push(product);
                 });
@@ -194,10 +204,11 @@ export default function CheckoutScreen() {
                     checkedProducts,
                 };
                 setSupportedPaymentOption(shop);
+                setSupportedShippingOption(shop);
             };
             groupProducts();
         }
-    }, [from, checkedProducts, getShop, availablePaymentOption]);
+    }, [from, checkedProducts, getShop, availablePaymentOption, availableShippingOption]);
 
     if (from === 'buyNow') {
         return (

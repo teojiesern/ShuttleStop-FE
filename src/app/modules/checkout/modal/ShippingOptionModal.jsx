@@ -66,7 +66,12 @@ const ButtonContainer = styled.div`
     gap: 0.5rem;
 `;
 
-export default function ShippingOptionModal({ hideModal, shippingOption, updateShippingOption }) {
+export default function ShippingOptionModal({
+    hideModal,
+    shippingOption,
+    updateShippingOption,
+    availableShippingOption,
+}) {
     const [selectedOption, setSelectedOption] = useState(shippingOption);
 
     const handleStandardDeliveryClick = () => {
@@ -102,25 +107,30 @@ export default function ShippingOptionModal({ hideModal, shippingOption, updateS
     return (
         <Container>
             <Title>Shipping Option</Title>
-            <StandardDeliveryButton
-                isActive={selectedOption === 'standardDelivery'}
-                onClick={handleStandardDeliveryClick}
-            >
-                <p>Standard Delivery</p>
-                <p style={{ textAlign: 'right' }}>RM5.90</p>
-            </StandardDeliveryButton>
-            <SelfCollectionContainer>
-                <SelfCollectionTitle>
-                    <p>Self Collection Points</p>
-                    <p style={{ textAlign: 'right' }}>RM5.90</p>
-                </SelfCollectionTitle>
-                <StyledRadioGroup
-                    value={selectedOption}
-                    onChange={handleRadioChange}
+            {availableShippingOption[0] && (
+                <StandardDeliveryButton
+                    isActive={selectedOption === 'standardDelivery'}
+                    onClick={handleStandardDeliveryClick}
                 >
-                    {mockData}
-                </StyledRadioGroup>
-            </SelfCollectionContainer>
+                    <p>Standard Delivery</p>
+                    <p style={{ textAlign: 'right' }}>RM5.90</p>
+                </StandardDeliveryButton>
+            )}
+
+            {availableShippingOption[1] && (
+                <SelfCollectionContainer>
+                    <SelfCollectionTitle>
+                        <p>Self Collection Points</p>
+                        <p style={{ textAlign: 'right' }}>RM5.90</p>
+                    </SelfCollectionTitle>
+                    <StyledRadioGroup
+                        value={selectedOption}
+                        onChange={handleRadioChange}
+                    >
+                        {mockData}
+                    </StyledRadioGroup>
+                </SelfCollectionContainer>
+            )}
             <ButtonContainer>
                 <Button
                     style={{ ...PlatformReusableStyles.SecondaryButtonStyles, padding: '1rem 2rem' }}
