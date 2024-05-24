@@ -1,9 +1,12 @@
 import { Button } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
+import CustomerInfoContext from '../../../platform/app/data/CustomerInfoContext';
+import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
+import ErrorModal from './Modal/ErrorModal';
 import arrowLeft from './assets/arrowLeft.png';
 import arrowRight from './assets/arrowRight.png';
 import CoachHeadImage from './assets/coachesHead.png';
@@ -56,9 +59,14 @@ const UpdateProfileLink = styled.div`
 
 export default function MarketingTestScreenTwo() {
     const { getCoachDetails } = useCoachDetail();
+    const { customerInfo } = useContext(CustomerInfoContext) || {};
     const [coaches, setCoach] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const navigate = useNavigate();
+    const { showModal, hideModal } = useModal();
+    const startIndex = currentIndex * 6;
+    const endIndex = Math.min(startIndex + 6, coaches.length);
+    const coachesPerPage = 6;
 
     useEffect(() => {
         getCoachDetails().then((data) => {
@@ -67,7 +75,8 @@ export default function MarketingTestScreenTwo() {
     }, [getCoachDetails]);
     console.log(coaches);
 
-    const index = coaches.length / 8;
+    const index = coaches.length / 6;
+    const totalPages = Math.ceil(coaches.length / coachesPerPage);
 
     const handlePrevClick = () => {
         if (currentIndex > 0) {
@@ -76,9 +85,39 @@ export default function MarketingTestScreenTwo() {
     };
 
     const handleNextClick = () => {
-        if (currentIndex < Math.ceil(index) - 1) {
+        if (currentIndex < totalPages - 1) {
             setCurrentIndex(currentIndex + 1);
         }
+    };
+
+    const handleRegister = () => {
+        const isCustomerIdUndefined = !customerInfo || customerInfo.customerID === undefined;
+
+        if (isCustomerIdUndefined) {
+            return showModal({
+                modal: (
+                    <ErrorModal
+                        hideModal={hideModal}
+                        title="Please log in to register coach! "
+                    />
+                ),
+            });
+        }
+
+        const isRegisteredForOneCoach = coaches.some((coach) => coach.customerID === customerInfo.customerID);
+
+        if (isRegisteredForOneCoach) {
+            return showModal({
+                modal: (
+                    <ErrorModal
+                        hideModal={hideModal}
+                        title="You can only register for one coach! "
+                    />
+                ),
+            });
+        }
+
+        navigate('/marketing/coach-registration');
     };
 
     return (
@@ -91,7 +130,7 @@ export default function MarketingTestScreenTwo() {
             <LinkContainer>
                 {/* update action to profile link */}
                 <UpdateProfileLink
-                    onClick={() => navigate('/marketing/coach-registration')}
+                    onClick={handleRegister}
                     style={{ cursor: 'pointer' }}
                 >
                     <CoachReusableStyle.Text>Coach Registeration</CoachReusableStyle.Text>
@@ -109,7 +148,7 @@ export default function MarketingTestScreenTwo() {
                     {coaches.length === 0 ? (
                         <p>No coach available</p>
                     ) : (
-                        coaches.slice(currentIndex * 6, currentIndex * 6 + 6).map((coach) => (
+                        coaches.slice(startIndex, endIndex).map((coach) => (
                             <div key={coach.coachId}>
                                 <ContentContainer
                                     onClick={() => {

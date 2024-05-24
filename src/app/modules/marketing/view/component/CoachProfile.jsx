@@ -57,7 +57,7 @@ export default function CoachProfile() {
     const { coachId } = useParams();
     const { getCoachDetails } = useCoachById(coachId);
     const [coach, setCoach] = useState([]);
-    const { customerInfo } = useContext(CustomerInfoContext);
+    const { customerInfo } = useContext(CustomerInfoContext) || {};
 
     useEffect(() => {
         getCoachDetails().then((data) => {
@@ -92,9 +92,11 @@ export default function CoachProfile() {
     }, [coach]);
 
     const handleEdit = useCallback(() => {
-        console.log('customerInfoEditID: ', customerInfo.customerID, 'coachCustomerID: ', coach.customerID);
-        if (customerInfo.customerID === coach.customerID) {
-            navigate(`/marketing/coach-edit/${coach.coachId}`, { state: { coach } });
+        console.log('customerInfoEditID: ', customerInfo?.customerID, 'coachCustomerID: ', coach?.customerID);
+
+        // Check if customerInfo and coach are defined before accessing their properties
+        if (customerInfo?.customerID === coach?.customerID) {
+            navigate(`/marketing/coach-edit/${coach?.coachId}`, { state: { coach } });
         } else {
             showModal({
                 modal: (
@@ -105,7 +107,7 @@ export default function CoachProfile() {
                 ),
             });
         }
-    }, [customerInfo.customerID, coach.customerID, coach.coachId, coach, hideModal, navigate]);
+    }, [customerInfo?.customerID, coach?.customerID, coach?.coachId, coach, hideModal, navigate]);
 
     return (
         <CoachReusableStyle.ContainerColumn>
