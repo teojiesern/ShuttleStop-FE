@@ -13,6 +13,7 @@ import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import CartContext from '../../customer/context/CartContext';
+import useShop from '../../customer/view/hooks/useShop';
 import DeleteItemModal from '../modal/DeleteItemModal';
 import COReusableStyles from './styles/COReusableStyles';
 
@@ -95,7 +96,9 @@ export default function ShoppingCartScreen() {
     const [productTotal, setProductTotal] = useState({});
     const [checkedProducts, setCheckedProducts] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [groupedProduct, setGroupedProducts] = useState({});
     const { showModal, hideModal } = useModal();
+    const { getShop } = useShop();
     const { cart, increaseQty, decreaseQty } = useContext(CartContext);
 
     useEffect(() => {
@@ -122,6 +125,23 @@ export default function ShoppingCartScreen() {
             return [...prevCheckedProducts, productId];
         });
     }, []);
+
+    const handleSelectStoresChange = useCallback(
+        (shopName) => {
+            setCheckedProducts((prevCheckedProducts) => {
+                const group = groupedProduct[shopName];
+                const productIds = group.products.map((product) => product.id);
+
+                const allChecked = productIds.every((productId) => prevCheckedProducts.includes(productId));
+
+                if (allChecked) {
+                    return prevCheckedProducts.filter((productId) => !productIds.includes(productId));
+                }
+                return [...new Set([...prevCheckedProducts, ...productIds])];
+            });
+        },
+        [groupedProduct],
+    );
 
     const handleSelectAllChange = useCallback(
         (event) => {
@@ -212,6 +232,27 @@ export default function ShoppingCartScreen() {
         setTotalPrice(updatedTotalPrice);
     }, [productTotal, checkedProducts, calculateTotalPrice]);
 
+    useEffect(() => {
+        async function groupProducts() {
+            const groups = {};
+            const promises = cart.map(async (product) => {
+                const shop = await getShop('520386e5-8b73-4e2f-a038-7800bf31164d');
+                if (!groups[shop.name]) {
+                    groups[shop.name] = {
+                        shop,
+                        products: [],
+                    };
+                }
+                groups[shop.name].products.push(product);
+            });
+
+            await Promise.all(promises);
+            setGroupedProducts(groups);
+        }
+
+        groupProducts();
+    }, [cart, getShop]);
+
     if (cart.length === 0) {
         return (
             <Wrapper>
@@ -273,7 +314,6 @@ export default function ShoppingCartScreen() {
                             <COReusableStyles.Label style={{ marginLeft: '1.5rem' }}>Product</COReusableStyles.Label>
                         }
                     />
-                    {console.log('checked product:', checkedProducts)}
                     <COReusableStyles.Label>Unit Price</COReusableStyles.Label>
                     <COReusableStyles.Label>Quantity</COReusableStyles.Label>
                     <COReusableStyles.Label>Total Price</COReusableStyles.Label>
@@ -281,76 +321,82 @@ export default function ShoppingCartScreen() {
                 </Layout>
             </COReusableStyles.BorderConatiner>
 
-            {cart.map((product) => (
-                <COReusableStyles.BorderConatiner key={product.id}>
+            {Object.entries(groupedProduct).map(([shopName, group]) => (
+                <COReusableStyles.BorderConatiner key={shopName}>
                     <FormControlLabel
                         control={
                             <Checkbox
-                                onChange={() => handleProductChecked(product.id)}
-                                checked={checkedProducts.includes(product.id)}
+                                onChange={() => handleSelectStoresChange(shopName)}
+                                checked={group.products.every((product) => checkedProducts.includes(product.id))}
                             />
                         }
                         label={
                             <CheckboxLabelContainer>
                                 <Storefront />
-                                <COReusableStyles.Text style={{}}>Titan Badminton Store</COReusableStyles.Text>
+                                <COReusableStyles.Text style={{}}>{shopName}</COReusableStyles.Text>
                             </CheckboxLabelContainer>
                         }
                     />
-                    <COReusableStyles.Divider />
-                    <Layout>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    onChange={() => handleProductChecked(product.id)}
-                                    checked={checkedProducts.includes(product.id)}
+                    {group.products.map((product) => (
+                        <>
+                            <COReusableStyles.Divider />
+                            <Layout>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            onChange={() => handleProductChecked(product.id)}
+                                            checked={checkedProducts.includes(product.id)}
+                                        />
+                                    }
+                                    label={
+                                        <CheckboxLabelContainer>
+                                            <img
+                                                src={product.imgSrc}
+                                                alt={product.name}
+                                                width="100px"
+                                            />
+                                            <COReusableStyles.Text style={{ textAlign: 'start' }}>
+                                                {product.name}
+                                                <p style={{ color: COLORS.darkGrey, fontSize: FONTSIZE['x-small'] }}>
+                                                    {[
+                                                        product.options.color ? product.options.color : '',
+                                                        product.options.size ? product.options.size : '',
+                                                        product.options.grade ? product.options.grade : '',
+                                                    ]
+                                                        .filter(Boolean)
+                                                        .join(', ')}
+                                                </p>
+                                            </COReusableStyles.Text>
+                                        </CheckboxLabelContainer>
+                                    }
                                 />
-                            }
-                            label={
-                                <CheckboxLabelContainer>
-                                    <img
-                                        src={product.imgSrc}
-                                        alt={product.name}
-                                        width="100px"
-                                    />
-                                    <COReusableStyles.Text style={{ textAlign: 'start' }}>
-                                        {product.name}
-                                        <p style={{ color: COLORS.darkGrey, fontSize: FONTSIZE['x-small'] }}>
-                                            {[
-                                                product.options.color ? product.options.color : '',
-                                                product.options.size ? product.options.size : '',
-                                                product.options.grade ? product.options.grade : '',
-                                            ]
-                                                .filter(Boolean)
-                                                .join(', ')}
-                                        </p>
+                                <COReusableStyles.Text>RM{product.price.toFixed(2)}</COReusableStyles.Text>
+                                <QuantityControlContainer>
+                                    <QuantityChangeButton onClick={() => handleDecrementChange(product.id)}>
+                                        -
+                                    </QuantityChangeButton>
+                                    <QuantityChangeButton style={{ cursor: 'auto' }}>
+                                        <p>{product.quantity}</p>
+                                    </QuantityChangeButton>
+                                    <QuantityChangeButton onClick={() => handleIncrementChange(product.id)}>
+                                        +
+                                    </QuantityChangeButton>
+                                </QuantityControlContainer>
+                                {productTotal[product.id] !== undefined && (
+                                    <COReusableStyles.Text>
+                                        RM{productTotal[product.id].toFixed(2)}
                                     </COReusableStyles.Text>
-                                </CheckboxLabelContainer>
-                            }
-                        />
-                        <COReusableStyles.Text>RM{product.price.toFixed(2)}</COReusableStyles.Text>
-                        <QuantityControlContainer>
-                            <QuantityChangeButton onClick={() => handleDecrementChange(product.id)}>
-                                -
-                            </QuantityChangeButton>
-                            <QuantityChangeButton style={{ cursor: 'auto' }}>
-                                <p>{product.quantity}</p>
-                            </QuantityChangeButton>
-                            <QuantityChangeButton onClick={() => handleIncrementChange(product.id)}>
-                                +
-                            </QuantityChangeButton>
-                        </QuantityControlContainer>
-                        {productTotal[product.id] !== undefined && (
-                            <COReusableStyles.Text>RM{productTotal[product.id].toFixed(2)}</COReusableStyles.Text>
-                        )}
-                        <IconButton
-                            onClick={() => handleActionClick(product.id)}
-                            aria-label="delete"
-                            style={{ color: COLORS.black }}
-                        >
-                            <DeleteOutline />
-                        </IconButton>
-                    </Layout>
+                                )}
+                                <IconButton
+                                    onClick={() => handleActionClick(product.id)}
+                                    aria-label="delete"
+                                    style={{ color: COLORS.black }}
+                                >
+                                    <DeleteOutline />
+                                </IconButton>
+                            </Layout>
+                        </>
+                    ))}
                 </COReusableStyles.BorderConatiner>
             ))}
             <BottomBar>
@@ -387,7 +433,6 @@ export default function ShoppingCartScreen() {
                     )}
                 </BottomLayout>
             </BottomBar>
-            {console.log('cart: ', cart)}
         </Wrapper>
     );
 }
