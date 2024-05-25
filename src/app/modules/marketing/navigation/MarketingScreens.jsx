@@ -1,11 +1,10 @@
 import { Route } from 'react-router-dom';
 
+import MarketingTestScreen from '../view/CompetitionScreen';
 import MarketingCoachEditScreen from '../view/MarketingCoachEditScreen';
 import MarketingCoachRegistrationScreen from '../view/MarketingCoachRegistrationScreen';
-import MarketingTestScreen from '../view/MarketingTestScreen';
 import MarketingTestScreenTwo from '../view/MarketingTestScreenTwo';
 import CoachProfile from '../view/component/CoachProfile';
-
 
 const MarketingScreens = (
     <>

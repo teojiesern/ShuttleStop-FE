@@ -36,7 +36,7 @@ const RadioButtonLabel = styled.div`
     align-items: center;
 `;
 
-export default function SelectPaymentMethod({ setIsPaymentSelected }) {
+export default function SelectPaymentMethod({ setIsPaymentSelected, availablePaymentOption }) {
     const [paymentMethod, setPaymentMethod] = useState('onlineBanking');
     const handlePaymentMethod = (newPaymentMethod) => {
         setPaymentMethod(newPaymentMethod);
@@ -49,21 +49,26 @@ export default function SelectPaymentMethod({ setIsPaymentSelected }) {
         <Container>
             <COReusableStyles.Title>Payment Method</COReusableStyles.Title>
             <ButtonContainer>
-                <PaymentMethodButton
-                    isActive={paymentMethod === 'onlineBanking'}
-                    onClick={() => handlePaymentMethod('onlineBanking')}
-                >
-                    <p>Online Banking</p>
-                </PaymentMethodButton>
-                <PaymentMethodButton
-                    isActive={paymentMethod === 'cod'}
-                    onClick={() => {
-                        handlePaymentMethod('cod');
-                        setIsPaymentSelected(true);
-                    }}
-                >
-                    <p>Cash On Delivery</p>
-                </PaymentMethodButton>
+                {availablePaymentOption[0] && (
+                    <PaymentMethodButton
+                        isActive={paymentMethod === 'onlineBanking'}
+                        onClick={() => handlePaymentMethod('onlineBanking')}
+                    >
+                        <p>Online Banking</p>
+                    </PaymentMethodButton>
+                )}
+
+                {availablePaymentOption[1] && (
+                    <PaymentMethodButton
+                        isActive={paymentMethod === 'cod'}
+                        onClick={() => {
+                            handlePaymentMethod('cod');
+                            setIsPaymentSelected(true);
+                        }}
+                    >
+                        <p>Cash On Delivery</p>
+                    </PaymentMethodButton>
+                )}
             </ButtonContainer>
             {paymentMethod === 'onlineBanking' && (
                 <RadioGroup>
