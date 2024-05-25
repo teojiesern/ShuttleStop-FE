@@ -53,7 +53,7 @@ export default function SCShippingSettingsScreen() {
     const [courierOptions, setCourierOptions] = useState(shopSupportedCourierOption);
     const [shippingOptions, setShippingOptions] = useState(shopSupportedShippingOption);
     const [paymentOptions, setPaymentOptions] = useState(shopSupportedPaymentOption);
-    const { updateShippingSettings } = useSCShippingSettings({ courierOptions, paymentOptions, shippingOptions });
+    const { updateShippingSettings } = useSCShippingSettings();
     const { showModal, hideModal } = useModal();
 
     const handleCourierOptionsClick = useCallback((courierOption) => {
@@ -86,13 +86,13 @@ export default function SCShippingSettingsScreen() {
         });
     }, []);
 
-    const onSaveClick = useCallback(() => {
-        updateShippingSettings();
+    const onSaveClick = useCallback(async () => {
+        await updateShippingSettings({ courierOptions, paymentOptions, shippingOptions });
         showModal({ modal: <TickedModal title="Shop Settings updated successfully!" /> });
         setTimeout(() => {
             hideModal();
         }, 3500);
-    }, [hideModal, showModal, updateShippingSettings]);
+    }, [courierOptions, hideModal, paymentOptions, shippingOptions, showModal, updateShippingSettings]);
 
     return (
         <Container>

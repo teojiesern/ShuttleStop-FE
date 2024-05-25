@@ -6,6 +6,7 @@ export default class SellerRepositoryImpl {
     #ROUTES = {
         SELLER: `${this.#BASE_URL}/information`,
         SHOP: (sellerId) => `${this.#BASE_URL}/shop/${sellerId}`,
+        UPDATE_SHOP: `${this.#BASE_URL}/update-shop`,
     };
 
     getSellerInformation = async () => {
@@ -38,5 +39,11 @@ export default class SellerRepositoryImpl {
         };
 
         return { status, data: mappedData };
+    };
+
+    updateShopInformation = async (shopData) => {
+        const { status, data } = await Network.getInstance().patch(this.#ROUTES.UPDATE_SHOP, shopData);
+
+        return { status, data };
     };
 }
