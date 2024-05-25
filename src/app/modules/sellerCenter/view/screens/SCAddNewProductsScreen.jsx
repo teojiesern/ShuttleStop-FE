@@ -9,9 +9,10 @@ import {
     TableRow,
     TextField,
 } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import ShopInfoContext from '../../../../platform/app/data/ShopInfoContext';
 import DropBox from '../../../../platform/components/dropbox/DropBox';
 import { ProductBrands, ProductCategories } from '../../../../platform/constants/PlatformConstants';
 import TickedModal from '../../../../platform/modal/TickedModal';
@@ -101,6 +102,8 @@ export default function SCAddNewProductsScreen({
     const [totalStock, setTotalStock] = useState(variants.map((variant) => variant.totalStock));
     const [price, setPrice] = useState(variants.map((variant) => variant.price));
 
+    const { setShopInfo } = useContext(ShopInfoContext);
+
     const { addNewProducts } = useSCAddNewProducts();
     const { showLoadingModal, hideLoadingModal } = useLoadingModal();
     const { showModal: showInternalModal } = useModal();
@@ -161,7 +164,7 @@ export default function SCAddNewProductsScreen({
         }));
         try {
             showLoadingModal();
-            await addNewProducts({
+            const newProductId = await addNewProducts({
                 productName,
                 productCategory,
                 productBrand,
@@ -173,6 +176,10 @@ export default function SCAddNewProductsScreen({
                 productDescription,
                 variants: newVariants,
             });
+            setShopInfo((prev) => ({
+                ...prev,
+                shopProducts: [newProductId, ...prev.shopProducts],
+            }));
 
             // set everything back to empty state
             setProductName('');

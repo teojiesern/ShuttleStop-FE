@@ -37,8 +37,8 @@ export default function useSCAddNewProducts() {
                 formData.append('productDescription', productDescription);
                 formData.append('variants', JSON.stringify(variants));
 
-                const { data } = await repositoryRef.current.addNewProducts(formData);
-                return data;
+                const { productId } = await repositoryRef.current.addNewProducts(formData);
+                return productId;
             } catch (error) {
                 throw error;
             }
