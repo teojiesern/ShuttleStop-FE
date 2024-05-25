@@ -1,12 +1,16 @@
 import { Button, TextField } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import ShopInfoContext from '../../../../platform/app/data/ShopInfoContext';
 import DropBox from '../../../../platform/components/dropbox/DropBox';
+import CrossedModal from '../../../../platform/modal/CrossedModal';
+import TickedModal from '../../../../platform/modal/TickedModal';
+import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
+import useSCShopProfile from '../hooks/useSCShopProfile';
 
 const Container = styled.div`
     display: flex;
@@ -32,7 +36,41 @@ const FormLabel = styled.label`
 
 export default function SCShopProfileScreen() {
     const { shopName, shopDescription, shopLogoPath } = useContext(ShopInfoContext);
+    const [shopNameValue, setShopNameValue] = useState(shopName);
+    const [shopDescriptionValue, setShopDescriptionValue] = useState(shopDescription);
     const [files, setFiles] = useState([{ name: '', preview: shopLogoPath }]);
+
+    const { showModal } = useModal();
+    const { updateShopProfile } = useSCShopProfile();
+
+    const onSaveClick = useCallback(async () => {
+        if (shopNameValue === '') {
+            showModal({
+                modal: (
+                    <CrossedModal
+                        title="Please enter your shop name"
+                        description="This will be shown to customers when they visit your shop."
+                    />
+                ),
+            });
+            return;
+        }
+
+        if (files.length === 0) {
+            showModal({
+                modal: (
+                    <CrossedModal
+                        title="Please do not leave the shop logo field empty"
+                        description="Shop Logo can let customers recognize your shop easily."
+                    />
+                ),
+            });
+            return;
+        }
+
+        await updateShopProfile({ name: shopNameValue, description: shopDescriptionValue, file: files });
+        showModal({ modal: <TickedModal title="Shop Settings updated successfully!" /> });
+    }, [files, shopDescriptionValue, shopNameValue, showModal, updateShopProfile]);
 
     return (
         <Container>
@@ -42,7 +80,8 @@ export default function SCShopProfileScreen() {
                     label="Enter your shop name"
                     size="small"
                     style={{ minWidth: '50%' }}
-                    defaultValue={shopName}
+                    value={shopNameValue}
+                    onChange={(e) => setShopNameValue(e.target.value)}
                 />
             </ContentContainer>
             <ContentContainer>
@@ -59,14 +98,20 @@ export default function SCShopProfileScreen() {
                 <TextField
                     size="small"
                     style={{ minWidth: '50%' }}
-                    defaultValue={shopDescription}
+                    value={shopDescriptionValue}
+                    onChange={(e) => setShopDescriptionValue(e.target.value)}
                     multiline
                     rows={4}
                 />
             </ContentContainer>
             <ContentContainer>
                 <FormLabel />
-                <Button style={{ ...PlatformReusableStyles.PrimaryButtonStyles, padding: '.5rem 1rem' }}>Save</Button>
+                <Button
+                    style={{ ...PlatformReusableStyles.PrimaryButtonStyles, padding: '.5rem 1rem' }}
+                    onClick={onSaveClick}
+                >
+                    Save
+                </Button>
             </ContentContainer>
         </Container>
     );

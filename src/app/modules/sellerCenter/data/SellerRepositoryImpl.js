@@ -46,4 +46,15 @@ export default class SellerRepositoryImpl {
 
         return { status, data };
     };
+
+    // Form data variant of updateShopInformation, used for file updates
+    updateShopInformationFile = async (formData) => {
+        const { status, data } = await Network.getInstance().patch(this.#ROUTES.UPDATE_SHOP, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        return { status, data };
+    };
 }
