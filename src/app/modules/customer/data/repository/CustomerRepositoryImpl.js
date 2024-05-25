@@ -12,6 +12,7 @@ export default class CustomerRepositoryImpl {
 
     getCustomer = async () => {
         const { status, data } = await Network.getInstance().get(this.#ROUTES.CUSTOMER);
+        console.log(data);
 
         const mappedData = {
             customerID: data.customerId,
@@ -21,6 +22,7 @@ export default class CustomerRepositoryImpl {
             gender: data.gender,
             birthday: data.birthday,
             profileImgPath: `http://localhost:3000/${data.profileImgPath}`,
+            seller: data.seller,
             address: {
                 street: data.address.street,
                 city: data.address.city,
