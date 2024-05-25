@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import ShopInfoContext from '../../../../platform/app/data/ShopInfoContext';
 import CustomSwitch from '../../../../platform/components/control/CustomSwitch';
+import CrossedModal from '../../../../platform/modal/CrossedModal';
 import TickedModal from '../../../../platform/modal/TickedModal';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
@@ -54,7 +55,7 @@ export default function SCShippingSettingsScreen() {
     const [shippingOptions, setShippingOptions] = useState(shopSupportedShippingOption);
     const [paymentOptions, setPaymentOptions] = useState(shopSupportedPaymentOption);
     const { updateShippingSettings } = useSCShippingSettings();
-    const { showModal, hideModal } = useModal();
+    const { showModal } = useModal();
 
     const handleCourierOptionsClick = useCallback((courierOption) => {
         setCourierOptions((prevCourierOptions) => {
@@ -87,12 +88,24 @@ export default function SCShippingSettingsScreen() {
     }, []);
 
     const onSaveClick = useCallback(async () => {
+        if (courierOptions.length === 0) {
+            showModal({ modal: <CrossedModal title="Please select at least one courier option" /> });
+            return;
+        }
+
+        if (shippingOptions.length === 0) {
+            showModal({ modal: <CrossedModal title="Please select at least one shipping option" /> });
+            return;
+        }
+
+        if (paymentOptions.length === 0) {
+            showModal({ modal: <CrossedModal title="Please select at least one payment option" /> });
+            return;
+        }
+
         await updateShippingSettings({ courierOptions, paymentOptions, shippingOptions });
         showModal({ modal: <TickedModal title="Shop Settings updated successfully!" /> });
-        setTimeout(() => {
-            hideModal();
-        }, 3500);
-    }, [courierOptions, hideModal, paymentOptions, shippingOptions, showModal, updateShippingSettings]);
+    }, [courierOptions, paymentOptions, shippingOptions, showModal, updateShippingSettings]);
 
     return (
         <Container>
