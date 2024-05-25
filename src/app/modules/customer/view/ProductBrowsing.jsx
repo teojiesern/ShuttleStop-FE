@@ -8,7 +8,7 @@ import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import FilterContext from '../context/FilterContext';
 import Product from './Product';
-import products from './assets/ProductList2';
+import useCustomer from './hooks/useCustomer';
 
 const ProductGrid = styled.div`
     display: grid;
@@ -28,14 +28,27 @@ const Sort = styled.div`
 export default function ProductBrowsing() {
     const location = useLocation();
     const pathnames = location.pathname.split('/');
+    const { getAllProducts } = useCustomer();
+    const [allProducts, setAllProducts] = useState([]);
+    const [productDisplay, setProductDisplay] = useState([]);
+    useEffect(() => {
+        async function fetchProduct() {
+            try {
+                const products = await getAllProducts();
+                setAllProducts(products);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchProduct();
+    }, [setAllProducts, getAllProducts]);
 
     const category = pathnames[pathnames.length - 1];
 
-    const [productDisplay, setProductDisplay] = useState(products);
     useEffect(() => {
-        const newProductsDisplay = products.filter((p) => p.category === category);
+        const newProductsDisplay = allProducts.filter((p) => p.category.toLowerCase() === category);
         setProductDisplay(newProductsDisplay);
-    }, [category]);
+    }, [category, allProducts]);
 
     const [filteredProducts, setFilteredProducts] = useState([]);
     const { filter, setFilter } = useContext(FilterContext);
@@ -44,19 +57,18 @@ export default function ProductBrowsing() {
         // Apply filters to product list
         const newFilteredProducts = productDisplay.filter(
             (product) =>
-                (filter.selectedBrands.length === 0 || filter.selectedBrands.includes(product.brand)) &&
-                product.rate >= filter.selectedRate &&
-                (filter.minPrice === 0 || product.price >= filter.minPrice) &&
-                (filter.maxPrice === 0 || product.price <= filter.maxPrice),
+                (filter.selectedBrands.length === 0 || filter.selectedBrands.includes(product.brands)) &&
+                (!filter.selectedRate || product.rate >= filter.selectedRate) &&
+                (filter.minPrice === 0 || product.minPrice >= filter.minPrice) &&
+                (filter.maxPrice === 0 || product.minPrice <= filter.maxPrice),
         );
-
         // Apply sort to filtered product list
         switch (filter.sort) {
             case 'price-asc':
-                newFilteredProducts.sort((a, b) => a.price - b.price);
+                newFilteredProducts.sort((a, b) => a.minPrice - b.minPrice);
                 break;
             case 'price-desc':
-                newFilteredProducts.sort((a, b) => b.price - a.price);
+                newFilteredProducts.sort((a, b) => b.minPrice - a.minPrice);
                 break;
             case 'name-asc':
                 newFilteredProducts.sort((a, b) => a.name.localeCompare(b.name));
@@ -70,7 +82,6 @@ export default function ProductBrowsing() {
             default:
                 break;
         }
-
         setFilteredProducts(newFilteredProducts);
     }, [filter, productDisplay]);
 
@@ -118,17 +129,17 @@ export default function ProductBrowsing() {
                     <MenuItem value="name-desc">Name: Z to A</MenuItem>
                 </Select>
             </Sort>
-            <ProductGrid key={category}>
+            <ProductGrid>
                 {productsForCurrentPage.length === 0 ? (
                     <p>No product available</p>
                 ) : (
                     productsForCurrentPage.map((product) => (
                         <Product
-                            key={product.id}
-                            id={product.id}
-                            imgSrc={product.imgSrc}
+                            key={product.productId}
+                            id={product.productId}
+                            thumbnail={product.thumbnailImage}
                             name={product.name}
-                            price={product.price}
+                            price={product.minPrice}
                             category={product.category}
                         />
                     ))
