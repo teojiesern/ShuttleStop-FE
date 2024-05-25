@@ -52,8 +52,33 @@ export default function useCustomer() {
         [getCustomer],
     );
 
+    const getAllProducts = useCallback(async () => {
+        try {
+            const { data } = await repositoryRef.current.getAllProducts();
+            return data;
+        } catch (error) {
+            if (isAxiosError(error)) {
+                console.log('this is the errors', error.response.data);
+            }
+        }
+    }, []);
+
+    const getProductById = useCallback(async (productId) => {
+        try {
+            const { data } = await repositoryRef.current.getProductById(productId);
+
+            return data;
+        } catch (error) {
+            if (isAxiosError(error)) {
+                console.log('this is the errors', error.response.data);
+            }
+        }
+    }, []);
+
     return {
         getCustomer,
         updateCustomer,
+        getAllProducts,
+        getProductById,
     };
 }

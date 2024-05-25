@@ -4,7 +4,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Button } from '@mui/material';
 import Rating from '@mui/material/Rating';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
@@ -14,7 +14,8 @@ import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import CartContext from '../context/CartContext';
-import products from './assets/ProductList2';
+import useCustomer from './hooks/useCustomer';
+import useShop from './hooks/useShop';
 import AddCartModal from './modal/AddCartModal';
 
 const AllDetails = styled.div`
@@ -174,25 +175,31 @@ const TextSmallGrey = styled.p`
 export default function ProductDetailScreen() {
     const { isLogin } = useContext(CustomerStatusContext);
     const navigate = useNavigate();
+    const { getProductById } = useCustomer();
+    const { getShop } = useShop();
+    const [product, setProduct] = useState();
+    const [productShop, setProductShop] = useState();
+    const [selectedVariant, setSelectedVariant] = useState('');
 
     const { id } = useParams();
-    const product = products.find((p) => p.id === Number(id));
+    useEffect(() => {
+        async function fetchProduct() {
+            try {
+                const p = await getProductById(id);
+                setProduct(p);
+                setSelectedVariant(p.variants[0].color);
+                const s = await getShop(id);
+                setProductShop(s);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchProduct();
+    }, [id, getProductById, getShop]);
 
-    const { size, color, grade } = product.options;
-
-    const [selectedOptions, setSelectedOptions] = useState({
-        ...(size && size.length > 0 ? { size: size[0] } : {}),
-        ...(color && color.length > 0 ? { color: color[0] } : {}),
-        ...(grade && grade.length > 0 ? { grade: grade[0] } : {}),
-    });
-
-    const handleOptionClick = (optionType, optionValue) => {
-        setSelectedOptions((prevOptions) => ({
-            ...prevOptions,
-            [optionType]: optionValue,
-        }));
+    const handleOptionClick = (variant) => {
+        setSelectedVariant(variant);
     };
-
     const [quantity, setQuantity] = useState(1);
     const [inputQuantity, setInputQuantity] = useState(quantity);
 
@@ -204,14 +211,7 @@ export default function ProductDetailScreen() {
         if (!isLogin) {
             navigate('/authentication/login', { replace: true });
         } else {
-            addToCart({
-                id: product.id + JSON.stringify(selectedOptions),
-                name: product.name,
-                price: product.price,
-                imgSrc: product.imgSrc,
-                quantity,
-                options: selectedOptions,
-            });
+            addToCart(product, selectedVariant, quantity);
             showModal({
                 modal: <AddCartModal />,
                 disableBackdropDismiss: true,
@@ -231,14 +231,7 @@ export default function ProductDetailScreen() {
     );
 
     const handleBuyNow = () => {
-        buyNow({
-            id: product.id + JSON.stringify(selectedOptions),
-            name: product.name,
-            price: product.price,
-            imgSrc: product.imgSrc,
-            quantity,
-            options: selectedOptions,
-        });
+        buyNow({ product, selectedVariant, quantity });
     };
 
     useEffect(() => {
@@ -247,14 +240,6 @@ export default function ProductDetailScreen() {
             buyNow(null);
         }
     }, [buyNowProduct, navigateToCheckout, buyNow]);
-
-    const description = product.description.split('\n').map((line) => (
-        <React.Fragment key={line}>
-            <br />
-            {line}
-            <br />
-        </React.Fragment>
-    ));
 
     const [imageListStart, setImageListStart] = useState(0);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -302,7 +287,7 @@ export default function ProductDetailScreen() {
             <AllDetails>
                 <AllImage>
                     <BigImg>
-                        {product.imgAll.length > 1 && (
+                        {product.productImages.length > 1 && (
                             <PrevButton
                                 onClick={handlePrevClickBigImage}
                                 style={{ width: '40px', height: '40px' }}
@@ -311,12 +296,12 @@ export default function ProductDetailScreen() {
                             </PrevButton>
                         )}
                         <img
-                            src={product.imgAll[selectedImageIndex]}
+                            src={product.productImages[selectedImageIndex]}
                             alt={product.name}
                             width={400}
                             height={400}
                         />
-                        {product.imgAll.length > 1 && (
+                        {product.productImages.length > 1 && (
                             <NextButton
                                 onClick={handleNextClickBigImage}
                                 style={{ width: '40px', height: '40px' }}
@@ -326,12 +311,12 @@ export default function ProductDetailScreen() {
                         )}
                     </BigImg>
                     <SmallImg>
-                        {product.imgAll.length > 4 && (
+                        {product.productImages.length > 4 && (
                             <PrevButton onClick={handlePrevClick}>
                                 <ArrowBackIosOutlined style={{ fontSize: '10px' }} />
                             </PrevButton>
                         )}
-                        {product.imgAll.slice(imageListStart, imageListStart + 4).map((image, index) => (
+                        {product.productImages.slice(imageListStart, imageListStart + 4).map((image, index) => (
                             <button
                                 key={Math.random()}
                                 onClick={() => handleImageClick(imageListStart + index)}
@@ -355,7 +340,7 @@ export default function ProductDetailScreen() {
                                 />
                             </button>
                         ))}
-                        {product.imgAll.length > 4 && (
+                        {product.productImages.length > 4 && (
                             <NextButton onClick={handleNextClick}>
                                 <ArrowForwardIosOutlined style={{ fontSize: '10px' }} />
                             </NextButton>
@@ -365,52 +350,51 @@ export default function ProductDetailScreen() {
                 <Details>
                     <TextXLarge>{product.name}</TextXLarge>
                     <Rate>
-                        <TextSmallGrey>{product.rate.toFixed(1)}</TextSmallGrey>
-                        <Rating
-                            name="read-only"
-                            value={product.rate}
-                            precision={0.5}
-                            readOnly
-                        />
+                        {product.rate > 0 ? (
+                            <>
+                                <TextSmallGrey>5.0</TextSmallGrey>
+                                <Rating
+                                    name="read-only"
+                                    value="5.0"
+                                    precision={0.5}
+                                    readOnly
+                                />
+                            </>
+                        ) : (
+                            <TextSmallGrey>No Rating</TextSmallGrey>
+                        )}
                         <TextSmallGrey>({product.numReviews} reviews)</TextSmallGrey>
                     </Rate>
-                    <Text3XLarge>RM {product.price.toFixed(2)}</Text3XLarge>
+                    <Text3XLarge>RM {product.minPrice.toFixed(2)}</Text3XLarge>
                     <StyledHr />
                     <Selectt>
-                        {Object.entries({ size, color, grade }).map(
-                            ([optionType, optionValues]) =>
-                                optionType &&
-                                optionValues &&
-                                optionValues.length > 0 && (
-                                    <WholeOption key={optionType}>
-                                        <OptionsType>{optionType}</OptionsType>
-                                        <AllOptionBtns>
-                                            {optionValues.map((optionValue) => (
-                                                <Button
-                                                    style={
-                                                        optionValue === selectedOptions[optionType]
-                                                            ? {
-                                                                  ...PlatformReusableStyles.OutlineButtonStyles,
-                                                                  width: '80px',
-                                                                  height: '50px',
-                                                              }
-                                                            : {
-                                                                  ...PlatformReusableStyles.BlackOutlineButtonStyles,
-                                                                  width: '80px',
-                                                                  height: '50px',
-                                                              }
-                                                    }
-                                                    key={optionValue}
-                                                    selected={optionValue === selectedOptions[optionType]}
-                                                    onClick={() => handleOptionClick(optionType, optionValue)}
-                                                >
-                                                    {optionValue}
-                                                </Button>
-                                            ))}
-                                        </AllOptionBtns>
-                                    </WholeOption>
-                                ),
-                        )}
+                        <WholeOption key="color">
+                            <OptionsType>Color</OptionsType>
+                            <AllOptionBtns>
+                                {product.variants.map((variant) => (
+                                    <Button
+                                        style={
+                                            variant.color === selectedVariant
+                                                ? {
+                                                      ...PlatformReusableStyles.OutlineButtonStyles,
+                                                      width: '80px',
+                                                      height: '50px',
+                                                  }
+                                                : {
+                                                      ...PlatformReusableStyles.BlackOutlineButtonStyles,
+                                                      width: '80px',
+                                                      height: '50px',
+                                                  }
+                                        }
+                                        key={variant.color}
+                                        // selected={variant.color === selectedVariant}
+                                        onClick={() => handleOptionClick(variant.color)}
+                                    >
+                                        {variant.color}
+                                    </Button>
+                                ))}
+                            </AllOptionBtns>
+                        </WholeOption>
                         <WholeOption>
                             <OptionsType>quantity </OptionsType>
                             <AllOptionBtns>
@@ -506,18 +490,22 @@ export default function ProductDetailScreen() {
                 </Details>
             </AllDetails>
             <hr />
-            <Seller>
-                <img
-                    src={product.sellerLogo}
-                    alt="seller logo"
-                    width={60}
-                    style={{ border: `2px solid ${COLORS.black}`, borderRadius: '50%' }}
-                />
-                <p>{product.seller}</p>
-            </Seller>
+            {productShop ? (
+                <Seller>
+                    <img
+                        src={productShop.logoPath}
+                        alt="seller logo"
+                        width={60}
+                        height={60}
+                        style={{ border: `2px solid ${COLORS.black}`, borderRadius: '50%' }}
+                    />
+                    <p>{productShop.name}</p>
+                </Seller>
+            ) : null}
             <hr />
             <ProductDescription>
-                <p>{description}</p>
+                <TextXLarge>Description</TextXLarge>
+                <p>{product.productDescription}</p>
             </ProductDescription>
             <br />
         </div>

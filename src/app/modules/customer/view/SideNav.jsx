@@ -83,7 +83,7 @@ const Rate = styled.div`
 `;
 
 export default function SideNav() {
-    const brands = ['Yonex', 'Felet', 'Apacs', 'Li-Ning', 'Victor', 'Maxx', 'Alpsport'];
+    const brands = ['YONEX', 'LI_NING', 'VICTOR', 'ASICS', 'APACS', 'FZ_FORZA', 'KAWASAKI'];
 
     const [showAllBrands, setShowAllBrands] = useState(false);
     const displayedBrands = showAllBrands ? brands : brands.slice(0, 5);
