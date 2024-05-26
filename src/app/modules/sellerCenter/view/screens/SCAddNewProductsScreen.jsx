@@ -123,6 +123,29 @@ export default function SCAddNewProductsScreen({
     }, [colors, price, totalStock, variants]);
 
     const onSave = useCallback(async () => {
+        if (!productName) {
+            showInternalModal({
+                modal: (
+                    <CrossedModal
+                        title="Please enter your product name"
+                        description="Product name will ease customers in identifying your product"
+                    />
+                ),
+            });
+            return;
+        }
+        if (thumbnailFile.length === 0) {
+            showInternalModal({
+                modal: (
+                    <CrossedModal
+                        title="Please do not leave the thumbnail field empty"
+                        description="Having a thumbnail image will increase the visibility of your product"
+                    />
+                ),
+            });
+            return;
+        }
+
         // Entry point is through modal
         if (hideModal) {
             const finalVariants = variants.map((variant, i) => ({
