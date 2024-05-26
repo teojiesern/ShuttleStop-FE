@@ -28,7 +28,7 @@ export default function useSCAddNewProducts() {
                 formData.append('sellerId', sellerId);
                 formData.append('name', productName);
                 formData.append('category', productCategory);
-                formData.append('brands', productBrand);
+                formData.append('brand', productBrand);
                 formData.append('thumbnailImage', thumbnailFile[0]);
                 formData.append('productImage1', productImage1[0]);
                 formData.append('productImage2', productImage2[0]);

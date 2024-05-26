@@ -57,7 +57,7 @@ export default function ProductBrowsing() {
         // Apply filters to product list
         const newFilteredProducts = productDisplay.filter(
             (product) =>
-                (filter.selectedBrands.length === 0 || filter.selectedBrands.includes(product.brands)) &&
+                (filter.selectedBrands.length === 0 || filter.selectedBrands.includes(product.brand)) &&
                 (!filter.selectedRate || product.rate >= filter.selectedRate) &&
                 (filter.minPrice === 0 || product.minPrice >= filter.minPrice) &&
                 (filter.maxPrice === 0 || product.minPrice <= filter.maxPrice),

@@ -82,11 +82,11 @@ export default function SCAddNewProductsScreen({
     const [productName, setProductName] = useState(cproductName || '');
     const [productCategory, setProductCategory] = useState(cproductCategory || '');
     const [productBrand, setProductBrand] = useState(cproductBrand || '');
-    const [thumbnailFile, setThumbnailFile] = useState(cthumbnailFile || []);
-    const [productImage1, setProductImage1] = useState(cproductImage1 || []);
-    const [productImage2, setProductImage2] = useState(cproductImage2 || []);
-    const [productImage3, setProductImage3] = useState(cproductImage3 || []);
-    const [productImage4, setProductImage4] = useState(cproductImage4 || []);
+    const [thumbnailFile, setThumbnailFile] = useState(cthumbnailFile ? [{ name: '', preview: cthumbnailFile }] : []);
+    const [productImage1, setProductImage1] = useState(cproductImage1 ? [{ name: '', preview: cproductImage1 }] : []);
+    const [productImage2, setProductImage2] = useState(cproductImage2 ? [{ name: '', preview: cproductImage2 }] : []);
+    const [productImage3, setProductImage3] = useState(cproductImage3 ? [{ name: '', preview: cproductImage3 }] : []);
+    const [productImage4, setProductImage4] = useState(cproductImage4 ? [{ name: '', preview: cproductImage4 }] : []);
     const [productDescription, setProductDescription] = useState(cproductDescription || '');
     const [variants, setVariants] = useState(
         cvariants || [
