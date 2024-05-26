@@ -46,7 +46,60 @@ export default function useSCAddNewProducts() {
         [sellerId],
     );
 
+    const updateProduct = useCallback(
+        async ({
+            productId,
+            productName,
+            productCategory,
+            productBrand,
+            thumbnailFile,
+            productImage1,
+            productImage2,
+            productImage3,
+            productImage4,
+            productDescription,
+            variants,
+            newProductImages,
+        }) => {
+            // eslint-disable-next-line no-useless-catch
+            try {
+                const formData = new FormData();
+
+                formData.append('productId', productId);
+                formData.append('subfolder', SubFolder.PRODUCT);
+                formData.append('name', productName);
+                formData.append('category', productCategory);
+                formData.append('brand', productBrand);
+                if (thumbnailFile[0] && thumbnailFile[0].path) {
+                    formData.append('thumbnailImage', thumbnailFile[0]);
+                }
+                if (productImage1[0] && productImage1[0].path) {
+                    formData.append('productImage1', productImage1[0]);
+                }
+                if (productImage2[0] && productImage2[0].path) {
+                    formData.append('productImage2', productImage2[0]);
+                }
+                if (productImage3[0] && productImage3[0].path) {
+                    formData.append('productImage3', productImage3[0]);
+                }
+                if (productImage4[0] && productImage4[0].path) {
+                    formData.append('productImage4', productImage4[0]);
+                }
+                formData.append('productDescription', productDescription);
+                formData.append('variants', JSON.stringify(variants));
+                formData.append('productImages', JSON.stringify(newProductImages));
+
+                const { updatedProduct } = await repositoryRef.current.updateProduct(formData);
+                return updatedProduct;
+            } catch (error) {
+                throw error;
+            }
+        },
+        [],
+    );
+
     return {
         addNewProducts,
+        updateProduct,
     };
 }

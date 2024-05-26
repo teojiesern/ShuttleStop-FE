@@ -14,7 +14,8 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import ShopInfoContext from '../../../../platform/app/data/ShopInfoContext';
 import DropBox from '../../../../platform/components/dropbox/DropBox';
-import { ProductBrands, ProductCategories } from '../../../../platform/constants/PlatformConstants';
+import { ImageURL, ProductBrands, ProductCategories } from '../../../../platform/constants/PlatformConstants';
+import CrossedModal from '../../../../platform/modal/CrossedModal';
 import TickedModal from '../../../../platform/modal/TickedModal';
 import useLoadingModal from '../../../../platform/modal/useLoadingModal';
 import useModal from '../../../../platform/modal/useModal';
@@ -65,8 +66,6 @@ const ButtonContainer = styled.div`
 
 export default function SCAddNewProductsScreen({
     hideModal,
-    cproducts,
-    csetProducts,
     cproductID,
     cproductName,
     cproductCategory,
@@ -104,7 +103,7 @@ export default function SCAddNewProductsScreen({
 
     const { setShopInfo } = useContext(ShopInfoContext);
 
-    const { addNewProducts } = useSCAddNewProducts();
+    const { addNewProducts, updateProduct } = useSCAddNewProducts();
     const { showLoadingModal, hideLoadingModal } = useLoadingModal();
     const { showModal: showInternalModal } = useModal();
 
@@ -133,26 +132,45 @@ export default function SCAddNewProductsScreen({
                 price: price[i],
             }));
 
-            csetProducts(
-                cproducts.map((product) =>
-                    product.productID === cproductID
-                        ? {
-                              productID: cproductID,
-                              productName,
-                              productCategory,
-                              productBrand,
-                              thumbnailFile,
-                              productImage1,
-                              productImage2,
-                              productImage3,
-                              productImage4,
-                              productDescription,
-                              variants: finalVariants,
-                          }
-                        : product,
-                ),
-            );
-            hideModal();
+            try {
+                await updateProduct({
+                    productId: cproductID,
+                    productName,
+                    productCategory,
+                    productBrand,
+                    thumbnailFile,
+                    productImage1,
+                    productImage2,
+                    productImage3,
+                    productImage4,
+                    productDescription,
+                    variants: finalVariants,
+                    newProductImages: [
+                        productImage1[0] &&
+                            (productImage1[0].path
+                                ? `imageDB/product/${productImage1[0].path}`
+                                : productImage1[0].preview),
+                        productImage2[0] &&
+                            (productImage2[0].path
+                                ? `imageDB/product/${productImage2[0].path}`
+                                : productImage2[0].preview),
+                        productImage3[0] &&
+                            (productImage3[0].path
+                                ? `imageDB/product/${productImage3[0].path}`
+                                : productImage3[0].preview),
+                        productImage4[0] &&
+                            (productImage4[0].path
+                                ? `imageDB/product/${productImage4[0].path}`
+                                : productImage4[0].preview),
+                    ]
+                        .filter(Boolean)
+                        .map((url) => url.replace(ImageURL, '')),
+                });
+            } catch (error) {
+                showInternalModal({ modal: <CrossedModal title="Failed to update product" /> });
+                return;
+            }
+            window.location.reload();
             return;
         }
 
@@ -207,16 +225,15 @@ export default function SCAddNewProductsScreen({
 
             showInternalModal({ modal: <TickedModal title="Product added successfully!" /> });
         } catch (error) {
-            console.log(error.message);
+            showInternalModal({ modal: <CrossedModal title="Failed to update product" /> });
         }
     }, [
         hideModal,
         colors,
         variants,
-        csetProducts,
-        cproducts,
         totalStock,
         price,
+        updateProduct,
         cproductID,
         productName,
         productCategory,
@@ -227,11 +244,11 @@ export default function SCAddNewProductsScreen({
         productImage3,
         productImage4,
         productDescription,
+        showInternalModal,
         showLoadingModal,
         addNewProducts,
         setShopInfo,
         hideLoadingModal,
-        showInternalModal,
     ]);
 
     return (
