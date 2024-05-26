@@ -1,7 +1,9 @@
 /* eslint-disable no-shadow */
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import ShopInfoContext from '../../../../platform/app/data/ShopInfoContext';
+import Skeleton from '../../../../platform/components/skeleton/Skeleton';
 import useModal from '../../../../platform/modal/useModal';
 import useSCMyProducts from '../hooks/useSCMyProducts';
 import SCEditProductsModal from '../modal/SCEditProductsModal';
@@ -33,6 +35,8 @@ const ProductImage = styled.img`
 
 export default function SCMyProductsScreen() {
     const [products, setProducts] = useState(null);
+    const { shopProducts } = useContext(ShopInfoContext);
+
     const { getMyProducts } = useSCMyProducts();
     const { showModal, hideModal } = useModal();
 
@@ -64,15 +68,17 @@ export default function SCMyProductsScreen() {
     );
 
     useEffect(() => {
-        getMyProducts().then((data) => {
-            setProducts(data.products);
-        });
-    }, [getMyProducts]);
+        async function fetchData() {
+            const product = await getMyProducts(shopProducts);
+            setProducts(product);
+        }
+        fetchData();
+    }, [getMyProducts, shopProducts]);
 
     if (products === null) {
-        // TODO: Implement loading state
-        return <p>loading...</p>;
+        return <Skeleton />;
     }
+    console.log(products);
 
     return (
         <Container>
@@ -94,7 +100,7 @@ export default function SCMyProductsScreen() {
                             {product.variants.flatMap((variant, index) => [
                                 index === 0 ? (
                                     <ProductContainer>
-                                        <ProductImage src={product.thumbnailFile[0]?.preview} />
+                                        <ProductImage src={product.thumbnailFile} />
                                         <SCReusableStyles.Text>{product.productName}</SCReusableStyles.Text>
                                     </ProductContainer>
                                 ) : (
