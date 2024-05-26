@@ -78,7 +78,6 @@ export default function SCMyProductsScreen() {
     if (products === null) {
         return <Skeleton />;
     }
-    console.log(products);
 
     return (
         <Container>
