@@ -134,6 +134,28 @@ export default function SCAddNewProductsScreen({
             });
             return;
         }
+        if (!productCategory) {
+            showInternalModal({
+                modal: (
+                    <CrossedModal
+                        title="Please select a category"
+                        description="Selecting a category will help customers in finding your product"
+                    />
+                ),
+            });
+            return;
+        }
+        if (!productBrand) {
+            showInternalModal({
+                modal: (
+                    <CrossedModal
+                        title="Please select a brand"
+                        description="Selecting a brand will help customers in finding your product"
+                    />
+                ),
+            });
+            return;
+        }
         if (thumbnailFile.length === 0) {
             showInternalModal({
                 modal: (
