@@ -22,3 +22,5 @@ export const SubFolder = Object.freeze({
     CUSTOMER: 'customer',
     PRODUCT: 'product',
 });
+
+export const ImageURL = 'http://localhost:3000/';
