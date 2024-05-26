@@ -229,6 +229,7 @@ export default function SCAddNewProductsScreen({
         productDescription,
         showLoadingModal,
         addNewProducts,
+        setShopInfo,
         hideLoadingModal,
         showInternalModal,
     ]);
