@@ -98,6 +98,7 @@ export default class CustomerRepositoryImpl {
             description: data.description,
             shopSupportedCourierOption: data.shopSupportedCourierOption,
             shopSupportedPaymentOption: data.shopSupportedPaymentOption,
+            shopSupportedShippingOption: data.shopSupportedShippingOption,
             products: data.products,
             owner: data.owner,
         };

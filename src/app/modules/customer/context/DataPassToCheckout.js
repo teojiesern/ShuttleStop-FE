@@ -34,7 +34,7 @@ function PassData() {
 
     // Additional for delete product in cart
     const removeFromCart = (item) => {
-        setCart((prevCart) => prevCart.filter((element) => element !== item));
+        setCart((prevCart) => prevCart.filter((element) => element.product.productId !== item.product.productId));
     };
 
     // Additional for edit product quantity in cart
