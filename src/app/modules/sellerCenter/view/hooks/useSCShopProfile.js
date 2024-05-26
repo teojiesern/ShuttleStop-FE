@@ -17,7 +17,9 @@ export default function useSCShopProfile() {
             formData.append('sellerId', sellerId);
             formData.append('name', name);
             formData.append('description', description);
-            formData.append('file', file[0]);
+            if (file[0] && file[0].path) {
+                formData.append('file', file[0]);
+            }
 
             const { data } = await repositoryRef.current.updateShopInformationFile(formData);
 
