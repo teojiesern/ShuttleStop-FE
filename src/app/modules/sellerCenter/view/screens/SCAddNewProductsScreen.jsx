@@ -317,9 +317,15 @@ export default function SCAddNewProductsScreen({
                     style={{ minWidth: '50%' }}
                     size="small"
                     select
-                    value={ProductCategories[productCategory]}
+                    value={productCategory}
                     onChange={(e) => setProductCategory(e.target.value)}
                 >
+                    <MenuItem
+                        value=""
+                        disabled
+                    >
+                        <em>None</em>
+                    </MenuItem>
                     {Object.keys(ProductCategories).map((category) => (
                         <MenuItem
                             key={category}
@@ -337,9 +343,15 @@ export default function SCAddNewProductsScreen({
                     style={{ minWidth: '50%' }}
                     size="small"
                     select
-                    value={ProductBrands[productBrand]}
+                    value={productBrand}
                     onChange={(e) => setProductBrand(e.target.value)}
                 >
+                    <MenuItem
+                        value=""
+                        disabled
+                    >
+                        <em>None</em>
+                    </MenuItem>
                     {Object.keys(ProductBrands).map((brand) => (
                         <MenuItem
                             key={brand}
