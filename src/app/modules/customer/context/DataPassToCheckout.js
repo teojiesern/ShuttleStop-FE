@@ -5,19 +5,24 @@ function PassData() {
     const [buyNowProduct, setBuyNowProduct] = useState(null);
 
     // Add a product to the cart
-    const addToCart = (product) => {
+    const addToCart = (product, selectedVariant, quantity) => {
         setCart((prevCart) => {
             // Find the index of the product in the cart to check whether exist or not with same options
-            const index = prevCart.findIndex((item) => item.id === product.id);
+            const index = prevCart.findIndex(
+                (item) => item.product.productId === product.productId && item.selectedVariant === selectedVariant,
+            );
 
             // If the product is not in the cart, add it
             if (index === -1) {
-                return [...prevCart, { ...product }];
+                return [...prevCart, { product, selectedVariant, quantity }];
             }
 
             // If the product is already in the cart, increase its quantity
             const newCart = [...prevCart];
-            newCart[index].quantity += product.quantity;
+            newCart[index] = {
+                ...newCart[index],
+                quantity: newCart[index].quantity + quantity,
+            };
             return newCart;
         });
     };
@@ -28,22 +33,22 @@ function PassData() {
     };
 
     // Additional for delete product in cart
-    const removeFromCart = (productId) => {
-        setCart((prevCart) => prevCart.filter((product) => product.id !== productId));
+    const removeFromCart = (item) => {
+        setCart((prevCart) => prevCart.filter((element) => element !== item));
     };
 
     // Additional for edit product quantity in cart
-    const increaseQty = useCallback((productId) => {
+    const increaseQty = useCallback((item) => {
         setCart((prevCart) => {
-            const index = prevCart.findIndex((product) => product.id === productId);
+            const index = prevCart.findIndex((element) => element === item);
             const newCart = [...prevCart];
             newCart[index].quantity += 1;
             return newCart;
         });
     }, []);
-    const decreaseQty = useCallback((productId) => {
+    const decreaseQty = useCallback((item) => {
         setCart((prevCart) => {
-            const index = prevCart.findIndex((product) => product.id === productId);
+            const index = prevCart.findIndex((element) => element === item);
             const newCart = [...prevCart];
             newCart[index].quantity -= 1;
             return newCart;
