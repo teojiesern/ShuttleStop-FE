@@ -6,6 +6,7 @@ import CustomerInfoContext from '../../../../platform/app/data/CustomerInfoConte
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import collectionPointsList from '../../data/collectionPointsList';
 import EditAddressModal from '../../modal/EditAddressModal';
 import COReusableStyles from '../styles/COReusableStyles';
 
@@ -97,7 +98,11 @@ export default function ShippingDetailsBar({ shippingOption }) {
                 <HintText>No address record</HintText>
             );
         }
-        return <COReusableStyles.Text>CollectCo JustPrint Penang</COReusableStyles.Text>;
+        return (
+            <COReusableStyles.Text>
+                {collectionPointsList.find((point) => point.address === shippingOption)?.name}
+            </COReusableStyles.Text>
+        );
     };
 
     return (

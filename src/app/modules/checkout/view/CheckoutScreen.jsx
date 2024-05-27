@@ -15,6 +15,7 @@ import OrderPlacedModal from '../modal/OrderPlacedModal';
 import ShippingOptionModal from '../modal/ShippingOptionModal';
 import SelectPaymentMethod from './component/SelectPaymentMethod';
 import ShippingDetailsBar from './component/ShippingDetailsBar';
+import useOrder from './hooks/useOrder';
 import useShipping from './hooks/useShipping';
 import COReusableStyles from './styles/COReusableStyles';
 
@@ -115,6 +116,7 @@ export default function CheckoutScreen() {
     const { removeFromCart } = useContext(CartContext);
     const { showModal, hideModal } = useModal();
     const { getShop } = useShop();
+    const { createOrder } = useOrder();
     const { shippingOption, updateShippingOption } = useShipping();
     const navigate = useNavigate();
 
@@ -126,7 +128,13 @@ export default function CheckoutScreen() {
     }, [checkedProducts, removeFromCart, navigate]);
 
     const handlePlaceOrderClick = useCallback(() => {
+        const payload = {
+            groupedProduct,
+            shippingOption,
+        };
+
         if (isPaymentSelected) {
+            createOrder(payload);
             showModal({
                 modal: (
                     <OrderPlacedModal
@@ -144,7 +152,7 @@ export default function CheckoutScreen() {
                 hideModal();
             }, 3000);
         }
-    }, [showModal, hideModal, navigateWithCleanup, isPaymentSelected]);
+    }, [showModal, hideModal, navigateWithCleanup, isPaymentSelected, createOrder, groupedProduct, shippingOption]);
 
     const handleChangeClick = () => {
         showModal({
