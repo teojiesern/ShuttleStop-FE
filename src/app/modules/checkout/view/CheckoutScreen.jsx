@@ -1,6 +1,6 @@
 import Storefront from '@mui/icons-material/Storefront';
 import { Button } from '@mui/material';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
@@ -15,6 +15,7 @@ import OrderPlacedModal from '../modal/OrderPlacedModal';
 import ShippingOptionModal from '../modal/ShippingOptionModal';
 import SelectPaymentMethod from './component/SelectPaymentMethod';
 import ShippingDetailsBar from './component/ShippingDetailsBar';
+import useOrder from './hooks/useOrder';
 import useShipping from './hooks/useShipping';
 import COReusableStyles from './styles/COReusableStyles';
 
@@ -112,21 +113,28 @@ export default function CheckoutScreen() {
     const [groupedProduct, setGroupedProducts] = useState({});
     const [availablePaymentOption, setAvailablePaymentOption] = useState([true, true]);
     const [availableShippingOption, setAvailableShippingOption] = useState([true, true]);
-    const { cart, removeFromCart } = useContext(CartContext);
+    const { removeFromCart } = useContext(CartContext);
     const { showModal, hideModal } = useModal();
     const { getShop } = useShop();
+    const { createOrder } = useOrder();
     const { shippingOption, updateShippingOption } = useShipping();
     const navigate = useNavigate();
 
     const navigateWithCleanup = useCallback(() => {
         navigate('/');
         if (Array.isArray(checkedProducts)) {
-            checkedProducts.forEach((itemId) => removeFromCart(itemId));
+            checkedProducts.forEach((item) => removeFromCart(item));
         }
     }, [checkedProducts, removeFromCart, navigate]);
 
     const handlePlaceOrderClick = useCallback(() => {
+        const payload = {
+            groupedProduct,
+            shippingOption,
+        };
+
         if (isPaymentSelected) {
+            createOrder(payload);
             showModal({
                 modal: (
                     <OrderPlacedModal
@@ -144,7 +152,7 @@ export default function CheckoutScreen() {
                 hideModal();
             }, 3000);
         }
-    }, [showModal, hideModal, navigateWithCleanup, isPaymentSelected]);
+    }, [showModal, hideModal, navigateWithCleanup, isPaymentSelected, createOrder, groupedProduct, shippingOption]);
 
     const handleChangeClick = () => {
         showModal({
@@ -178,8 +186,8 @@ export default function CheckoutScreen() {
         if (from !== 'buyNow') {
             const groupProducts = async () => {
                 const groups = {};
-                const promises = checkedProducts.map(async (product) => {
-                    const shop = await getShop('520386e5-8b73-4e2f-a038-7800bf31164d');
+                const promises = checkedProducts.map(async (item) => {
+                    const shop = await getShop(item.product.productId);
                     if (!groups[shop.name]) {
                         groups[shop.name] = {
                             shop,
@@ -188,144 +196,35 @@ export default function CheckoutScreen() {
                         setSupportedPaymentOption(shop);
                         setSupportedShippingOption(shop);
                     }
-                    groups[shop.name].products.push(product);
+                    groups[shop.name].products.push(item);
                 });
 
                 await Promise.all(promises);
+
+                Object.values(groups).forEach((group) => {
+                    group.products.sort((a, b) => checkedProducts.indexOf(a) - checkedProducts.indexOf(b));
+                });
+
                 setGroupedProducts(groups);
             };
             groupProducts();
         } else {
             const groupProducts = async () => {
                 const groups = {};
-                const shop = await getShop('520386e5-8b73-4e2f-a038-7800bf31164d');
+                const shop = await getShop(checkedProducts.product.productId);
                 groups[shop.name] = {
                     shop,
-                    checkedProducts,
+                    products: [],
                 };
                 setSupportedPaymentOption(shop);
                 setSupportedShippingOption(shop);
+
+                groups[shop.name].products.push(checkedProducts);
+                setGroupedProducts(groups);
             };
             groupProducts();
         }
     }, [from, checkedProducts, getShop, availablePaymentOption, availableShippingOption]);
-
-    if (from === 'buyNow') {
-        return (
-            <Wrapper>
-                <COReusableStyles.BorderConatiner>
-                    <ShippingDetailsBar shippingOption={shippingOption} />
-                </COReusableStyles.BorderConatiner>
-                <COReusableStyles.BorderConatiner>
-                    <Container>
-                        <COReusableStyles.Title>Products Ordered</COReusableStyles.Title>
-                        <ProductOrderedLayout>
-                            <ItemStoreContainer>
-                                <Storefront />
-                                <COReusableStyles.Text>Titan Badminton Store</COReusableStyles.Text>
-                            </ItemStoreContainer>
-                            <Label>Unit Price</Label>
-                            <Label>Quantity</Label>
-                            <Label>Total Price</Label>
-                        </ProductOrderedLayout>
-                    </Container>
-                    <COReusableStyles.Divider />
-
-                    <ProductOrderedLayout>
-                        <ItemStoreContainer>
-                            <img
-                                src={checkedProducts.imgSrc}
-                                alt={checkedProducts.name}
-                                width="54px"
-                            />
-                            <COReusableStyles.Text style={{ textAlign: 'start' }}>
-                                {checkedProducts.name}
-                                <p style={{ color: COLORS.darkGrey, fontSize: FONTSIZE['x-small'] }}>
-                                    {[
-                                        checkedProducts.options.color ? checkedProducts.options.color : '',
-                                        checkedProducts.options.size ? checkedProducts.options.size : '',
-                                        checkedProducts.options.grade ? checkedProducts.options.grade : '',
-                                    ]
-                                        .filter(Boolean)
-                                        .join(', ')}
-                                </p>
-                            </COReusableStyles.Text>
-                        </ItemStoreContainer>
-                        <COReusableStyles.Text>RM{checkedProducts.price.toFixed(2)}</COReusableStyles.Text>
-                        <COReusableStyles.Text>{checkedProducts.quantity}</COReusableStyles.Text>
-                        <COReusableStyles.Text>
-                            RM{(checkedProducts.price * checkedProducts.quantity).toFixed(2)}
-                        </COReusableStyles.Text>
-                    </ProductOrderedLayout>
-                    <COReusableStyles.Divider />
-                    <Container>
-                        <ShippingLayout>
-                            <COReusableStyles.Text style={{ textAlign: 'right' }}>
-                                Shipping Method:
-                            </COReusableStyles.Text>
-                            {shippingOption === 'standardDelivery' ? (
-                                <COReusableStyles.Title style={{ textAlign: 'center' }}>
-                                    Standard Delivery
-                                </COReusableStyles.Title>
-                            ) : (
-                                <COReusableStyles.Title style={{ textAlign: 'center' }}>
-                                    Self Collection
-                                </COReusableStyles.Title>
-                            )}
-                            <ChangeShippingMethod onClick={handleChangeClick}>
-                                <p>Change</p>
-                            </ChangeShippingMethod>
-                            <COReusableStyles.Text>RM5.90</COReusableStyles.Text>
-                        </ShippingLayout>
-                        <OrderTotalLayout>
-                            <COReusableStyles.Text style={{ textAlign: 'right' }}>
-                                Order Total (1 item):
-                            </COReusableStyles.Text>
-
-                            <div />
-                            <TotalPrice>RM{(checkedProducts.price * checkedProducts.quantity).toFixed(2)}</TotalPrice>
-                        </OrderTotalLayout>
-                    </Container>
-                </COReusableStyles.BorderConatiner>
-
-                <COReusableStyles.BorderConatiner>
-                    <SelectPaymentMethod
-                        setIsPaymentSelected={setIsPaymentSelected}
-                        availablePaymentOption={availablePaymentOption}
-                    />
-                    <COReusableStyles.Divider />
-
-                    <Container>
-                        <PaymentDetailsLayout>
-                            <TextAlignEnd>Order Subtotal: </TextAlignEnd>
-                            <TextAlignEnd>
-                                RM{(checkedProducts.price * checkedProducts.quantity).toFixed(2)}
-                            </TextAlignEnd>
-                        </PaymentDetailsLayout>
-                        <PaymentDetailsLayout>
-                            <TextAlignEnd>Shipping Subtotal: </TextAlignEnd>
-                            <TextAlignEnd>RM5.90</TextAlignEnd>
-                        </PaymentDetailsLayout>
-                        <PaymentDetailsLayout>
-                            <TextAlignEnd>Total Payment: </TextAlignEnd>
-                            <TotalPayment>
-                                RM{(checkedProducts.price * checkedProducts.quantity + 5.9).toFixed(2)}
-                            </TotalPayment>
-                        </PaymentDetailsLayout>
-                    </Container>
-                    <COReusableStyles.Divider />
-                    <ButtonContainer>
-                        <Button
-                            style={{ ...PlatformReusableStyles.PrimaryButtonStyles }}
-                            onClick={handlePlaceOrderClick}
-                        >
-                            <p>PLACE ORDER</p>
-                        </Button>
-                    </ButtonContainer>
-                </COReusableStyles.BorderConatiner>
-            </Wrapper>
-        );
-    }
 
     let totalPrice = 0;
 
@@ -339,7 +238,7 @@ export default function CheckoutScreen() {
                     <COReusableStyles.Title>Products Ordered</COReusableStyles.Title>
                 </Container>
                 {Object.entries(groupedProduct).map(([shopName, group]) => (
-                    <>
+                    <React.Fragment key={shopName}>
                         <Container>
                             <ProductOrderedLayout>
                                 <ItemStoreContainer>
@@ -352,42 +251,38 @@ export default function CheckoutScreen() {
                             </ProductOrderedLayout>
                         </Container>
                         <COReusableStyles.Divider />
-                        {group.products.map((element) => {
-                            const product = cart.find((item) => item.id === element);
-                            totalPrice += product.quantity * product.price;
+                        {group.products.map((item) => {
+                            totalPrice += item.quantity * item.product.minPrice;
                             return (
-                                <>
+                                <React.Fragment key={item.product.productId}>
                                     <ProductOrderedLayout>
                                         <ItemStoreContainer>
                                             <img
-                                                src={product.imgSrc}
-                                                alt={product.name}
+                                                src={item.product.thumbnailImage}
+                                                alt={item.product.name}
                                                 width="54px"
+                                                height="54px"
                                             />
                                             <COReusableStyles.Text style={{ textAlign: 'start' }}>
-                                                {product.name}
+                                                {item.product.name}
                                                 <p style={{ color: COLORS.darkGrey, fontSize: FONTSIZE['x-small'] }}>
-                                                    {[
-                                                        product.options.color ? product.options.color : '',
-                                                        product.options.size ? product.options.size : '',
-                                                        product.options.grade ? product.options.grade : '',
-                                                    ]
-                                                        .filter(Boolean)
-                                                        .join(', ')}
+                                                    {item.selectedVariant}
                                                 </p>
                                             </COReusableStyles.Text>
                                         </ItemStoreContainer>
-                                        <COReusableStyles.Text>RM{product.price.toFixed(2)}</COReusableStyles.Text>
-                                        <COReusableStyles.Text>{product.quantity}</COReusableStyles.Text>
                                         <COReusableStyles.Text>
-                                            RM{(product.price * product.quantity).toFixed(2)}
+                                            RM{item.product.minPrice.toFixed(2)}
+                                        </COReusableStyles.Text>
+                                        <COReusableStyles.Text>{item.quantity}</COReusableStyles.Text>
+                                        <COReusableStyles.Text>
+                                            RM{(item.product.minPrice * item.quantity).toFixed(2)}
                                         </COReusableStyles.Text>
                                     </ProductOrderedLayout>
                                     <COReusableStyles.Divider />
-                                </>
+                                </React.Fragment>
                             );
                         })}
-                    </>
+                    </React.Fragment>
                 ))}
                 <Container>
                     <ShippingLayout>
@@ -407,13 +302,13 @@ export default function CheckoutScreen() {
                         <COReusableStyles.Text>RM5.90</COReusableStyles.Text>
                     </ShippingLayout>
                     <OrderTotalLayout>
-                        {checkedProducts.length === 1 ? (
+                        {checkedProducts.length > 1 ? (
                             <COReusableStyles.Text style={{ textAlign: 'right' }}>
-                                Order Total (1 item):
+                                Order Total ({checkedProducts.length} items):
                             </COReusableStyles.Text>
                         ) : (
                             <COReusableStyles.Text style={{ textAlign: 'right' }}>
-                                Order Total ({checkedProducts.length} items):
+                                Order Total (1 item):
                             </COReusableStyles.Text>
                         )}
                         <div />

@@ -87,23 +87,6 @@ export default function ShippingOptionModal({
         hideModal();
     }, [hideModal, updateShippingOption, selectedOption]);
 
-    const mockData = [];
-    for (let i = 0; i < 2; i++) {
-        mockData.push(
-            <FormControlLabel
-                key={i}
-                value={i}
-                control={<Radio />}
-                label={
-                    <CollectionPointLabel>
-                        <p>{collectionPointsList.name}</p>
-                        <p style={{ color: COLORS.darkGrey }}>{collectionPointsList.address}</p>
-                    </CollectionPointLabel>
-                }
-            />,
-        );
-    }
-
     return (
         <Container>
             <Title>Shipping Option</Title>
@@ -127,7 +110,19 @@ export default function ShippingOptionModal({
                         value={selectedOption}
                         onChange={handleRadioChange}
                     >
-                        {mockData}
+                        {collectionPointsList.map((point) => (
+                            <FormControlLabel
+                                key={point.name}
+                                value={point.address}
+                                control={<Radio />}
+                                label={
+                                    <CollectionPointLabel>
+                                        <p>{point.name}</p>
+                                        <p style={{ color: COLORS.darkGrey }}>{point.address}</p>
+                                    </CollectionPointLabel>
+                                }
+                            />
+                        ))}
                     </StyledRadioGroup>
                 </SelfCollectionContainer>
             )}

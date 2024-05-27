@@ -3,7 +3,7 @@ import ProductionQuantityLimits from '@mui/icons-material/ProductionQuantityLimi
 import Storefront from '@mui/icons-material/Storefront';
 import { Checkbox, FormControlLabel, IconButton } from '@mui/material';
 import Button from '@mui/material/Button';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
@@ -90,8 +90,6 @@ const TotalCheckout = styled.span`
     text-align: center;
 `;
 
-// function handleSelectStoresChange() {}
-
 export default function ShoppingCartScreen() {
     const [productTotal, setProductTotal] = useState({});
     const [checkedProducts, setCheckedProducts] = useState([]);
@@ -102,8 +100,8 @@ export default function ShoppingCartScreen() {
     const { cart, increaseQty, decreaseQty } = useContext(CartContext);
 
     useEffect(() => {
-        const initialProductTotal = cart.reduce((acc, product) => {
-            acc[product.id] = product.quantity * product.price;
+        const initialProductTotal = cart.reduce((acc, item) => {
+            acc[item.product.productId] = item.quantity * item.product.minPrice;
             return acc;
         }, {});
         setProductTotal(initialProductTotal);
@@ -111,18 +109,18 @@ export default function ShoppingCartScreen() {
 
     const calculateTotalPrice = useCallback(() => {
         let total = 0;
-        checkedProducts.forEach((productId) => {
-            total += productTotal[productId] || 0;
+        checkedProducts.forEach((item) => {
+            total += productTotal[item.product.productId] || 0;
         });
         return total;
     }, [checkedProducts, productTotal]);
 
-    const handleProductChecked = useCallback((productId) => {
+    const handleProductChecked = useCallback((item) => {
         setCheckedProducts((prevCheckedProducts) => {
-            if (prevCheckedProducts.includes(productId)) {
-                return prevCheckedProducts.filter((id) => id !== productId);
+            if (prevCheckedProducts.includes(item)) {
+                return prevCheckedProducts.filter((element) => element !== item);
             }
-            return [...prevCheckedProducts, productId];
+            return [...prevCheckedProducts, item];
         });
     }, []);
 
@@ -130,14 +128,14 @@ export default function ShoppingCartScreen() {
         (shopName) => {
             setCheckedProducts((prevCheckedProducts) => {
                 const group = groupedProduct[shopName];
-                const productIds = group.products.map((product) => product.id);
+                const product = group.products.map((item) => item);
 
-                const allChecked = productIds.every((productId) => prevCheckedProducts.includes(productId));
+                const allChecked = product.every((item) => prevCheckedProducts.includes(item));
 
                 if (allChecked) {
-                    return prevCheckedProducts.filter((productId) => !productIds.includes(productId));
+                    return prevCheckedProducts.filter((element) => !product.includes(element));
                 }
-                return [...new Set([...prevCheckedProducts, ...productIds])];
+                return [...new Set([...prevCheckedProducts, ...product])];
             });
         },
         [groupedProduct],
@@ -147,7 +145,7 @@ export default function ShoppingCartScreen() {
         (event) => {
             setCheckedProducts(() => {
                 if (event.target.checked) {
-                    return cart.map((product) => product.id);
+                    return cart.map((product) => product);
                 }
                 return [];
             });
@@ -156,19 +154,19 @@ export default function ShoppingCartScreen() {
     );
 
     const handleActionClick = useCallback(
-        (productId) => {
+        (item) => {
             showModal({
                 modal: (
                     <DeleteItemModal
                         hideModal={hideModal}
-                        productId={productId}
+                        item={item}
                         onDelete={() => {
                             setProductTotal((prevTotal) => {
                                 const updatedTotal = { ...prevTotal };
-                                delete updatedTotal[productId];
+                                delete updatedTotal[item.product.productId];
                                 return updatedTotal;
                             });
-                            setCheckedProducts(checkedProducts.filter((itemId) => itemId !== productId));
+                            setCheckedProducts(checkedProducts.filter((element) => element !== item));
                         }}
                     />
                 ),
@@ -178,39 +176,39 @@ export default function ShoppingCartScreen() {
     );
 
     const handleIncrementChange = useCallback(
-        (productId) => {
-            increaseQty(productId);
-            const product = cart.find((item) => item.id === productId);
+        (item) => {
+            increaseQty(item);
+            const product = cart.find((element) => element === item);
             setProductTotal((prevTotal) => ({
                 ...prevTotal,
-                [productId]: product.quantity * product.price,
+                [product.product.productId]: product.quantity * product.product.minPrice,
             }));
         },
         [increaseQty, cart],
     );
 
     const handleDecrementChange = useCallback(
-        (productId) => {
-            const product = cart.find((item) => item.id === productId);
+        (item) => {
+            const product = cart.find((element) => element === item);
             if (product.quantity > 1) {
-                decreaseQty(productId);
+                decreaseQty(item);
                 setProductTotal((prevTotal) => ({
                     ...prevTotal,
-                    [productId]: product.quantity * product.price,
+                    [product.productId]: product.quantity * product.product.minPrice,
                 }));
             } else {
                 showModal({
                     modal: (
                         <DeleteItemModal
                             hideModal={hideModal}
-                            productId={productId}
+                            item={item}
                             onDelete={() => {
                                 setProductTotal((prevTotal) => {
                                     const updatedTotal = { ...prevTotal };
-                                    delete updatedTotal[productId];
+                                    delete updatedTotal[item.product.productId];
                                     return updatedTotal;
                                 });
-                                setCheckedProducts(checkedProducts.filter((itemId) => itemId !== productId));
+                                setCheckedProducts(checkedProducts.filter((element) => element !== item));
                             }}
                         />
                     ),
@@ -235,18 +233,23 @@ export default function ShoppingCartScreen() {
     useEffect(() => {
         async function groupProducts() {
             const groups = {};
-            const promises = cart.map(async (product) => {
-                const shop = await getShop('520386e5-8b73-4e2f-a038-7800bf31164d');
+            const promises = cart.map(async (item) => {
+                const shop = await getShop(item.product.productId);
                 if (!groups[shop.name]) {
                     groups[shop.name] = {
                         shop,
                         products: [],
                     };
                 }
-                groups[shop.name].products.push(product);
+                groups[shop.name].products.push(item);
             });
 
             await Promise.all(promises);
+
+            Object.values(groups).forEach((group) => {
+                group.products.sort((a, b) => cart.indexOf(a) - cart.indexOf(b));
+            });
+
             setGroupedProducts(groups);
         }
 
@@ -327,7 +330,7 @@ export default function ShoppingCartScreen() {
                         control={
                             <Checkbox
                                 onChange={() => handleSelectStoresChange(shopName)}
-                                checked={group.products.every((product) => checkedProducts.includes(product.id))}
+                                checked={group.products.every((item) => checkedProducts.includes(item))}
                             />
                         }
                         label={
@@ -337,65 +340,60 @@ export default function ShoppingCartScreen() {
                             </CheckboxLabelContainer>
                         }
                     />
-                    {group.products.map((product) => (
-                        <>
+                    {group.products.map((item) => (
+                        <React.Fragment key={item.product.productId}>
                             <COReusableStyles.Divider />
                             <Layout>
                                 <FormControlLabel
                                     control={
                                         <Checkbox
-                                            onChange={() => handleProductChecked(product.id)}
-                                            checked={checkedProducts.includes(product.id)}
+                                            onChange={() => handleProductChecked(item)}
+                                            checked={checkedProducts.includes(item)}
                                         />
                                     }
                                     label={
                                         <CheckboxLabelContainer>
                                             <img
-                                                src={product.imgSrc}
-                                                alt={product.name}
+                                                src={item.product.thumbnailImage}
+                                                alt={item.product.name}
                                                 width="100px"
+                                                height="100px"
                                             />
                                             <COReusableStyles.Text style={{ textAlign: 'start' }}>
-                                                {product.name}
+                                                {item.product.name}
                                                 <p style={{ color: COLORS.darkGrey, fontSize: FONTSIZE['x-small'] }}>
-                                                    {[
-                                                        product.options.color ? product.options.color : '',
-                                                        product.options.size ? product.options.size : '',
-                                                        product.options.grade ? product.options.grade : '',
-                                                    ]
-                                                        .filter(Boolean)
-                                                        .join(', ')}
+                                                    {item.selectedVariant}
                                                 </p>
                                             </COReusableStyles.Text>
                                         </CheckboxLabelContainer>
                                     }
                                 />
-                                <COReusableStyles.Text>RM{product.price.toFixed(2)}</COReusableStyles.Text>
+                                <COReusableStyles.Text>RM{item.product.minPrice.toFixed(2)}</COReusableStyles.Text>
                                 <QuantityControlContainer>
-                                    <QuantityChangeButton onClick={() => handleDecrementChange(product.id)}>
+                                    <QuantityChangeButton onClick={() => handleDecrementChange(item)}>
                                         -
                                     </QuantityChangeButton>
                                     <QuantityChangeButton style={{ cursor: 'auto' }}>
-                                        <p>{product.quantity}</p>
+                                        <p>{item.quantity}</p>
                                     </QuantityChangeButton>
-                                    <QuantityChangeButton onClick={() => handleIncrementChange(product.id)}>
+                                    <QuantityChangeButton onClick={() => handleIncrementChange(item)}>
                                         +
                                     </QuantityChangeButton>
                                 </QuantityControlContainer>
-                                {productTotal[product.id] !== undefined && (
+                                {productTotal[item.product.productId] !== undefined && (
                                     <COReusableStyles.Text>
-                                        RM{productTotal[product.id].toFixed(2)}
+                                        RM{productTotal[item.product.productId].toFixed(2)}
                                     </COReusableStyles.Text>
                                 )}
                                 <IconButton
-                                    onClick={() => handleActionClick(product.id)}
+                                    onClick={() => handleActionClick(item)}
                                     aria-label="delete"
                                     style={{ color: COLORS.black }}
                                 >
                                     <DeleteOutline />
                                 </IconButton>
                             </Layout>
-                        </>
+                        </React.Fragment>
                     ))}
                 </COReusableStyles.BorderConatiner>
             ))}
