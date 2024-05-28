@@ -10,7 +10,6 @@ import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import UseCoachEdit from './hooks/useCoachEdit';
-
 import CompReusableStyles from './style/reusableStyle';
 
 const Container = styled.div`

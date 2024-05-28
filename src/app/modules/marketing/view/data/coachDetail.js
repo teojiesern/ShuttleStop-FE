@@ -16,6 +16,7 @@ export default class CoachDetails {
                 // Mapping data if needed
                 const mappedData = data.map((coach) => ({
                     coachId: coach.coachId,
+                    customerID: coach.customerID,
                     coachName: coach.coachName,
                     level: coach.level,
                     targetAge: coach.targetAge,

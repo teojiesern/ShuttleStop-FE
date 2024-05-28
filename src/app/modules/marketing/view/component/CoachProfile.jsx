@@ -1,13 +1,15 @@
 import { Button } from '@mui/material';
 import Rating from '@mui/material/Rating';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import CustomerInfoContext from '../../../../platform/app/data/CustomerInfoContext';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import ReusableStyle from '../../../../platform/style/PlatformReusableStyles';
+import ErrorModal from '../Modal/ErrorModal';
 import RatingModal from '../Modal/RatingModal';
 import ageIcon from '../assets/ageIcon.png';
 import editIcon from '../assets/editIcon.png';
@@ -55,6 +57,7 @@ export default function CoachProfile() {
     const { coachId } = useParams();
     const { getCoachDetails } = useCoachById(coachId);
     const [coach, setCoach] = useState([]);
+    const { customerInfo } = useContext(CustomerInfoContext) || {};
 
     useEffect(() => {
         getCoachDetails().then((data) => {
@@ -66,7 +69,7 @@ export default function CoachProfile() {
     const { showModal, hideModal } = useModal();
     const navigate = useNavigate();
 
-    const rateNow = useCallback(() => {
+    const rateNow = () => {
         const handleModalClose = (latestRating) => {
             setValue(latestRating);
             console.log('latestrating', value);
@@ -81,13 +84,30 @@ export default function CoachProfile() {
                 />
             ),
         });
-    }, [showModal]);
-
+    };
     useEffect(() => {
         if (coach) {
             setValue(coach.rating); // Set the initial value to coach.rating
         }
     }, [coach]);
+
+    const handleEdit = useCallback(() => {
+        console.log('customerInfoEditID: ', customerInfo?.customerID, 'coachCustomerID: ', coach?.customerID);
+
+        // Check if customerInfo and coach are defined before accessing their properties
+        if (customerInfo?.customerID === coach?.customerID) {
+            navigate(`/marketing/coach-edit/${coach?.coachId}`, { state: { coach } });
+        } else {
+            showModal({
+                modal: (
+                    <ErrorModal
+                        hideModal={hideModal}
+                        title="You are not authorised to edit this profile! "
+                    />
+                ),
+            });
+        }
+    }, [customerInfo?.customerID, coach?.customerID, coach?.coachId, coach, hideModal, navigate]);
 
     return (
         <CoachReusableStyle.ContainerColumn>
@@ -103,7 +123,7 @@ export default function CoachProfile() {
                         <Title>
                             {coach.coachName}
                             <button
-                                onClick={() => navigate(`/marketing/coach-edit/${coach.coachId}`, { state: { coach } })}
+                                onClick={handleEdit}
                                 style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}
                             >
                                 <img

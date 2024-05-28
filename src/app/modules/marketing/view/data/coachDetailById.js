@@ -15,6 +15,7 @@ export default class CoachDetails {
             if (status === 200) {
                 // Mapping data if needed
                 const mappedData = {
+                    customerID: data.customerID,
                     coachId: data.coachId,
                     coachName: data.coachName,
                     level: data.level,

@@ -1,7 +1,9 @@
 import { Button, InputAdornment, TextField } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
+import CustomerInfoContext from '../../../platform/app/data/CustomerInfoContext';
 import { SubFolder } from '../../../platform/constants/PlatformConstants';
 import TickedModal from '../../../platform/modal/TickedModal';
 import useModal from '../../../platform/modal/useModal';
@@ -97,6 +99,8 @@ export default function MarketingCoachRegistrationScreen() {
     const [timeslot, setTimeslot] = useState('');
     const [location, setLocation] = useState('');
     const [feePerSession, setFeePerSession] = useState('');
+    const { customerInfo } = useContext(CustomerInfoContext) || {};
+    const navigate = useNavigate();
 
     const inputRef = useRef(null);
     const { showModal, hideModal } = useModal();
@@ -113,7 +117,7 @@ export default function MarketingCoachRegistrationScreen() {
 
     const handleSubmit = async () => {
         const formData = new FormData();
-
+        formData.append('customerID', customerInfo.customerID);
         formData.append('coachName', username);
         formData.append('level', targetLevel);
         formData.append('targetAge', targetAge);
@@ -146,6 +150,7 @@ export default function MarketingCoachRegistrationScreen() {
             setTimeout(() => {
                 hideModal();
             }, 3500);
+            navigate('/marketing/coaches');
         } catch (error) {
             console.error(error);
             alert('There was an error submitting the form. Please try again.');
