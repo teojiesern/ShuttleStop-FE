@@ -51,8 +51,27 @@ export default function ColdStartInitializationProvider({ children }) {
                         setShopInfo,
                     });
                 } else {
-                    setSellerInfo(null);
-                    setShopInfo(null);
+                    setSellerInfo({
+                        sellerName: '',
+                        sellerIcNumber: '',
+                        sellerTotalIncome: 0,
+                        sellerId: '',
+                        setSellerInfo,
+                    });
+                    setShopInfo({
+                        shopName: '',
+                        shopDescription: '',
+                        shopPickupAddress: '',
+                        shopEmail: '',
+                        shopPhoneNumber: '',
+                        shopLogoPath: '',
+                        shopSupportedCourierOption: [],
+                        shopSupportedShippingOption: [],
+                        shopSupportedPaymentOption: [],
+                        shopProducts: [],
+                        shopOwner: '',
+                        setShopInfo,
+                    });
                 }
             } catch (error) {
                 setCustomerStatus({ isLogin: false, registeredSeller: false, setCustomerStatus });
