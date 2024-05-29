@@ -1,3 +1,4 @@
+import { ImageURL } from '../../../platform/constants/PlatformConstants';
 import Network from '../../../platform/network/Network';
 
 export default class SellerCenterMyOrdersRepositoryImpl {
@@ -18,8 +19,8 @@ export default class SellerCenterMyOrdersRepositoryImpl {
                 productId: product.product,
                 buyer: order.customer_name,
                 productDescription: product.selectedVariant,
-                productImage: 'test',
-                productName: product.product,
+                productImage: `${ImageURL}${product.thumbnailImage}`,
+                productName: product.name,
                 quantity: product.quantity,
                 shippingOption: order.shippingOption,
                 shippingStatus: product.status,

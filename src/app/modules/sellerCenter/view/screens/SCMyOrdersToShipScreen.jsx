@@ -3,6 +3,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ShopInfoContext from '../../../../platform/app/data/ShopInfoContext';
+import Skeleton from '../../../../platform/components/skeleton/Skeleton';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
@@ -20,7 +21,7 @@ const Container = styled.div`
 const Layout = styled.div`
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 5fr 2fr 2fr 2fr;
+    grid-template-columns: 1fr 5fr 4fr 2fr 2fr;
     gap: 3rem;
     align-items: center;
 `;
@@ -94,8 +95,11 @@ export default function SCMyOrdersToShipScreen() {
     }, [getToShipOrders]);
 
     if (orders === null) {
-        // TODO: Implement loading state
-        return <p>loading...</p>;
+        return (
+            <div style={{ marginTop: '2rem' }}>
+                <Skeleton />
+            </div>
+        );
     }
 
     return (
