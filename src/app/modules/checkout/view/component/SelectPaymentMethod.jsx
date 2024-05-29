@@ -36,13 +36,13 @@ const RadioButtonLabel = styled.div`
     align-items: center;
 `;
 
-export default function SelectPaymentMethod({ setIsPaymentSelected, availablePaymentOption }) {
+export default function SelectPaymentMethod({ setSelectedPaymentMethod, availablePaymentOption }) {
     const [paymentMethod, setPaymentMethod] = useState('onlineBanking');
     const handlePaymentMethod = (newPaymentMethod) => {
         setPaymentMethod(newPaymentMethod);
     };
     const handleRadioOnChange = () => {
-        setIsPaymentSelected(true);
+        setSelectedPaymentMethod('Online Banking');
     };
 
     return (
@@ -63,7 +63,7 @@ export default function SelectPaymentMethod({ setIsPaymentSelected, availablePay
                         isActive={paymentMethod === 'cod'}
                         onClick={() => {
                             handlePaymentMethod('cod');
-                            setIsPaymentSelected(true);
+                            setSelectedPaymentMethod('COD');
                         }}
                     >
                         <p>Cash On Delivery</p>

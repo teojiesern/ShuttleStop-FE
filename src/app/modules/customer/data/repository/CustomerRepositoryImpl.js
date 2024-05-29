@@ -96,6 +96,7 @@ export default class CustomerRepositoryImpl {
             phoneNumber: data.phoneNumber,
             logoPath: `http://localhost:3000/${data.logoPath}`,
             description: data.description,
+            shopId: data.shopId,
             shopSupportedCourierOption: data.shopSupportedCourierOption,
             shopSupportedPaymentOption: data.shopSupportedPaymentOption,
             shopSupportedShippingOption: data.shopSupportedShippingOption,
