@@ -225,9 +225,10 @@ export default function CheckoutScreen() {
             };
             groupProducts();
         }
-    }, [from, checkedProducts, getShop, availablePaymentOption, availableShippingOption]);
+    }, [from, getShop, availablePaymentOption, availableShippingOption]);
 
     let totalPrice = 0;
+    const numOfShops = Object.keys(groupedProduct).length;
 
     return (
         <Wrapper>
@@ -240,6 +241,7 @@ export default function CheckoutScreen() {
                 </Container>
                 {Object.entries(groupedProduct).map(([shopName, group]) => (
                     <React.Fragment key={shopName}>
+                        <COReusableStyles.Divider />
                         <Container>
                             <ProductOrderedLayout>
                                 <ItemStoreContainer>
@@ -253,7 +255,7 @@ export default function CheckoutScreen() {
                         </Container>
                         <COReusableStyles.Divider />
                         {group.products.map((item) => {
-                            totalPrice += item.quantity * item.product.minPrice;
+                            totalPrice += item.quantity * item.selectedVariantPrice;
                             return (
                                 <React.Fragment key={item.product.productId}>
                                     <ProductOrderedLayout>
@@ -272,36 +274,41 @@ export default function CheckoutScreen() {
                                             </COReusableStyles.Text>
                                         </ItemStoreContainer>
                                         <COReusableStyles.Text>
-                                            RM{item.product.minPrice.toFixed(2)}
+                                            RM{item.selectedVariantPrice.toFixed(2)}
                                         </COReusableStyles.Text>
                                         <COReusableStyles.Text>{item.quantity}</COReusableStyles.Text>
                                         <COReusableStyles.Text>
-                                            RM{(item.product.minPrice * item.quantity).toFixed(2)}
+                                            RM{(item.selectedVariantPrice * item.quantity).toFixed(2)}
                                         </COReusableStyles.Text>
                                     </ProductOrderedLayout>
                                     <COReusableStyles.Divider />
                                 </React.Fragment>
                             );
                         })}
+                        <Container>
+                            <ShippingLayout>
+                                <COReusableStyles.Text style={{ textAlign: 'right' }}>
+                                    Shipping Method:
+                                </COReusableStyles.Text>
+                                {shippingOption === 'standardDelivery' ? (
+                                    <COReusableStyles.Title style={{ textAlign: 'center' }}>
+                                        Standard Delivery
+                                    </COReusableStyles.Title>
+                                ) : (
+                                    <COReusableStyles.Title style={{ textAlign: 'center' }}>
+                                        Self Collection
+                                    </COReusableStyles.Title>
+                                )}
+                                <ChangeShippingMethod onClick={handleChangeClick}>
+                                    <p>Change</p>
+                                </ChangeShippingMethod>
+                                <COReusableStyles.Text>RM5.90</COReusableStyles.Text>
+                            </ShippingLayout>
+                        </Container>
                     </React.Fragment>
                 ))}
+                <COReusableStyles.Divider />
                 <Container>
-                    <ShippingLayout>
-                        <COReusableStyles.Text style={{ textAlign: 'right' }}>Shipping Method:</COReusableStyles.Text>
-                        {shippingOption === 'standardDelivery' ? (
-                            <COReusableStyles.Title style={{ textAlign: 'center' }}>
-                                Standard Delivery
-                            </COReusableStyles.Title>
-                        ) : (
-                            <COReusableStyles.Title style={{ textAlign: 'center' }}>
-                                Self Collection
-                            </COReusableStyles.Title>
-                        )}
-                        <ChangeShippingMethod onClick={handleChangeClick}>
-                            <p>Change</p>
-                        </ChangeShippingMethod>
-                        <COReusableStyles.Text>RM5.90</COReusableStyles.Text>
-                    </ShippingLayout>
                     <OrderTotalLayout>
                         {checkedProducts.length > 1 ? (
                             <COReusableStyles.Text style={{ textAlign: 'right' }}>
@@ -317,7 +324,6 @@ export default function CheckoutScreen() {
                     </OrderTotalLayout>
                 </Container>
             </COReusableStyles.BorderConatiner>
-
             <COReusableStyles.BorderConatiner>
                 <SelectPaymentMethod
                     setSelectedPaymentMethod={setSelectedPaymentMethod}
@@ -332,11 +338,11 @@ export default function CheckoutScreen() {
                     </PaymentDetailsLayout>
                     <PaymentDetailsLayout>
                         <TextAlignEnd>Shipping Subtotal: </TextAlignEnd>
-                        <TextAlignEnd>RM5.90</TextAlignEnd>
+                        <TextAlignEnd>RM{(5.9 * numOfShops).toFixed(2)}</TextAlignEnd>
                     </PaymentDetailsLayout>
                     <PaymentDetailsLayout>
                         <TextAlignEnd>Total Payment: </TextAlignEnd>
-                        <TotalPayment>RM{(totalPrice + 5.9).toFixed(2)}</TotalPayment>
+                        <TotalPayment>RM{(totalPrice + 5.9 * numOfShops).toFixed(2)}</TotalPayment>
                     </PaymentDetailsLayout>
                 </Container>
                 <COReusableStyles.Divider />

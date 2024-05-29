@@ -5,7 +5,7 @@ function PassData() {
     const [buyNowProduct, setBuyNowProduct] = useState(null);
 
     // Add a product to the cart
-    const addToCart = (product, selectedVariant, quantity) => {
+    const addToCart = (product, selectedVariant, quantity, selectedVariantPrice) => {
         setCart((prevCart) => {
             // Find the index of the product in the cart to check whether exist or not with same options
             const index = prevCart.findIndex(
@@ -14,7 +14,7 @@ function PassData() {
 
             // If the product is not in the cart, add it
             if (index === -1) {
-                return [...prevCart, { product, selectedVariant, quantity }];
+                return [...prevCart, { product, selectedVariant, quantity, selectedVariantPrice }];
             }
 
             // If the product is already in the cart, increase its quantity

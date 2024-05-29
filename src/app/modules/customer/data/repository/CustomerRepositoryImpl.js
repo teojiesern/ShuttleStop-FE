@@ -6,10 +6,13 @@ export default class CustomerRepositoryImpl {
     #ROUTES = {
         CUSTOMER: `${this.#BASE_URL}`,
         REGISTER: `${this.#BASE_URL}/signup`,
-        UPDATE: `${this.#BASE_URL}/my-profile`,
+        PROFILE: `${this.#BASE_URL}/my-profile`,
         ALLPRODUCTS: `${this.#BASE_URL}/products`,
         PRODUCT: `${this.#BASE_URL}/product`,
         SHOP: `${this.#BASE_URL}/shop-by-product`,
+        TOSHIP_PURCHASE: `${this.#BASE_URL}/my-purchase-toship`,
+        SHIPPING_PURCHASE: `${this.#BASE_URL}/my-purchase-shipping`,
+        COMPLETED_PURCHASE: `${this.#BASE_URL}/my-purchase-completed`,
     };
 
     getCustomer = async () => {
@@ -42,7 +45,7 @@ export default class CustomerRepositoryImpl {
     };
 
     updateCustomer = async (user) => {
-        const { status, data } = await Network.getInstance().patch(this.#ROUTES.UPDATE, user);
+        const { status, data } = await Network.getInstance().patch(this.#ROUTES.PROFILE, user);
 
         return { status, data };
     };
@@ -104,5 +107,23 @@ export default class CustomerRepositoryImpl {
             owner: data.owner,
         };
         return { status, data: mappedData };
+    };
+
+    getToShipPurchases = async () => {
+        const { status, data } = await Network.getInstance().get(this.#ROUTES.TOSHIP_PURCHASE);
+
+        return { status, data };
+    };
+
+    getShippingPurchases = async () => {
+        const { status, data } = await Network.getInstance().get(this.#ROUTES.SHIPPING_PURCHASE);
+
+        return { status, data };
+    };
+
+    getCompletedPurchases = async () => {
+        const { status, data } = await Network.getInstance().get(this.#ROUTES.COMPLETED_PURCHASE);
+
+        return { status, data };
     };
 }

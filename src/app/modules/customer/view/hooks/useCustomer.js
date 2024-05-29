@@ -75,10 +75,46 @@ export default function useCustomer() {
         }
     }, []);
 
+    const getToShipPurchases = useCallback(async () => {
+        try {
+            const { data } = await repositoryRef.current.getToShipPurchases();
+            return data;
+        } catch (error) {
+            if (isAxiosError(error)) {
+                console.log('this is the errors', error.response.data);
+            }
+        }
+    }, []);
+
+    const getShippingPurchases = useCallback(async () => {
+        try {
+            const { data } = await repositoryRef.current.getShippingPurchases();
+            return data;
+        } catch (error) {
+            if (isAxiosError(error)) {
+                console.log('this is the errors', error.response.data);
+            }
+        }
+    }, []);
+
+    const getCompletedPurchases = useCallback(async () => {
+        try {
+            const { data } = await repositoryRef.current.getCompletedPurchases();
+            return data;
+        } catch (error) {
+            if (isAxiosError(error)) {
+                console.log('this is the errors', error.response.data);
+            }
+        }
+    }, []);
+
     return {
         getCustomer,
         updateCustomer,
         getAllProducts,
         getProductById,
+        getToShipPurchases,
+        getShippingPurchases,
+        getCompletedPurchases,
     };
 }

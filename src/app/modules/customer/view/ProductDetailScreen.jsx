@@ -180,6 +180,7 @@ export default function ProductDetailScreen() {
     const [product, setProduct] = useState();
     const [productShop, setProductShop] = useState();
     const [selectedVariant, setSelectedVariant] = useState('');
+    const [selectedVariantPrice, setSelectedVariantPrice] = useState(0);
 
     const { id } = useParams();
     useEffect(() => {
@@ -188,6 +189,7 @@ export default function ProductDetailScreen() {
                 const p = await getProductById(id);
                 setProduct(p);
                 setSelectedVariant(p.variants[0].color);
+                setSelectedVariantPrice(p.variants[0].price);
                 const s = await getShop(id);
                 setProductShop(s);
             } catch (error) {
@@ -197,8 +199,9 @@ export default function ProductDetailScreen() {
         fetchProduct();
     }, [id, getProductById, getShop]);
 
-    const handleOptionClick = (variant) => {
-        setSelectedVariant(variant);
+    const handleVariantChange = (variant) => {
+        setSelectedVariant(variant.color);
+        setSelectedVariantPrice(variant.price);
     };
     const [quantity, setQuantity] = useState(1);
     const [inputQuantity, setInputQuantity] = useState(quantity);
@@ -211,7 +214,7 @@ export default function ProductDetailScreen() {
         if (!isLogin) {
             navigate('/authentication/login', { replace: true });
         } else {
-            addToCart(product, selectedVariant, quantity);
+            addToCart(product, selectedVariant, quantity, selectedVariantPrice);
             showModal({
                 modal: <AddCartModal />,
                 disableBackdropDismiss: true,
@@ -231,7 +234,7 @@ export default function ProductDetailScreen() {
     );
 
     const handleBuyNow = () => {
-        buyNow({ product, selectedVariant, quantity });
+        buyNow({ product, selectedVariant, quantity, selectedVariantPrice });
     };
 
     useEffect(() => {
@@ -365,7 +368,7 @@ export default function ProductDetailScreen() {
                         )}
                         <TextSmallGrey>({product.numReviews} reviews)</TextSmallGrey>
                     </Rate>
-                    <Text3XLarge>RM {product.minPrice.toFixed(2)}</Text3XLarge>
+                    <Text3XLarge>RM {selectedVariantPrice.toFixed(2)}</Text3XLarge>
                     <StyledHr />
                     <Selectt>
                         <WholeOption key="color">
@@ -388,7 +391,7 @@ export default function ProductDetailScreen() {
                                         }
                                         key={variant.color}
                                         // selected={variant.color === selectedVariant}
-                                        onClick={() => handleOptionClick(variant.color)}
+                                        onClick={() => handleVariantChange(variant)}
                                     >
                                         {variant.color}
                                     </Button>
