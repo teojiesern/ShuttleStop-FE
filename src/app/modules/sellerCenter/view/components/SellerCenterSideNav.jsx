@@ -9,7 +9,7 @@ const SideNavContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    min-width: 20%;
+    min-width: 18%;
 `;
 
 const SectionGroup = styled.div`

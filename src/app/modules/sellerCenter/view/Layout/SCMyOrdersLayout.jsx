@@ -45,7 +45,7 @@ export default function SCMyOrdersLayout() {
                     style={NavLinkStylesUtil.activeStyle}
                     to="delivered"
                 >
-                    Delivered
+                    Completed
                 </StyledNavLink>
             </NavLinkContainer>
             <Outlet />

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Skeleton from '../../../../platform/components/skeleton/Skeleton';
 import useSCMyOrdersDelivered from '../hooks/useSCMyOrdersDelivered';
 import SCReusableStyles from '../styles/SCReusableStyles';
 
@@ -13,7 +14,7 @@ const Container = styled.div`
 const Layout = styled.div`
     width: 100%;
     display: grid;
-    grid-template-columns: 5fr 1fr 2fr 2fr 2fr 2fr;
+    grid-template-columns: 5fr 3fr 1.5fr 1.5fr 1.5fr 1.5fr;
     gap: 3rem;
     align-items: center;
 `;
@@ -39,13 +40,16 @@ export default function SCMyOrdersDeliveredScreen() {
 
     useEffect(() => {
         getDeliveredOrders().then((data) => {
-            setOrders(data.orders);
+            setOrders(data);
         });
     }, [getDeliveredOrders]);
 
     if (orders === null) {
-        // TODO: Implement loading state
-        return <p>loading...</p>;
+        return (
+            <div style={{ marginTop: '2rem' }}>
+                <Skeleton />
+            </div>
+        );
     }
 
     return (
@@ -77,10 +81,7 @@ export default function SCMyOrdersDeliveredScreen() {
                             </OrdersContainer>
                             <SCReusableStyles.Text>{order.orderID}</SCReusableStyles.Text>
                             <SCReusableStyles.Text>{order.buyer}</SCReusableStyles.Text>
-                            <div>
-                                <SCReusableStyles.Text>{order.shippingOption}</SCReusableStyles.Text>
-                                <SCReusableStyles.Text>{order.courier}</SCReusableStyles.Text>
-                            </div>
+                            <SCReusableStyles.Text>{order.shippingOption}</SCReusableStyles.Text>
                             <SCReusableStyles.Text>{order.trackingNumber}</SCReusableStyles.Text>
                             <SCReusableStyles.Text>{order.shippingStatus}</SCReusableStyles.Text>
                         </Layout>
