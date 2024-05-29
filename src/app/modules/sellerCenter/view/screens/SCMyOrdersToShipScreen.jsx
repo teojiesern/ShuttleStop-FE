@@ -47,13 +47,13 @@ export default function SCMyOrdersToShipScreen() {
     const { showModal, hideModal } = useModal();
     const { shopSupportedCourierOption } = useContext(ShopInfoContext);
 
-    const handleOrderClick = useCallback((orderId) => {
+    const handleOrderClick = useCallback((uniqueIds) => {
         setCheckedOrders((prevCheckedOrders) => {
-            if (prevCheckedOrders.includes(orderId)) {
+            if (prevCheckedOrders.includes(uniqueIds)) {
                 // uncheck logic
-                return prevCheckedOrders.filter((id) => id !== orderId);
+                return prevCheckedOrders.filter((id) => id !== uniqueIds);
             }
-            return [...prevCheckedOrders, orderId];
+            return [...prevCheckedOrders, uniqueIds];
         });
     }, []);
 
@@ -61,7 +61,7 @@ export default function SCMyOrdersToShipScreen() {
         (event) => {
             setCheckedOrders(() => {
                 if (event.target.checked) {
-                    return orders.map((order) => order.orderID);
+                    return orders.map((order) => `${order.orderID},${order.productId}`);
                 }
                 return [];
             });
@@ -89,7 +89,7 @@ export default function SCMyOrdersToShipScreen() {
 
     useEffect(() => {
         getToShipOrders().then((data) => {
-            setOrders(data.orders);
+            setOrders(data);
         });
     }, [getToShipOrders]);
 
@@ -113,11 +113,11 @@ export default function SCMyOrdersToShipScreen() {
             <SCReusableStyles.BorderContainer>
                 {orders.map((order, index) => (
                     <div
-                        key={order.orderID}
+                        key={`${order.orderID},${order.productId}`}
                         style={{ cursor: 'pointer' }}
                     >
-                        <Layout onClick={() => handleOrderClick(order.orderID)}>
-                            <Checkbox checked={checkedOrders.includes(order.orderID)} />
+                        <Layout onClick={() => handleOrderClick(`${order.orderID},${order.productId}`)}>
+                            <Checkbox checked={checkedOrders.includes(`${order.orderID},${order.productId}`)} />
                             <OrdersContainer>
                                 <OrderImage src={order.productImage} />
                                 <OrderDescriptionContainer>

@@ -25,6 +25,7 @@ export default class SellerRepositoryImpl {
         const { status, data } = await Network.getInstance().get(this.#ROUTES.SHOP(sellerId));
 
         const mappedData = {
+            shopId: data.shop.shopId,
             shopName: data.shop.name,
             shopDescription: data.shop.description || '',
             shopPickupAddress: data.shop.pickupAddress,
