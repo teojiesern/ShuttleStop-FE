@@ -109,7 +109,7 @@ export default function CheckoutScreen() {
     const from = searchParams.get('from');
     const checkedProducts = JSON.parse(searchParams.get('products'));
 
-    const [isPaymentSelected, setIsPaymentSelected] = useState(false);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
     const [groupedProduct, setGroupedProducts] = useState({});
     const [availablePaymentOption, setAvailablePaymentOption] = useState([true, true]);
     const [availableShippingOption, setAvailableShippingOption] = useState([true, true]);
@@ -131,9 +131,10 @@ export default function CheckoutScreen() {
         const payload = {
             groupedProduct,
             shippingOption,
+            selectedPaymentMethod,
         };
 
-        if (isPaymentSelected) {
+        if (selectedPaymentMethod !== null) {
             createOrder(payload);
             showModal({
                 modal: (
@@ -152,7 +153,7 @@ export default function CheckoutScreen() {
                 hideModal();
             }, 3000);
         }
-    }, [showModal, hideModal, navigateWithCleanup, isPaymentSelected, createOrder, groupedProduct, shippingOption]);
+    }, [showModal, hideModal, navigateWithCleanup, selectedPaymentMethod, createOrder, groupedProduct, shippingOption]);
 
     const handleChangeClick = () => {
         showModal({
@@ -319,7 +320,7 @@ export default function CheckoutScreen() {
 
             <COReusableStyles.BorderConatiner>
                 <SelectPaymentMethod
-                    setIsPaymentSelected={setIsPaymentSelected}
+                    setSelectedPaymentMethod={setSelectedPaymentMethod}
                     availablePaymentOption={availablePaymentOption}
                 />
                 <COReusableStyles.Divider />
