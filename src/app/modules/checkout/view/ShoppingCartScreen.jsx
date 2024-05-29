@@ -101,7 +101,7 @@ export default function ShoppingCartScreen() {
 
     useEffect(() => {
         const initialProductTotal = cart.reduce((acc, item) => {
-            acc[item.product.productId] = item.quantity * item.product.minPrice;
+            acc[`${item.product.productId}-${item.selectedVariant}`] = item.quantity * item.selectedVariantPrice;
             return acc;
         }, {});
         setProductTotal(initialProductTotal);
@@ -110,7 +110,7 @@ export default function ShoppingCartScreen() {
     const calculateTotalPrice = useCallback(() => {
         let total = 0;
         checkedProducts.forEach((item) => {
-            total += productTotal[item.product.productId] || 0;
+            total += productTotal[`${item.product.productId}-${item.selectedVariant}`] || 0;
         });
         return total;
     }, [checkedProducts, productTotal]);
@@ -163,7 +163,7 @@ export default function ShoppingCartScreen() {
                         onDelete={() => {
                             setProductTotal((prevTotal) => {
                                 const updatedTotal = { ...prevTotal };
-                                delete updatedTotal[item.product.productId];
+                                delete updatedTotal[`${item.product.productId}-${item.selectedVariant}`];
                                 return updatedTotal;
                             });
                             setCheckedProducts(checkedProducts.filter((element) => element !== item));
@@ -181,7 +181,8 @@ export default function ShoppingCartScreen() {
             const product = cart.find((element) => element === item);
             setProductTotal((prevTotal) => ({
                 ...prevTotal,
-                [product.product.productId]: product.quantity * product.product.minPrice,
+                [`${product.product.productId}-${product.selectedVariant}`]:
+                    product.quantity * product.selectedVariantPrice,
             }));
         },
         [increaseQty, cart],
@@ -194,7 +195,8 @@ export default function ShoppingCartScreen() {
                 decreaseQty(item);
                 setProductTotal((prevTotal) => ({
                     ...prevTotal,
-                    [product.productId]: product.quantity * product.product.minPrice,
+                    [`${product.product.productId}-${product.selectedVariant}`]:
+                        product.quantity * product.selectedVariantPrice,
                 }));
             } else {
                 showModal({
@@ -205,7 +207,7 @@ export default function ShoppingCartScreen() {
                             onDelete={() => {
                                 setProductTotal((prevTotal) => {
                                     const updatedTotal = { ...prevTotal };
-                                    delete updatedTotal[item.product.productId];
+                                    delete updatedTotal[`${item.product.productId}-${item.selectedVariant}`];
                                     return updatedTotal;
                                 });
                                 setCheckedProducts(checkedProducts.filter((element) => element !== item));
@@ -368,7 +370,7 @@ export default function ShoppingCartScreen() {
                                         </CheckboxLabelContainer>
                                     }
                                 />
-                                <COReusableStyles.Text>RM{item.product.minPrice.toFixed(2)}</COReusableStyles.Text>
+                                <COReusableStyles.Text>RM{item.selectedVariantPrice.toFixed(2)}</COReusableStyles.Text>
                                 <QuantityControlContainer>
                                     <QuantityChangeButton onClick={() => handleDecrementChange(item)}>
                                         -
@@ -380,9 +382,9 @@ export default function ShoppingCartScreen() {
                                         +
                                     </QuantityChangeButton>
                                 </QuantityControlContainer>
-                                {productTotal[item.product.productId] !== undefined && (
+                                {productTotal[`${item.product.productId}-${item.selectedVariant}`] !== undefined && (
                                     <COReusableStyles.Text>
-                                        RM{productTotal[item.product.productId].toFixed(2)}
+                                        RM{productTotal[`${item.product.productId}-${item.selectedVariant}`].toFixed(2)}
                                     </COReusableStyles.Text>
                                 )}
                                 <IconButton
