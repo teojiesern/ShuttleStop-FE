@@ -3,6 +3,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import SellerInfoContext from '../../../../platform/app/data/SellerInfoContext';
+import Skeleton from '../../../../platform/components/skeleton/Skeleton';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
@@ -136,8 +137,11 @@ export default function SCMyIncomeScreen() {
     }, [getPreviousOrders]);
 
     if (orders === null) {
-        // TODO: Implement loading state
-        return <p>loading...</p>;
+        return (
+            <div style={{ marginTop: '2rem' }}>
+                <Skeleton />
+            </div>
+        );
     }
 
     return (
