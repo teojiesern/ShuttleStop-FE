@@ -12,10 +12,17 @@ export default function useSCMyIncome() {
         return response.data;
     }, [shopId]);
 
+    const updateSellerBankInformation = useCallback(async (payload) => {
+        const response = await repostitoryRef.current.updateSellerBankInformation(payload);
+
+        return response.data;
+    }, []);
+
     return useMemo(
         () => ({
             getPreviousOrders,
+            updateSellerBankInformation,
         }),
-        [getPreviousOrders],
+        [getPreviousOrders, updateSellerBankInformation],
     );
 }

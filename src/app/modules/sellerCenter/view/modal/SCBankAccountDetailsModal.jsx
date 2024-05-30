@@ -98,7 +98,13 @@ export default function SCBankAccountDetailsModal({ bankInformation, hideModal, 
                     type="number"
                     style={{ minWidth: '50%' }}
                     value={newBankInformation?.accountNumber}
-                    onChange={(e) => setNewBankInformation({ ...newBankInformation, accountNumber: e.target.value })}
+                    onChange={(e) => {
+                        const parsedValue = parseInt(e.target.value, 10);
+                        if (!Number.isNaN(parsedValue)) {
+                            const newAccountNo = Math.max(0, parsedValue).toString().slice(0, 10);
+                            setNewBankInformation({ ...newBankInformation, accountNumber: newAccountNo });
+                        }
+                    }}
                 />
             </ContentContainer>
             <ButtonContainer>

@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import SellerInfoContext from '../../../../platform/app/data/SellerInfoContext';
 import Skeleton from '../../../../platform/components/skeleton/Skeleton';
+import CrossedModal from '../../../../platform/modal/CrossedModal';
+import TickedModal from '../../../../platform/modal/TickedModal';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
@@ -69,7 +71,7 @@ const OrderImage = styled.img`
 `;
 
 export default function SCMyIncomeScreen() {
-    const { sellerBankAccount, sellerBankAccountNumber, sellerNameInBankAccount, sellerTotalIncome } =
+    const { sellerId, sellerBankAccount, sellerBankAccountNumber, sellerNameInBankAccount, sellerTotalIncome } =
         useContext(SellerInfoContext);
 
     const [orders, setOrders] = useState(null);
@@ -78,20 +80,39 @@ export default function SCMyIncomeScreen() {
         sellerBankAccount !== '' && sellerBankAccountNumber !== '' && sellerNameInBankAccount !== ''
             ? {
                   bankName: sellerBankAccount,
-                  bankIcon: BankLists.find((bank) => bank.name === sellerBankAccount).icon,
+                  bankIcon: BankLists.find((bank) => bank.name === sellerBankAccount)?.icon,
                   accountNumber: sellerBankAccountNumber,
                   accountHolderName: sellerNameInBankAccount,
               }
             : null,
     );
 
-    const { getPreviousOrders } = useSCMyIncome();
+    const { getPreviousOrders, updateSellerBankInformation } = useSCMyIncome();
     const { showModal, hideModal } = useModal();
 
-    const updateBankInformation = useCallback(async (newBankInformation) => {
-        // call api
-        setBankInformation(newBankInformation);
-    }, []);
+    const updateBankInformation = useCallback(
+        async (newBankInformation) => {
+            try {
+                const payload = {
+                    sellerId,
+                    bankAccount: newBankInformation.bankName,
+                    accountNumber: newBankInformation.accountNumber,
+                    nameInBankAccount: newBankInformation.accountHolderName,
+                };
+                const updatedBankInformation = await updateSellerBankInformation(payload);
+
+                setBankInformation(updatedBankInformation);
+                showModal({
+                    modal: <TickedModal title="Bank information successfully updated" />,
+                });
+            } catch (error) {
+                showModal({
+                    modal: <CrossedModal title="Failed to update bank information" />,
+                });
+            }
+        },
+        [sellerId, showModal, updateSellerBankInformation],
+    );
 
     const withdrawMoney = useCallback(async (withdrawalAmount) => {
         // const response = await repostitoryRef.current.withdrawMoney(withdrawalAmount);
