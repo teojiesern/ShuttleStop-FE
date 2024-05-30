@@ -4,6 +4,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ShopInfoContext from '../../../../platform/app/data/ShopInfoContext';
 import Skeleton from '../../../../platform/components/skeleton/Skeleton';
+import CrossedModal from '../../../../platform/modal/CrossedModal';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
@@ -22,7 +23,7 @@ const Container = styled.div`
 const Layout = styled.div`
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 5fr 4fr 2fr 2fr;
+    grid-template-columns: 1fr 5fr 2fr 2fr 2fr;
     gap: 3rem;
     align-items: center;
 `;
@@ -55,6 +56,7 @@ const OrderImage = styled.img`
 export default function SCMyOrdersToShipScreen() {
     const [orders, setOrders] = useState(null);
     const [checkedOrders, setCheckedOrders] = useState([]);
+    const [checkedAll, setCheckedAll] = useState(false);
     const { getToShipOrders, shipOrders } = useSCMyOrdersToShip();
     const { showModal, hideModal } = useModal();
     const { shopSupportedCourierOption } = useContext(ShopInfoContext);
@@ -71,9 +73,10 @@ export default function SCMyOrdersToShipScreen() {
 
     const handleAllCheckChange = useCallback(
         (event) => {
+            setCheckedAll((prevCheckedAll) => !prevCheckedAll);
             setCheckedOrders(() => {
                 if (event.target.checked) {
-                    return orders.map((order) => `${order.orderID},${order.productId}`);
+                    return orders.map((order) => order.trackingNumber);
                 }
                 return [];
             });
@@ -88,16 +91,35 @@ export default function SCMyOrdersToShipScreen() {
             });
             return;
         }
+
+        const shipAndUpdateOrders = async () => {
+            try {
+                await shipOrders(checkedOrders);
+                setOrders((prevOrders) => prevOrders.filter((order) => !checkedOrders.includes(order.trackingNumber)));
+                setCheckedOrders([]);
+                setCheckedAll(false);
+            } catch (error) {
+                showModal({
+                    modal: (
+                        <CrossedModal
+                            title="We weren't able to ship the products"
+                            description="We are aware of this problem and are trying our best to fix it"
+                        />
+                    ),
+                });
+            }
+        };
+
         showModal({
             modal: (
                 <CourierSelectionModal
                     hideModal={hideModal}
-                    shipOrders={shipOrders}
+                    shipOrders={shipAndUpdateOrders}
                     activeCourierOptions={shopSupportedCourierOption}
                 />
             ),
         });
-    }, [shopSupportedCourierOption, checkedOrders.length, hideModal, shipOrders, showModal]);
+    }, [checkedOrders, showModal, hideModal, shopSupportedCourierOption, shipOrders]);
 
     useEffect(() => {
         getToShipOrders().then((data) => {
@@ -117,9 +139,12 @@ export default function SCMyOrdersToShipScreen() {
         <Container>
             <SCReusableStyles.BorderContainer>
                 <Layout>
-                    <Checkbox onChange={handleAllCheckChange} />
+                    <Checkbox
+                        onChange={handleAllCheckChange}
+                        checked={checkedAll}
+                    />
                     <SCReusableStyles.Text>Product(s)</SCReusableStyles.Text>
-                    <SCReusableStyles.Text>Order ID</SCReusableStyles.Text>
+                    <SCReusableStyles.Text>Tracking Number</SCReusableStyles.Text>
                     <SCReusableStyles.Text>Buyer</SCReusableStyles.Text>
                     <SCReusableStyles.Text>Shipping Option</SCReusableStyles.Text>
                 </Layout>
@@ -132,8 +157,8 @@ export default function SCMyOrdersToShipScreen() {
                             key={`${order.orderID},${order.productId}`}
                             style={{ cursor: 'pointer' }}
                         >
-                            <Layout onClick={() => handleOrderClick(`${order.orderID},${order.productId}`)}>
-                                <Checkbox checked={checkedOrders.includes(`${order.orderID},${order.productId}`)} />
+                            <Layout onClick={() => handleOrderClick(order.trackingNumber)}>
+                                <Checkbox checked={checkedOrders.includes(order.trackingNumber)} />
                                 <OrdersContainer>
                                     <OrderImage src={order.productImage} />
                                     <OrderDescriptionContainer>
@@ -144,7 +169,7 @@ export default function SCMyOrdersToShipScreen() {
                                         <SCReusableStyles.Text>{order.quantity}</SCReusableStyles.Text>
                                     </OrderDescriptionContainer>
                                 </OrdersContainer>
-                                <SCReusableStyles.Text>{order.orderID}</SCReusableStyles.Text>
+                                <SCReusableStyles.Text>{order.trackingNumber}</SCReusableStyles.Text>
                                 <SCReusableStyles.Text>{order.buyer}</SCReusableStyles.Text>
                                 <SCReusableStyles.Text>{order.shippingOption}</SCReusableStyles.Text>
                             </Layout>

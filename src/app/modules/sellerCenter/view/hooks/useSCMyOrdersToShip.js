@@ -12,13 +12,15 @@ export default function useSCMyOrdersToShip() {
         return response.data;
     }, [shopId]);
 
-    const shipOrders = () => {};
+    const shipOrders = useCallback(async (trackingNumbers) => {
+        await repostitoryRef.current.shipOrders(trackingNumbers);
+    }, []);
 
     return useMemo(
         () => ({
             getToShipOrders,
             shipOrders,
         }),
-        [getToShipOrders],
+        [getToShipOrders, shipOrders],
     );
 }

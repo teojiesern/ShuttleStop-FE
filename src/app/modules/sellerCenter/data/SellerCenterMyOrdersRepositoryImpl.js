@@ -8,6 +8,7 @@ export default class SellerCenterMyOrdersRepositoryImpl {
         TO_SHIP_ORDERS: (shopId) => `${this.#BASE_URL}/orders/to-ship/${shopId}`,
         SHIPPING_ORDERS: (shopId) => `${this.#BASE_URL}/orders/shipping/${shopId}`,
         COMPLETED_ORDERS: (shopId) => `${this.#BASE_URL}/orders/completed/${shopId}`,
+        SHIP_ORDERS: `${this.#BASE_URL}/ship-orders`,
     };
 
     getToShipOrders = async (payload) => {
@@ -73,8 +74,9 @@ export default class SellerCenterMyOrdersRepositoryImpl {
         return { status, data: mappedData };
     };
 
-    shipOrders = async (orderIds) => {
-        const { status, data } = await Network.getInstance().post(this.#ROUTES.GET_TO_SHIP_ORDERS, { orderIds });
+    shipOrders = async (trackingNumbers) => {
+        const { status, data } = await Network.getInstance().post(this.#ROUTES.SHIP_ORDERS, { trackingNumbers });
+
         return { status, data };
     };
 }
