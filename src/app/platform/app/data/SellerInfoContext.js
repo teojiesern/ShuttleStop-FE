@@ -5,6 +5,9 @@ const SellerInfoContext = createContext({
     sellerIcNumber: '',
     sellerTotalIncome: 0,
     sellerId: '',
+    sellerBankAccount: '',
+    sellerBankAccountNumber: '',
+    sellerNameInBankAccount: '',
     setSellerInfo: () => {},
 });
 

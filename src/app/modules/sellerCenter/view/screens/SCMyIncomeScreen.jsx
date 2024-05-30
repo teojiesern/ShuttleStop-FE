@@ -1,11 +1,13 @@
 import { Button } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import SellerInfoContext from '../../../../platform/app/data/SellerInfoContext';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
+import BankLists from '../../data/BankLists';
 import useSCMyIncome from '../hooks/useSCMyIncome';
 import SCBankAccountDetailsModal from '../modal/SCBankAccountDetailsModal';
 import SCWithdrawMoneyModal from '../modal/SCWithdrawMoneyModal';
@@ -66,15 +68,41 @@ const OrderImage = styled.img`
 `;
 
 export default function SCMyIncomeScreen() {
+    const { sellerBankAccount, sellerBankAccountNumber, sellerNameInBankAccount, sellerTotalIncome } =
+        useContext(SellerInfoContext);
+
     const [orders, setOrders] = useState(null);
-    const { bankInformation, getPreviousOrders, totalAmount, updateBankInformation, withdrawMoney } = useSCMyIncome();
+    const [totalIncome, setTotalAmount] = useState(sellerTotalIncome.toFixed(2));
+    const [bankInformation, setBankInformation] = useState(
+        sellerBankAccount !== '' && sellerBankAccountNumber !== '' && sellerNameInBankAccount !== ''
+            ? {
+                  bankName: sellerBankAccount,
+                  bankIcon: BankLists.find((bank) => bank.name === sellerBankAccount).icon,
+                  accountNumber: sellerBankAccountNumber,
+                  accountHolderName: sellerNameInBankAccount,
+              }
+            : null,
+    );
+
+    const { getPreviousOrders } = useSCMyIncome();
     const { showModal, hideModal } = useModal();
+
+    const updateBankInformation = useCallback(async (newBankInformation) => {
+        // call api
+        setBankInformation(newBankInformation);
+    }, []);
+
+    const withdrawMoney = useCallback(async (withdrawalAmount) => {
+        // const response = await repostitoryRef.current.withdrawMoney(withdrawalAmount);
+
+        setTotalAmount((prev) => (prev - withdrawalAmount).toFixed(2));
+    }, []);
 
     const handleWithdraw = useCallback(() => {
         showModal({
             modal: bankInformation ? (
                 <SCWithdrawMoneyModal
-                    totalAmount={totalAmount}
+                    totalAmount={totalIncome}
                     bankInformation={bankInformation}
                     hideModal={hideModal}
                     withdrawMoney={withdrawMoney}
@@ -87,7 +115,7 @@ export default function SCMyIncomeScreen() {
                 />
             ),
         });
-    }, [bankInformation, hideModal, showModal, totalAmount, updateBankInformation, withdrawMoney]);
+    }, [bankInformation, hideModal, showModal, totalIncome, updateBankInformation, withdrawMoney]);
 
     const handleChangeBankInformation = useCallback(() => {
         showModal({
@@ -119,7 +147,7 @@ export default function SCMyIncomeScreen() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <Title>Total Amount</Title>
                         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                            <TotalAmount>RM{totalAmount ?? 0.0}</TotalAmount>
+                            <TotalAmount>RM{totalIncome ?? 0.0}</TotalAmount>
                             <Button
                                 style={PlatformReusableStyles.PrimaryButtonStyles}
                                 onClick={handleWithdraw}

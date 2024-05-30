@@ -16,6 +16,9 @@ export default class SellerRepositoryImpl {
             sellerName: data.seller.name,
             sellerIcNumber: data.seller.icNumber,
             sellerTotalIncome: data.seller.totalIncome,
+            sellerBankAccount: data.seller.bankAccount,
+            sellerBankAccountNumber: data.seller.accountNumber,
+            sellerNameInBankAccount: data.seller.nameInBankAccount,
         };
 
         return { status, data: mappedData };
