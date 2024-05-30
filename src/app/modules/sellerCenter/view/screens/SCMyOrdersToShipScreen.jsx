@@ -7,6 +7,7 @@ import Skeleton from '../../../../platform/components/skeleton/Skeleton';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
+import EmptyState from '../assets/emptyState.svg';
 import useSCMyOrdersToShip from '../hooks/useSCMyOrdersToShip';
 import CourierSelectionModal from '../modal/CourierSelectionModal';
 import SCMyOrdersToShipErrorModal from '../modal/SCMyOrdersToShipErrorModal';
@@ -35,6 +36,16 @@ const OrderDescriptionContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+`;
+
+const EmptyStateContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+    max-height: 50%;
+    gap: 2rem;
 `;
 
 const OrderImage = styled.img`
@@ -114,44 +125,56 @@ export default function SCMyOrdersToShipScreen() {
                 </Layout>
             </SCReusableStyles.BorderContainer>
 
-            <SCReusableStyles.BorderContainer>
-                {orders.map((order, index) => (
-                    <div
-                        key={`${order.orderID},${order.productId}`}
-                        style={{ cursor: 'pointer' }}
-                    >
-                        <Layout onClick={() => handleOrderClick(`${order.orderID},${order.productId}`)}>
-                            <Checkbox checked={checkedOrders.includes(`${order.orderID},${order.productId}`)} />
-                            <OrdersContainer>
-                                <OrderImage src={order.productImage} />
-                                <OrderDescriptionContainer>
-                                    <SCReusableStyles.Text>{order.productName}</SCReusableStyles.Text>
-                                    <SCReusableStyles.TextDescription>
-                                        {order.productDescription}
-                                    </SCReusableStyles.TextDescription>
-                                    <SCReusableStyles.Text>{order.quantity}</SCReusableStyles.Text>
-                                </OrderDescriptionContainer>
-                            </OrdersContainer>
-                            <SCReusableStyles.Text>{order.orderID}</SCReusableStyles.Text>
-                            <SCReusableStyles.Text>{order.buyer}</SCReusableStyles.Text>
-                            <SCReusableStyles.Text>{order.shippingOption}</SCReusableStyles.Text>
-                        </Layout>
-                        {index !== orders.length - 1 && <SCReusableStyles.Divider />}
-                    </div>
-                ))}
+            <SCReusableStyles.BorderContainer style={{ justifyContent: 'center' }}>
+                {orders.length > 0 ? (
+                    orders.map((order, index) => (
+                        <div
+                            key={`${order.orderID},${order.productId}`}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            <Layout onClick={() => handleOrderClick(`${order.orderID},${order.productId}`)}>
+                                <Checkbox checked={checkedOrders.includes(`${order.orderID},${order.productId}`)} />
+                                <OrdersContainer>
+                                    <OrderImage src={order.productImage} />
+                                    <OrderDescriptionContainer>
+                                        <SCReusableStyles.Text>{order.productName}</SCReusableStyles.Text>
+                                        <SCReusableStyles.TextDescription>
+                                            {order.productDescription}
+                                        </SCReusableStyles.TextDescription>
+                                        <SCReusableStyles.Text>{order.quantity}</SCReusableStyles.Text>
+                                    </OrderDescriptionContainer>
+                                </OrdersContainer>
+                                <SCReusableStyles.Text>{order.orderID}</SCReusableStyles.Text>
+                                <SCReusableStyles.Text>{order.buyer}</SCReusableStyles.Text>
+                                <SCReusableStyles.Text>{order.shippingOption}</SCReusableStyles.Text>
+                            </Layout>
+                            {index !== orders.length - 1 && <SCReusableStyles.Divider />}
+                        </div>
+                    ))
+                ) : (
+                    <EmptyStateContainer>
+                        <img
+                            src={EmptyState}
+                            height="200px"
+                        />
+                        <SCReusableStyles.Text>No orders to ship, come back later</SCReusableStyles.Text>
+                    </EmptyStateContainer>
+                )}
             </SCReusableStyles.BorderContainer>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button
-                    style={{
-                        ...PlatformReusableStyles.PrimaryButtonStyles,
-                        fontSize: FONTSIZE.small,
-                    }}
-                    onClick={onMassShip}
-                >
-                    Mass Ship
-                </Button>
-            </div>
+            {orders.length > 0 && (
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button
+                        style={{
+                            ...PlatformReusableStyles.PrimaryButtonStyles,
+                            fontSize: FONTSIZE.small,
+                        }}
+                        onClick={onMassShip}
+                    >
+                        Mass Ship
+                    </Button>
+                </div>
+            )}
         </Container>
     );
 }
