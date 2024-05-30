@@ -18,11 +18,18 @@ export default function useSCMyIncome() {
         return response.data;
     }, []);
 
+    const withdrawIncome = useCallback(async (payload) => {
+        const response = await repostitoryRef.current.withdrawIncome(payload);
+
+        return response.data;
+    }, []);
+
     return useMemo(
         () => ({
             getPreviousOrders,
             updateSellerBankInformation,
+            withdrawIncome,
         }),
-        [getPreviousOrders, updateSellerBankInformation],
+        [getPreviousOrders, updateSellerBankInformation, withdrawIncome],
     );
 }

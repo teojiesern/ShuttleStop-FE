@@ -87,7 +87,7 @@ export default function SCMyIncomeScreen() {
             : null,
     );
 
-    const { getPreviousOrders, updateSellerBankInformation } = useSCMyIncome();
+    const { getPreviousOrders, updateSellerBankInformation, withdrawIncome } = useSCMyIncome();
     const { showModal, hideModal } = useModal();
 
     const updateBankInformation = useCallback(
@@ -114,11 +114,27 @@ export default function SCMyIncomeScreen() {
         [sellerId, showModal, updateSellerBankInformation],
     );
 
-    const withdrawMoney = useCallback(async (withdrawalAmount) => {
-        // const response = await repostitoryRef.current.withdrawMoney(withdrawalAmount);
+    const withdrawMoney = useCallback(
+        async (withdrawalAmount) => {
+            try {
+                const payload = {
+                    sellerId,
+                    amount: withdrawalAmount,
+                };
+                const updatedIncome = await withdrawIncome(payload);
 
-        setTotalAmount((prev) => (prev - withdrawalAmount).toFixed(2));
-    }, []);
+                setTotalAmount(updatedIncome.toFixed(2));
+                showModal({
+                    modal: <TickedModal title="Bank information successfully updated" />,
+                });
+            } catch (error) {
+                showModal({
+                    modal: <CrossedModal title="Failed to update bank information" />,
+                });
+            }
+        },
+        [sellerId, showModal, withdrawIncome],
+    );
 
     const handleWithdraw = useCallback(() => {
         showModal({

@@ -7,7 +7,8 @@ export default class SCMyIncomeRepositoryImpl {
 
     #ROUTES = {
         ORDERS: (shopId) => `${this.#BASE_URL}/order/${shopId}`,
-        SELER_BANK: `${this.#BASE_URL}/seller-bank`,
+        SELLER_BANK: `${this.#BASE_URL}/seller-bank`,
+        WITHDRAW: `${this.#BASE_URL}/withdraw`,
     };
 
     getPreviousOrders = async (payload) => {
@@ -22,7 +23,7 @@ export default class SCMyIncomeRepositoryImpl {
     };
 
     updateSellerBankInformation = async (payload) => {
-        const { status, data } = await Network.getInstance().patch(`${this.#ROUTES.SELER_BANK}`, payload);
+        const { status, data } = await Network.getInstance().patch(this.#ROUTES.SELLER_BANK, payload);
 
         const mappedData = {
             bankName: data.bankAccount,
@@ -32,5 +33,11 @@ export default class SCMyIncomeRepositoryImpl {
         };
 
         return { status, data: mappedData };
+    };
+
+    withdrawIncome = async (payload) => {
+        const { status, data } = await Network.getInstance().patch(this.#ROUTES.WITHDRAW, payload);
+
+        return { status, data };
     };
 }
