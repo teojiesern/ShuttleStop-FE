@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import SCMyIncomeFakeRepositoryImpl from '../../data/SCMyIncomeFakeRepositoryImpl';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import ShopInfoContext from '../../../../platform/app/data/ShopInfoContext';
+import SCMyIncomeRepositoryImpl from '../../data/SCMyIncomeRepositoryImpl';
 
 export default function useSCMyIncome() {
     const [bankInformation, setBankInformation] = useState(null);
     const [totalAmount, setTotalAmount] = useState(null);
-    const repostitoryRef = useRef(new SCMyIncomeFakeRepositoryImpl());
+    const repostitoryRef = useRef(new SCMyIncomeRepositoryImpl());
+    const { shopId } = useContext(ShopInfoContext);
 
     useEffect(() => {
         repostitoryRef.current.getBankInformation().then(({ data }) => {
@@ -16,11 +18,11 @@ export default function useSCMyIncome() {
         });
     }, []);
 
-    const getPreviousOrders = async () => {
-        const response = await repostitoryRef.current.getPreviousOrders();
+    const getPreviousOrders = useCallback(async () => {
+        const response = await repostitoryRef.current.getPreviousOrders({ shopId });
 
         return response.data;
-    };
+    }, [shopId]);
 
     const updateBankInformation = async (newBankInformation) => {
         // const response = await repostitoryRef.current.updateBankInformation(newBankInformation);
@@ -42,6 +44,6 @@ export default function useSCMyIncome() {
             updateBankInformation,
             withdrawMoney,
         }),
-        [bankInformation, totalAmount],
+        [bankInformation, getPreviousOrders, totalAmount],
     );
 }

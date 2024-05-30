@@ -45,7 +45,7 @@ const TotalAmount = styled.h2`
 
 const Layout = styled.div`
     display: grid;
-    grid-template-columns: 5fr 1.5fr 1.5fr 1.5fr 1.5fr;
+    grid-template-columns: 5fr 2.5fr 2fr 2fr 1.5fr;
     gap: 3rem;
     align-items: center;
 `;
@@ -103,7 +103,7 @@ export default function SCMyIncomeScreen() {
 
     useEffect(() => {
         getPreviousOrders().then((data) => {
-            setOrders(data.orders);
+            setOrders(data);
         });
     }, [getPreviousOrders]);
 
@@ -169,7 +169,7 @@ export default function SCMyIncomeScreen() {
 
             <SCReusableStyles.BorderContainer>
                 {orders.map((order, index) => (
-                    <div key={order.orderID}>
+                    <div key={order.orderId}>
                         <Layout>
                             <OrdersContainer>
                                 <OrderImage src={order.productImage} />
@@ -181,7 +181,7 @@ export default function SCMyIncomeScreen() {
                                     <SCReusableStyles.Text>{order.quantity}</SCReusableStyles.Text>
                                 </OrderDescriptionContainer>
                             </OrdersContainer>
-                            <SCReusableStyles.Text>{order.orderID}</SCReusableStyles.Text>
+                            <SCReusableStyles.Text>{order.orderId}</SCReusableStyles.Text>
                             <SCReusableStyles.Text>{order.date}</SCReusableStyles.Text>
                             <SCReusableStyles.Text>{order.paymentMethod}</SCReusableStyles.Text>
                             <SCReusableStyles.Text>{order.amount}</SCReusableStyles.Text>
