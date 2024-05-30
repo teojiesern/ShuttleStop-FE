@@ -32,6 +32,7 @@ export default function MyPurchaseLayout() {
     const [ToShipPurchases, setToShipPurchases] = useState([]);
     const [ShippingPurchases, setShippingPurchases] = useState([]);
     const [CompletedPurchases, setCompletedPurchases] = useState([]);
+    const [StatusChange, setStatusChange] = useState(true);
 
     useEffect(() => {
         async function fetchData() {
@@ -42,18 +43,23 @@ export default function MyPurchaseLayout() {
                 setShippingPurchases(purchasesShipping);
                 const purchasesCompleted = await getCompletedPurchases();
                 setCompletedPurchases(purchasesCompleted);
+                setStatusChange(false);
             } catch (error) {
                 console.log(error);
             }
         }
-        fetchData();
+        if (StatusChange) {
+            fetchData();
+        }
     }, [
         setToShipPurchases,
         setShippingPurchases,
         setCompletedPurchases,
+        setStatusChange,
         getToShipPurchases,
         getShippingPurchases,
         getCompletedPurchases,
+        StatusChange,
     ]);
 
     const value = useMemo(
@@ -61,8 +67,10 @@ export default function MyPurchaseLayout() {
             ToShipPurchases,
             ShippingPurchases,
             CompletedPurchases,
+            StatusChange,
+            setStatusChange,
         }),
-        [ToShipPurchases, ShippingPurchases, CompletedPurchases],
+        [ToShipPurchases, ShippingPurchases, CompletedPurchases, StatusChange],
     );
 
     return (
