@@ -125,7 +125,12 @@ export default function SCMyIncomeScreen() {
 
                 setTotalAmount(updatedIncome.toFixed(2));
                 showModal({
-                    modal: <TickedModal title="Bank information successfully updated" />,
+                    modal: (
+                        <TickedModal
+                            title="Withdrawal successful"
+                            description="Treat yourself to a drink as a reward for all the hard work"
+                        />
+                    ),
                 });
             } catch (error) {
                 showModal({
