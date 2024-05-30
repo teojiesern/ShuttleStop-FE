@@ -13,6 +13,7 @@ export default class CustomerRepositoryImpl {
         TOSHIP_PURCHASE: `${this.#BASE_URL}/my-purchase-toship`,
         SHIPPING_PURCHASE: `${this.#BASE_URL}/my-purchase-shipping`,
         COMPLETED_PURCHASE: `${this.#BASE_URL}/my-purchase-completed`,
+        UPDATE_STATUS: `${this.#BASE_URL}/update-order-status`,
     };
 
     getCustomer = async () => {
@@ -123,6 +124,15 @@ export default class CustomerRepositoryImpl {
 
     getCompletedPurchases = async () => {
         const { status, data } = await Network.getInstance().get(this.#ROUTES.COMPLETED_PURCHASE);
+
+        return { status, data };
+    };
+
+    updateOrderStatus = async (trackingNumbers, newStatus) => {
+        const { status, data } = await Network.getInstance().patch(this.#ROUTES.UPDATE_STATUS, {
+            trackingNumbers,
+            newStatus,
+        });
 
         return { status, data };
     };

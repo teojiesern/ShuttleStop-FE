@@ -1,11 +1,14 @@
 import { Button, Rating } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
+import PurchasesContext from '../../context/PurchaseContext';
+import useCustomer from '../hooks/useCustomer';
 import useShop from '../hooks/useShop';
 import RateProductModal from '../modal/RateProductModal';
 import PurchaseItem from './PurchaseItem';
@@ -96,7 +99,10 @@ const TextGreySmall = styled.p`
 `;
 
 export default function PurchaseShop({ shop, shippedDate, deliveredDate }) {
+    const navigate = useNavigate();
+    const { setStatusChange } = useContext(PurchasesContext);
     const { getShop } = useShop();
+    const { updateOrderStatus } = useCustomer();
     const { showModal } = useModal();
     const [rating, setRating] = useState(5);
     const [ratingSubmitted, setRatingSubmitted] = useState(false);
@@ -120,8 +126,12 @@ export default function PurchaseShop({ shop, shippedDate, deliveredDate }) {
         return totalPrice;
     });
 
-    const handleParcelReceived = () => {
-        // will add later
+    const handleStatusChange = async () => {
+        const newStatus = 'Completed';
+        const trackingNumber = shop.products.flatMap((product) => product.trackingNumber);
+        await updateOrderStatus(trackingNumber, newStatus);
+        setStatusChange(true);
+        navigate('/customer/my-purchase/completed', { replace: true });
     };
 
     return (
@@ -169,7 +179,7 @@ export default function PurchaseShop({ shop, shippedDate, deliveredDate }) {
                     <AlignRight>
                         <Button
                             style={{ ...PlatformReusableStyles.PrimaryButtonStyles, width: '160px' }}
-                            onClick={handleParcelReceived}
+                            onClick={handleStatusChange}
                         >
                             ORDER RECEIVED
                         </Button>

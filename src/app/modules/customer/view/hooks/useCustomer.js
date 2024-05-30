@@ -108,6 +108,17 @@ export default function useCustomer() {
         }
     }, []);
 
+    const updateOrderStatus = useCallback(async (trackingNumbers, newStatus) => {
+        try {
+            const { data } = await repositoryRef.current.updateOrderStatus(trackingNumbers, newStatus);
+            return data;
+        } catch (error) {
+            if (isAxiosError(error)) {
+                console.log('this is the errors', error.response.data);
+            }
+        }
+    }, []);
+
     return {
         getCustomer,
         updateCustomer,
@@ -116,5 +127,6 @@ export default function useCustomer() {
         getToShipPurchases,
         getShippingPurchases,
         getCompletedPurchases,
+        updateOrderStatus,
     };
 }
