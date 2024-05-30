@@ -51,7 +51,7 @@ const HintText = styled.span`
     text-align: center;
 `;
 
-export default function ShippingDetailsBar({ shippingOption }) {
+export default function ShippingDetailsBar({ shippingOption, availableShippingOption }) {
     const [cusPhoneNo, setCusPhoneNo] = useState(null);
     const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
     const { showModal, hideModal } = useModal();
@@ -104,6 +104,14 @@ export default function ShippingDetailsBar({ shippingOption }) {
             </COReusableStyles.Text>
         );
     };
+
+    if (!availableShippingOption[0] && !availableShippingOption[1]) {
+        <Wrapper>
+            <COReusableStyles.Text>
+                The shops do not support common shipping option. Please split the order.
+            </COReusableStyles.Text>
+        </Wrapper>;
+    }
 
     return (
         <Wrapper>
