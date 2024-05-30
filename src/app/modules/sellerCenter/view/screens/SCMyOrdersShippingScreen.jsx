@@ -15,7 +15,7 @@ const Container = styled.div`
 const Layout = styled.div`
     width: 100%;
     display: grid;
-    grid-template-columns: 5fr 3fr 1.5fr 1.5fr 1.5fr 1.5fr;
+    grid-template-columns: 5fr 1.5fr 1.5fr 1.5fr 1.5fr;
     gap: 3rem;
     align-items: center;
 `;
@@ -68,7 +68,6 @@ export default function SCMyOrdersShippingScreen() {
             <SCReusableStyles.BorderContainer>
                 <Layout>
                     <SCReusableStyles.Text>Product(s)</SCReusableStyles.Text>
-                    <SCReusableStyles.Text>Order ID</SCReusableStyles.Text>
                     <SCReusableStyles.Text>Buyer</SCReusableStyles.Text>
                     <SCReusableStyles.Text>Shipping Option</SCReusableStyles.Text>
                     <SCReusableStyles.Text>Tracking Number</SCReusableStyles.Text>
@@ -91,7 +90,6 @@ export default function SCMyOrdersShippingScreen() {
                                         <SCReusableStyles.Text>{order.quantity}</SCReusableStyles.Text>
                                     </OrderDescriptionContainer>
                                 </OrdersContainer>
-                                <SCReusableStyles.Text>{order.orderID}</SCReusableStyles.Text>
                                 <SCReusableStyles.Text>{order.buyer}</SCReusableStyles.Text>
                                 <SCReusableStyles.Text>{order.shippingOption}</SCReusableStyles.Text>
                                 <SCReusableStyles.Text>{order.trackingNumber}</SCReusableStyles.Text>
