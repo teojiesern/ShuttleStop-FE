@@ -22,7 +22,7 @@ export default class SCMyIncomeRepositoryImpl {
     };
 
     updateSellerBankInformation = async (payload) => {
-        const { status, data } = await Network.getInstance().post(`${this.#ROUTES.SELER_BANK}`, payload);
+        const { status, data } = await Network.getInstance().patch(`${this.#ROUTES.SELER_BANK}`, payload);
 
         const mappedData = {
             bankName: data.bankAccount,
