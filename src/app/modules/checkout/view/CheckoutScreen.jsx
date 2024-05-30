@@ -233,7 +233,10 @@ export default function CheckoutScreen() {
     return (
         <Wrapper>
             <COReusableStyles.BorderConatiner>
-                <ShippingDetailsBar shippingOption={shippingOption} />
+                <ShippingDetailsBar
+                    shippingOption={shippingOption}
+                    availableShippingOption={availableShippingOption}
+                />
             </COReusableStyles.BorderConatiner>
             <COReusableStyles.BorderConatiner>
                 <Container>
@@ -320,7 +323,7 @@ export default function CheckoutScreen() {
                             </COReusableStyles.Text>
                         )}
                         <div />
-                        <TotalPrice>RM{totalPrice.toFixed(2)}</TotalPrice>
+                        <TotalPrice>RM{(totalPrice + 5.9 * numOfShops).toFixed(2)}</TotalPrice>
                     </OrderTotalLayout>
                 </Container>
             </COReusableStyles.BorderConatiner>

@@ -45,6 +45,16 @@ export default function SelectPaymentMethod({ setSelectedPaymentMethod, availabl
         setSelectedPaymentMethod('Online Banking');
     };
 
+    if (!availablePaymentOption[0] && !availablePaymentOption[1]) {
+        return (
+            <Container>
+                <COReusableStyles.Text>
+                    The shops do not support common payment method. Please split the order.
+                </COReusableStyles.Text>
+            </Container>
+        );
+    }
+
     return (
         <Container>
             <COReusableStyles.Title>Payment Method</COReusableStyles.Title>
