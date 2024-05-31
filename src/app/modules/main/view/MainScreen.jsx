@@ -202,14 +202,14 @@ export default function MainScreen() {
                     </DisplayList>
                 </DisplayContainer>
 
-                <EmblaCarousel banners={homeBanner2} />
+                <EmblaCarousel banners={homeBanner3} />
 
                 <DisplayContainer>
                     <DisplayHeader>Find your Coach</DisplayHeader>
                     <DisplayList>{coachCards}</DisplayList>
                 </DisplayContainer>
 
-                <EmblaCarousel banners={homeBanner3} />
+                <EmblaCarousel banners={homeBanner2} />
             </ContentContainer>
 
             <PaddingHorizontal>

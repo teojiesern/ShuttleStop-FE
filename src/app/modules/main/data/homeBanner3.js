@@ -1,15 +1,13 @@
-import SudirmanCup from '../view/assets/SudirmanCup.jpeg';
-import SurreyBC from '../view/assets/SurreyBC.jpeg';
-import ThailandOpen from '../view/assets/ThailandOpen.jpeg';
-import WC19 from '../view/assets/WC19.png';
-import WC23 from '../view/assets/WC23.jpeg';
+import Headline6 from '../view/assets/headline6.jpg';
+import Headline7 from '../view/assets/headline7.jpg';
+import Headline8 from '../view/assets/headline8.jpg';
+import Headline9 from '../view/assets/headline9.jpg';
 
 const homeBanner3 = [
-    { id: 11, url: WC23 },
-    { id: 12, url: SudirmanCup },
-    { id: 13, url: SurreyBC },
-    { id: 14, url: WC19 },
-    { id: 15, url: ThailandOpen },
+    { id: 11, url: Headline8 },
+    { id: 12, url: Headline9 },
+    { id: 13, url: Headline6 },
+    { id: 14, url: Headline7 },
 ];
 
 export default homeBanner3;
