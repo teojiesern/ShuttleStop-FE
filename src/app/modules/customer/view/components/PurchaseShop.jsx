@@ -102,7 +102,7 @@ export default function PurchaseShop({ shop, shippedDate, deliveredDate, purchas
     const navigate = useNavigate();
     const { setStatusChange } = useContext(PurchasesContext);
     const { getShop } = useShop();
-    const { updateOrderStatus } = useCustomer();
+    const { completeOrder } = useCustomer();
     const { showModal } = useModal();
     const [rating, setRating] = useState(5);
     const [ratingSubmitted, setRatingSubmitted] = useState(false);
@@ -127,9 +127,8 @@ export default function PurchaseShop({ shop, shippedDate, deliveredDate, purchas
     });
 
     const handleStatusChange = async () => {
-        const newStatus = 'Completed';
-        const trackingNumber = shop.products.flatMap((product) => product.trackingNumber);
-        await updateOrderStatus(trackingNumber, newStatus);
+        const trackingNumbers = shop.products.flatMap((product) => product.trackingNumber);
+        await completeOrder(trackingNumbers);
         setStatusChange(true);
         navigate('/customer/my-purchase/completed', { replace: true });
     };

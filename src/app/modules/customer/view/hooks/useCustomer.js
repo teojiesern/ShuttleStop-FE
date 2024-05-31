@@ -108,9 +108,9 @@ export default function useCustomer() {
         }
     }, []);
 
-    const updateOrderStatus = useCallback(async (trackingNumbers, newStatus) => {
+    const completeOrder = useCallback(async (trackingNumbers) => {
         try {
-            const { data } = await repositoryRef.current.updateOrderStatus(trackingNumbers, newStatus);
+            const { data } = await repositoryRef.current.completeOrder(trackingNumbers);
             return data;
         } catch (error) {
             if (isAxiosError(error)) {
@@ -138,7 +138,7 @@ export default function useCustomer() {
         getToShipPurchases,
         getShippingPurchases,
         getCompletedPurchases,
-        updateOrderStatus,
+        completeOrder,
         updateProductRating,
     };
 }
