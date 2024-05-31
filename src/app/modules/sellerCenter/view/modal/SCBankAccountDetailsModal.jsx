@@ -2,6 +2,8 @@ import { Button, MenuItem, TextField } from '@mui/material';
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import CrossedModal from '../../../../platform/modal/CrossedModal';
+import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
@@ -46,11 +48,25 @@ const ButtonContainer = styled.div`
 
 export default function SCBankAccountDetailsModal({ bankInformation, hideModal, updateBankInformation }) {
     const [newBankInformation, setNewBankInformation] = useState(bankInformation);
+    const { showModal } = useModal();
 
     const onConfirmClicked = useCallback(() => {
+        if (
+            !newBankInformation ||
+            !newBankInformation.accountHolderName ||
+            !newBankInformation.bankName ||
+            !newBankInformation.accountNumber
+        ) {
+            // TODO: Find out why does it not work
+            showModal({
+                modal: <CrossedModal title="Please make sure every field are filled in with the correct data" />,
+            });
+            return;
+        }
+
         updateBankInformation(newBankInformation);
         hideModal();
-    }, [hideModal, newBankInformation, updateBankInformation]);
+    }, [hideModal, newBankInformation, showModal, updateBankInformation]);
 
     return (
         <CenteredDiv>
