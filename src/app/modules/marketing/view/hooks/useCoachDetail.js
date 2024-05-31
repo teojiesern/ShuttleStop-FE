@@ -1,10 +1,10 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import CoachDetail from '../data/coachDetail';
 
 export default function useCoachDetail() {
     const repositoryRef = useRef(new CoachDetail());
 
-    const getCoachDetails = async () => {
+    const getCoachDetails = useCallback(async () => {
         try {
             const { data } = await repositoryRef.current.getCoachDetails();
             return data;
@@ -12,7 +12,7 @@ export default function useCoachDetail() {
             console.error('Error fetching coach details:', error);
             throw error;
         }
-    };
+    }, []);
 
     return { getCoachDetails };
 }
