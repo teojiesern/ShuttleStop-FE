@@ -92,13 +92,14 @@ export default function MarketingTestScreenTwo() {
 
     const handleRegister = () => {
         const isCustomerIdUndefined = !customerInfo || customerInfo.customerID === undefined;
+        console.log('HELLLLLOOOOOOid:', customerInfo.customerID);
 
         if (isCustomerIdUndefined) {
             return showModal({
                 modal: (
                     <ErrorModal
                         hideModal={hideModal}
-                        title="Please log in to register coach! "
+                        title="Please log in to register coach!"
                     />
                 ),
             });

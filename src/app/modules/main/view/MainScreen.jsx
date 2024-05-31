@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
@@ -5,10 +6,10 @@ import Footer from '../../../platform/components/Footer/Footer';
 import Header from '../../../platform/components/Header/Header';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
+import useCoachDetail from '../../marketing/view/hooks/useCoachDetail';
 import homeBanner from '../data/homeBanner';
 import homeBanner2 from '../data/homeBanner2';
 import homeBanner3 from '../data/homeBanner3';
-import homeCoachesLists from '../data/homeCoachesLists';
 import homeProductsLists from '../data/homeProductsLists';
 import Star from './assets/star.svg';
 import EmblaCarousel from './component/Embla/EmblaCarousel';
@@ -137,36 +138,45 @@ const CoachDetailContainer = styled.div`
 
 export default function MainScreen() {
     const navigate = useNavigate();
+    const { getCoachDetails } = useCoachDetail();
 
-    const mockData = [];
-    for (let i = 0; i < 6; i++) {
-        mockData.push(
-            <DisplayCard key={i}>
-                <CoachProfile>
-                    <CoachAvatar src={homeCoachesLists.image} />
-                    <TextMdSemiBold>{homeCoachesLists.name}</TextMdSemiBold>
-                    <TextSmRegular style={{ color: COLORS.darkGrey }}>{homeCoachesLists.location}</TextSmRegular>
-                </CoachProfile>
-                <CoachSummary>
-                    <CoachDetailContainer>
-                        <CoachLabel>Level:</CoachLabel>
-                        <CoachTitle>{homeCoachesLists.level}</CoachTitle>
-                    </CoachDetailContainer>
-                    <CoachDetailContainer>
-                        <CoachLabel>Age:</CoachLabel>
-                        <CoachTitle>{homeCoachesLists.age}</CoachTitle>
-                    </CoachDetailContainer>
-                    <CoachDetailContainer>
-                        <CoachLabel>Rating:</CoachLabel>
-                        <CoachTitle>
-                            {/* TODO: maybe revisit this to see if can center align the star */}
-                            {homeCoachesLists.rating} <img src={Star} />
-                        </CoachTitle>
-                    </CoachDetailContainer>
-                </CoachSummary>
-            </DisplayCard>,
-        );
-    }
+    const [coaches, setCoach] = useState([]);
+
+    useEffect(() => {
+        getCoachDetails().then((data) => {
+            setCoach(data);
+        });
+    }, [getCoachDetails]);
+
+    const coachCards = coaches.map((coach) => (
+        <DisplayCard key={coach.coachId}>
+            <CoachProfile>
+                <CoachAvatar src={coach.file} />
+                <TextMdSemiBold>{coach.coachName}</TextMdSemiBold>
+                <TextSmRegular style={{ color: COLORS.darkGrey }}>{coach.state}</TextSmRegular>
+            </CoachProfile>
+            <CoachSummary>
+                <CoachDetailContainer>
+                    <CoachLabel>Level:</CoachLabel>
+                    <CoachTitle>{coach.level}</CoachTitle>
+                </CoachDetailContainer>
+                <CoachDetailContainer>
+                    <CoachLabel>Age:</CoachLabel>
+                    <CoachTitle>{coach.targetAge}</CoachTitle>
+                </CoachDetailContainer>
+                <CoachDetailContainer>
+                    <CoachLabel>Rating:</CoachLabel>
+                    <CoachTitle>
+                        {coach.rating.toFixed(2)}{' '}
+                        <img
+                            src={Star}
+                            alt="star"
+                        />
+                    </CoachTitle>
+                </CoachDetailContainer>
+            </CoachSummary>
+        </DisplayCard>
+    ));
 
     return (
         <RootContainer>
@@ -196,7 +206,7 @@ export default function MainScreen() {
 
                 <DisplayContainer>
                     <DisplayHeader>Find your Coach</DisplayHeader>
-                    <DisplayList>{mockData}</DisplayList>
+                    <DisplayList>{coachCards}</DisplayList>
                 </DisplayContainer>
 
                 <EmblaCarousel banners={homeBanner3} />
