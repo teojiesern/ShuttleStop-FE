@@ -355,10 +355,10 @@ export default function ProductDetailScreen() {
                     <Rate>
                         {product.rate > 0 ? (
                             <>
-                                <TextSmallGrey>5.0</TextSmallGrey>
+                                <TextSmallGrey>{product.rate.toFixed(1)}</TextSmallGrey>
                                 <Rating
                                     name="read-only"
-                                    value="5.0"
+                                    value={product.rate}
                                     precision={0.5}
                                     readOnly
                                 />

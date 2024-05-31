@@ -1,13 +1,13 @@
 import { Button } from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
-import logoTitan from '../assets/logoTitan.png';
-import racquet from '../assets/racquet.png';
-import RatingBar from '../components/RatingBar';
+import RateEachProduct from '../components/RateEachProduct';
+import useCustomer from '../hooks/useCustomer';
 
 const CenteredDiv = styled.div`
     display: flex;
@@ -15,9 +15,9 @@ const CenteredDiv = styled.div`
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    height: 60vh;
-    width: 100%;
-    padding: 0 10px;
+    height: 100%;
+    width: 90%;
+    padding: 2rem;
 `;
 
 const Seller = styled.div`
@@ -40,31 +40,46 @@ const AlignRight = styled.div`
     width: 90%;
 `;
 
-const VerticalContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-left: 20px;
-    gap: 10px;
-`;
-
 const Title = styled.p`
     font-size: ${FONTSIZE.large};
     font-weight: ${FONTWEIGHT.SEMI_BOLD};
 `;
-
 const TextMedium = styled.p`
     font-size: ${FONTSIZE.medium};
 `;
 
-const TextMediumGrey = styled.p`
-    font-size: ${FONTSIZE.large};
-    color: ${COLORS.darkGrey};
-`;
-
 export default function RateProductModal(props) {
-    const { rating, setRating, setRatingSubmitted } = props;
+    const { rating, setRating, setRatingSubmitted, shop, shopInfo, orderId } = props;
+    const { updateProductRating } = useCustomer();
+    const [ratings, setRatings] = useState([]);
+    const [productIds, setProductIds] = useState([]);
 
     const { hideModal } = useModal();
+
+    const uniqueProducts = useMemo(
+        () =>
+            shop.products.reduce((unique, product) => {
+                if (!unique.some((item) => item.product === product.product)) {
+                    unique.push(product);
+                }
+                return unique;
+            }, []),
+        [shop.products],
+    );
+
+    useEffect(() => {
+        const initialRatings = new Array(uniqueProducts.length).fill(5);
+        setRatings(initialRatings);
+
+        const uniqueProductIds = uniqueProducts.map((product) => product.product);
+        setProductIds(uniqueProductIds);
+    }, [uniqueProducts]);
+
+    const handleRating = async () => {
+        setRatingSubmitted(true);
+        hideModal();
+        await updateProductRating(orderId, productIds, ratings);
+    };
 
     return (
         <CenteredDiv>
@@ -72,30 +87,28 @@ export default function RateProductModal(props) {
             <AlignLeft>
                 <Seller>
                     <img
-                        src={logoTitan}
+                        src={shopInfo ? shopInfo.logoPath : ''}
                         alt="seller logo"
                         width={40}
                         style={{ border: `2px solid ${COLORS.black}`, borderRadius: '50%' }}
                     />
-                    <TextMedium>Titan Badminton Store</TextMedium>
+                    <TextMedium>{shopInfo ? shopInfo.name : ''}</TextMedium>
                 </Seller>
             </AlignLeft>
             <hr style={{ border: `solid 1px ${COLORS.grey}`, width: '90%', margin: 0 }} />
-            <AlignLeft>
-                <img
-                    src={racquet}
-                    alt="product"
-                    width={60}
-                />
-                <VerticalContainer>
-                    <TextMedium>YONEX ASTOX 77PRO</TextMedium>
-                    <TextMediumGrey>Red</TextMediumGrey>
-                </VerticalContainer>
-            </AlignLeft>
-            <RatingBar
-                rating={rating}
-                setRating={setRating}
-            />
+            {uniqueProducts.map((product, index) =>
+                product.rated ? null : (
+                    <RateEachProduct
+                        key={product.product}
+                        product={product}
+                        rating={rating}
+                        setRating={setRating}
+                        ratings={ratings}
+                        setRatings={setRatings}
+                        index={index}
+                    />
+                ),
+            )}
             <AlignRight>
                 <Button
                     style={{
@@ -107,8 +120,7 @@ export default function RateProductModal(props) {
                         justifyContent: 'center',
                     }}
                     onClick={() => {
-                        setRatingSubmitted(true);
-                        hideModal();
+                        handleRating();
                     }}
                 >
                     Post

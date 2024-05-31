@@ -2,7 +2,7 @@ import Rating from '@mui/material/Rating';
 import { useEffect, useState } from 'react';
 
 export default function RatingBar(props) {
-    const { rating, setRating } = props;
+    const { rating, setRating, ratings, setRatings, index } = props;
     const [localRating, setLocalRating] = useState(rating);
 
     useEffect(() => {
@@ -12,6 +12,9 @@ export default function RatingBar(props) {
     const handleChange = (event, newValue) => {
         setLocalRating(newValue);
         setRating(newValue);
+        const newRatings = [...ratings];
+        newRatings[index] = newValue;
+        setRatings(newRatings);
     };
 
     return (
@@ -22,7 +25,7 @@ export default function RatingBar(props) {
                 onChange={handleChange}
                 sx={{
                     '& .MuiRating-icon': {
-                        fontSize: '4rem',
+                        fontSize: '2rem',
                     },
                 }}
                 style={{ margin: '0' }}

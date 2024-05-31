@@ -119,6 +119,17 @@ export default function useCustomer() {
         }
     }, []);
 
+    const updateProductRating = useCallback(async (orderId, productIds, ratings) => {
+        try {
+            const { data } = await repositoryRef.current.updateProductRating(orderId, productIds, ratings);
+            return data;
+        } catch (error) {
+            if (isAxiosError(error)) {
+                console.log('this is the errors', error.response.data);
+            }
+        }
+    }, []);
+
     return {
         getCustomer,
         updateCustomer,
@@ -128,5 +139,6 @@ export default function useCustomer() {
         getShippingPurchases,
         getCompletedPurchases,
         updateOrderStatus,
+        updateProductRating,
     };
 }

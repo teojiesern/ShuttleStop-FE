@@ -1,4 +1,4 @@
-import { Button, Rating } from '@mui/material';
+import { Button } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -98,7 +98,7 @@ const TextGreySmall = styled.p`
     font-size: ${FONTSIZE['x-small']};
 `;
 
-export default function PurchaseShop({ shop, shippedDate, deliveredDate }) {
+export default function PurchaseShop({ shop, shippedDate, deliveredDate, purchase }) {
     const navigate = useNavigate();
     const { setStatusChange } = useContext(PurchasesContext);
     const { getShop } = useShop();
@@ -189,17 +189,11 @@ export default function PurchaseShop({ shop, shippedDate, deliveredDate }) {
                 )}
                 {status === 'Completed' ? (
                     <AlignRight>
-                        {ratingSubmitted && (
+                        {purchase.rated || ratingSubmitted ? (
                             <Rated>
                                 <TextGrey>You have rated the product</TextGrey>
-                                <Rating
-                                    name="RatedRate"
-                                    value={rating}
-                                    readOnly
-                                />
                             </Rated>
-                        )}
-                        {!ratingSubmitted && (
+                        ) : (
                             <Button
                                 style={{ ...PlatformReusableStyles.PrimaryButtonStyles, width: '90px' }}
                                 onClick={() => {
@@ -208,11 +202,14 @@ export default function PurchaseShop({ shop, shippedDate, deliveredDate }) {
                                             <RateProductModal
                                                 rating={rating}
                                                 setRating={setRating}
+                                                shop={shop}
+                                                shopInfo={shopInfo}
+                                                orderId={purchase.orderId}
                                                 setRatingSubmitted={setRatingSubmitted}
                                             />
                                         ),
                                         disableBackdropDismiss: false,
-                                        cmaxWidth: 'sm',
+                                        cmaxWidth: 'md',
                                     });
                                 }}
                             >
