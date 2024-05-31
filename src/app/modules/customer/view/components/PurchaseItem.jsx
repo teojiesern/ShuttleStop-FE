@@ -34,12 +34,12 @@ export default function PurchaseItem({ product }) {
     const [productInfo, setProductInfo] = useState(null);
 
     useEffect(() => {
-        const fetchShopInfo = async () => {
+        const fetchProductInfo = async () => {
             const info = await getProductById(product.product);
             setProductInfo(info);
         };
 
-        fetchShopInfo();
+        fetchProductInfo();
     }, [getProductById, product]);
 
     return (

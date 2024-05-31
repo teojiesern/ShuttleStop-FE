@@ -14,6 +14,7 @@ export default class CustomerRepositoryImpl {
         SHIPPING_PURCHASE: `${this.#BASE_URL}/my-purchase-shipping`,
         COMPLETED_PURCHASE: `${this.#BASE_URL}/my-purchase-completed`,
         UPDATE_STATUS: `${this.#BASE_URL}/update-order-status`,
+        UPDATE_RATING: `${this.#BASE_URL}/update-rating`,
     };
 
     getCustomer = async () => {
@@ -85,7 +86,7 @@ export default class CustomerRepositoryImpl {
             productDescription: data.productDescription,
             variants: data.variants,
             rate: data.rate,
-            numReview: data.numReview,
+            numReviews: data.numReviews,
             minPrice,
         };
         return { status, data: mappedData };
@@ -132,6 +133,16 @@ export default class CustomerRepositoryImpl {
         const { status, data } = await Network.getInstance().patch(this.#ROUTES.UPDATE_STATUS, {
             trackingNumbers,
             newStatus,
+        });
+
+        return { status, data };
+    };
+
+    updateProductRating = async (orderId, productIds, ratings) => {
+        const { status, data } = await Network.getInstance().patch(`${this.#ROUTES.UPDATE_RATING}/${orderId}`, {
+            orderId,
+            productIds,
+            ratings,
         });
 
         return { status, data };

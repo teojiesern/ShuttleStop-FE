@@ -36,6 +36,7 @@ export default function PurchaseOne({ purchase }) {
                     shop={shop}
                     shippedDate={displayShippedDate}
                     deliveredDate={displayDeliveredDate}
+                    purchase={purchase}
                 />
             ))}
         </All>
