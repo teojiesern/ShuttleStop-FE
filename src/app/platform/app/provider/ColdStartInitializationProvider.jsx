@@ -14,7 +14,6 @@ export default function ColdStartInitializationProvider({ children }) {
     const [shopInfo, setShopInfo] = useState(null);
     const [customerInfo, setCustomerInfo] = useState(null);
 
-    // const { getShopSettings } = useShopSettings();
     const { getCustomer } = useCustomer();
     const { getSellerInformation, getShopInformation } = useSeller();
 
