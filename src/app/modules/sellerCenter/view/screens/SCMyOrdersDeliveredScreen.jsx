@@ -104,7 +104,9 @@ export default function SCMyOrdersDeliveredScreen() {
                             src={EmptyState}
                             height="200px"
                         />
-                        <SCReusableStyles.Text>No orders that are shipping, come back later</SCReusableStyles.Text>
+                        <SCReusableStyles.Text>
+                            No orders that has the status completed, come back later
+                        </SCReusableStyles.Text>
                     </EmptyStateContainer>
                 )}
             </SCReusableStyles.BorderContainer>
