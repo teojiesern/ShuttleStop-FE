@@ -73,7 +73,6 @@ export default function MarketingTestScreenTwo() {
             setCoach(data);
         });
     }, [getCoachDetails]);
-    console.log(coaches);
 
     const index = coaches.length / 6;
     const totalPages = Math.ceil(coaches.length / coachesPerPage);
@@ -98,7 +97,7 @@ export default function MarketingTestScreenTwo() {
                 modal: (
                     <ErrorModal
                         hideModal={hideModal}
-                        title="Please log in to register coach! "
+                        title="Please log in to register coach!"
                     />
                 ),
             });
@@ -152,7 +151,6 @@ export default function MarketingTestScreenTwo() {
                             <div key={coach.coachId}>
                                 <ContentContainer
                                     onClick={() => {
-                                        console.log(`id: ${coach.coachId}`);
                                         navigate(`/marketing/coach-profile/${coach.coachId}`);
                                     }}
                                     style={{ cursor: 'pointer' }}
