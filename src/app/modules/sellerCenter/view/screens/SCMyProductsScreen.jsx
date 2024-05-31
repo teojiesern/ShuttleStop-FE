@@ -1,10 +1,12 @@
 /* eslint-disable no-shadow */
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import ShopInfoContext from '../../../../platform/app/data/ShopInfoContext';
 import Skeleton from '../../../../platform/components/skeleton/Skeleton';
 import useModal from '../../../../platform/modal/useModal';
+import EmptyState from '../assets/emptyState.svg';
 import useSCMyProducts from '../hooks/useSCMyProducts';
 import SCEditProductsModal from '../modal/SCEditProductsModal';
 import SCReusableStyles from '../styles/SCReusableStyles';
@@ -27,6 +29,21 @@ const ProductContainer = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
+`;
+
+const EmptyStateContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+    max-height: 50%;
+    gap: 2rem;
+`;
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: ${COLORS.green};
 `;
 
 const ProductImage = styled.img`
@@ -92,38 +109,54 @@ export default function SCMyProductsScreen() {
                 </Layout>
             </SCReusableStyles.BorderContainer>
 
-            <SCReusableStyles.BorderContainer>
-                {products.map((product, index) => (
-                    <div key={product.productID}>
-                        <Layout>
-                            {product.variants.flatMap((variant, index) => [
-                                index === 0 ? (
-                                    <ProductContainer>
-                                        <ProductImage src={product.thumbnailFile} />
-                                        <SCReusableStyles.Text>{product.productName}</SCReusableStyles.Text>
-                                    </ProductContainer>
-                                ) : (
-                                    <div key={variant} />
-                                ),
-                                <SCReusableStyles.Text key={variant.color}>{variant.color}</SCReusableStyles.Text>,
-                                <SCReusableStyles.Text key={variant.color}>{variant.price}</SCReusableStyles.Text>,
-                                <SCReusableStyles.Text key={variant.color}>{variant.totalStock}</SCReusableStyles.Text>,
-                                <SCReusableStyles.Text key={variant.color}>{variant.totalSales}</SCReusableStyles.Text>,
-                                index === 0 ? (
-                                    <SCReusableStyles.Text
-                                        style={{ color: COLORS['semantic-blue'], cursor: 'pointer' }}
-                                        onClick={() => onEditClicked(product)}
-                                    >
-                                        Edit
-                                    </SCReusableStyles.Text>
-                                ) : (
-                                    <div key={variant.color} />
-                                ),
-                            ])}
-                        </Layout>
-                        {index !== products.length - 1 && <SCReusableStyles.Divider />}
-                    </div>
-                ))}
+            <SCReusableStyles.BorderContainer style={{ justifyContent: 'center' }}>
+                {products.length > 0 ? (
+                    products.map((product, index) => (
+                        <div key={product.productID}>
+                            <Layout>
+                                {product.variants.flatMap((variant, index) => [
+                                    index === 0 ? (
+                                        <ProductContainer>
+                                            <ProductImage src={product.thumbnailFile} />
+                                            <SCReusableStyles.Text>{product.productName}</SCReusableStyles.Text>
+                                        </ProductContainer>
+                                    ) : (
+                                        <div key={variant} />
+                                    ),
+                                    <SCReusableStyles.Text key={variant.color}>{variant.color}</SCReusableStyles.Text>,
+                                    <SCReusableStyles.Text key={variant.color}>{variant.price}</SCReusableStyles.Text>,
+                                    <SCReusableStyles.Text key={variant.color}>
+                                        {variant.totalStock}
+                                    </SCReusableStyles.Text>,
+                                    <SCReusableStyles.Text key={variant.color}>
+                                        {variant.totalSales}
+                                    </SCReusableStyles.Text>,
+                                    index === 0 ? (
+                                        <SCReusableStyles.Text
+                                            style={{ color: COLORS['semantic-blue'], cursor: 'pointer' }}
+                                            onClick={() => onEditClicked(product)}
+                                        >
+                                            Edit
+                                        </SCReusableStyles.Text>
+                                    ) : (
+                                        <div key={variant.color} />
+                                    ),
+                                ])}
+                            </Layout>
+                            {index !== products.length - 1 && <SCReusableStyles.Divider />}
+                        </div>
+                    ))
+                ) : (
+                    <EmptyStateContainer>
+                        <img
+                            src={EmptyState}
+                            height="200px"
+                        />
+                        <SCReusableStyles.Text>
+                            No Products added, <StyledLink to="../add-new-products">Add one now</StyledLink>
+                        </SCReusableStyles.Text>
+                    </EmptyStateContainer>
+                )}
             </SCReusableStyles.BorderContainer>
         </Container>
     );
