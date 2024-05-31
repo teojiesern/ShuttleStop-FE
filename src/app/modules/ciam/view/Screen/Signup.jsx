@@ -90,7 +90,7 @@ export default function Signup() {
         if (Object.keys(formErrors).length === 0) {
             const user = {
                 username: values.username,
-                email: values.email,
+                email: values.emailTel,
                 password: values.password,
             };
 
