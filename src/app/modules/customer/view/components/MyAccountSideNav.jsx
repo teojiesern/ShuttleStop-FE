@@ -19,13 +19,7 @@ const SectionGroup = styled.div`
     gap: 1rem;
 `;
 
-const SideNavHeader = styled.h3`
-    font-size: ${FONTSIZE.small};
-    color: ${COLORS.black};
-    cursor: pointer;
-`;
-
-const SideNavHeader2 = styled(Link)`
+const SideNavHeader = styled(Link)`
     font-size: ${FONTSIZE.small};
     color: ${COLORS.black};
     text-decoration: none;
@@ -60,6 +54,7 @@ export default function SellerCenterSideNav() {
                             ? { fontWeight: `${FONTWEIGHT.BOLD}` }
                             : { fontWeight: `${FONTWEIGHT.REGULAR}` }
                     }
+                    to="customer/my-profile"
                 >
                     My Account
                 </SideNavHeader>
@@ -75,7 +70,7 @@ export default function SellerCenterSideNav() {
                 >
                     My Address
                 </SideNavLink>
-                <SideNavHeader2
+                <SideNavHeader
                     to="/customer/my-purchase/to-ship"
                     style={
                         activeHeader === 'My Purchase'
@@ -84,7 +79,7 @@ export default function SellerCenterSideNav() {
                     }
                 >
                     My Purchase
-                </SideNavHeader2>
+                </SideNavHeader>
             </SectionGroup>
         </SideNavContainer>
     );

@@ -13,7 +13,7 @@ export default class CustomerRepositoryImpl {
         TOSHIP_PURCHASE: `${this.#BASE_URL}/my-purchase-toship`,
         SHIPPING_PURCHASE: `${this.#BASE_URL}/my-purchase-shipping`,
         COMPLETED_PURCHASE: `${this.#BASE_URL}/my-purchase-completed`,
-        UPDATE_STATUS: `${this.#BASE_URL}/update-order-status`,
+        COMPLETE_ORDER: `${this.#BASE_URL}/complete-order`,
         UPDATE_RATING: `${this.#BASE_URL}/update-rating`,
     };
 
@@ -129,10 +129,9 @@ export default class CustomerRepositoryImpl {
         return { status, data };
     };
 
-    updateOrderStatus = async (trackingNumbers, newStatus) => {
-        const { status, data } = await Network.getInstance().patch(this.#ROUTES.UPDATE_STATUS, {
+    completeOrder = async (trackingNumbers) => {
+        const { status, data } = await Network.getInstance().patch(this.#ROUTES.COMPLETE_ORDER, {
             trackingNumbers,
-            newStatus,
         });
 
         return { status, data };
