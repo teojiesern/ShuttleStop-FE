@@ -11,6 +11,7 @@ import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../../platform/style/PlatformReusableStyles';
 import BankLists from '../../data/BankLists';
+import EmptyState from '../assets/emptyState.svg';
 import useSCMyIncome from '../hooks/useSCMyIncome';
 import SCBankAccountDetailsModal from '../modal/SCBankAccountDetailsModal';
 import SCWithdrawMoneyModal from '../modal/SCWithdrawMoneyModal';
@@ -64,6 +65,16 @@ const OrderDescriptionContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+`;
+
+const EmptyStateContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+    max-height: 50%;
+    gap: 2rem;
 `;
 
 const OrderImage = styled.img`
@@ -241,28 +252,38 @@ export default function SCMyIncomeScreen() {
                 </Layout>
             </SCReusableStyles.BorderContainer>
 
-            <SCReusableStyles.BorderContainer>
-                {orders.map((order, index) => (
-                    <div key={order.orderId}>
-                        <Layout>
-                            <OrdersContainer>
-                                <OrderImage src={order.productImage} />
-                                <OrderDescriptionContainer>
-                                    <SCReusableStyles.Text>{order.productName}</SCReusableStyles.Text>
-                                    <SCReusableStyles.TextDescription>
-                                        {order.productDescription}
-                                    </SCReusableStyles.TextDescription>
-                                    <SCReusableStyles.Text>{order.quantity}</SCReusableStyles.Text>
-                                </OrderDescriptionContainer>
-                            </OrdersContainer>
-                            <SCReusableStyles.Text>{order.orderId}</SCReusableStyles.Text>
-                            <SCReusableStyles.Text>{order.date}</SCReusableStyles.Text>
-                            <SCReusableStyles.Text>{order.paymentMethod}</SCReusableStyles.Text>
-                            <SCReusableStyles.Text>{order.amount}</SCReusableStyles.Text>
-                        </Layout>
-                        {index !== orders.length - 1 && <SCReusableStyles.Divider />}
-                    </div>
-                ))}
+            <SCReusableStyles.BorderContainer style={{ justifyContent: 'center' }}>
+                {orders.length > 0 ? (
+                    orders.map((order, index) => (
+                        <div key={order.orderId}>
+                            <Layout>
+                                <OrdersContainer>
+                                    <OrderImage src={order.productImage} />
+                                    <OrderDescriptionContainer>
+                                        <SCReusableStyles.Text>{order.productName}</SCReusableStyles.Text>
+                                        <SCReusableStyles.TextDescription>
+                                            {order.productDescription}
+                                        </SCReusableStyles.TextDescription>
+                                        <SCReusableStyles.Text>{order.quantity}</SCReusableStyles.Text>
+                                    </OrderDescriptionContainer>
+                                </OrdersContainer>
+                                <SCReusableStyles.Text>{order.orderId}</SCReusableStyles.Text>
+                                <SCReusableStyles.Text>{order.date}</SCReusableStyles.Text>
+                                <SCReusableStyles.Text>{order.paymentMethod}</SCReusableStyles.Text>
+                                <SCReusableStyles.Text>{order.amount}</SCReusableStyles.Text>
+                            </Layout>
+                            {index !== orders.length - 1 && <SCReusableStyles.Divider />}
+                        </div>
+                    ))
+                ) : (
+                    <EmptyStateContainer>
+                        <img
+                            src={EmptyState}
+                            height="200px"
+                        />
+                        <SCReusableStyles.Text>You have no orders for the previous month</SCReusableStyles.Text>
+                    </EmptyStateContainer>
+                )}
             </SCReusableStyles.BorderContainer>
         </Container>
     );
