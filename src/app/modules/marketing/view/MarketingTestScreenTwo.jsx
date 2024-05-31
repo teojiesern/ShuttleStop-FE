@@ -73,7 +73,6 @@ export default function MarketingTestScreenTwo() {
             setCoach(data);
         });
     }, [getCoachDetails]);
-    console.log(coaches);
 
     const index = coaches.length / 6;
     const totalPages = Math.ceil(coaches.length / coachesPerPage);
@@ -92,7 +91,6 @@ export default function MarketingTestScreenTwo() {
 
     const handleRegister = () => {
         const isCustomerIdUndefined = !customerInfo || customerInfo.customerID === undefined;
-        console.log('HELLLLLOOOOOOid:', customerInfo.customerID);
 
         if (isCustomerIdUndefined) {
             return showModal({
@@ -153,7 +151,6 @@ export default function MarketingTestScreenTwo() {
                             <div key={coach.coachId}>
                                 <ContentContainer
                                     onClick={() => {
-                                        console.log(`id: ${coach.coachId}`);
                                         navigate(`/marketing/coach-profile/${coach.coachId}`);
                                     }}
                                     style={{ cursor: 'pointer' }}
