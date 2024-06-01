@@ -24,7 +24,7 @@ export default function ColdStartInitializationProvider({ children }) {
                 setCustomerStatus({ isLogin: true, registeredSeller: customer.seller, setCustomerStatus });
                 setCustomerInfo({
                     customerInfo: {
-                        customerID: customer.customerId,
+                        customerID: customer.customerID,
                         username: customer.username,
                         email: customer.email,
                         phoneNo: customer.phoneNo,
