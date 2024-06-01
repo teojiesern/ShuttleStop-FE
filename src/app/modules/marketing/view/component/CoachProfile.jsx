@@ -72,7 +72,6 @@ export default function CoachProfile() {
     const rateNow = () => {
         const handleModalClose = (latestRating) => {
             setValue(latestRating);
-            console.log('latestrating', value);
         };
 
         showModal({
@@ -92,8 +91,6 @@ export default function CoachProfile() {
     }, [coach]);
 
     const handleEdit = useCallback(() => {
-        console.log('customerInfoEditID: ', customerInfo?.customerID, 'coachCustomerID: ', coach?.customerID);
-
         // Check if customerInfo and coach are defined before accessing their properties
         if (customerInfo?.customerID === coach?.customerID) {
             navigate(`/marketing/coach-edit/${coach?.coachId}`, { state: { coach } });
@@ -107,7 +104,7 @@ export default function CoachProfile() {
                 ),
             });
         }
-    }, [customerInfo?.customerID, coach?.customerID, coach?.coachId, coach, hideModal, navigate]);
+    }, [customerInfo?.customerID, coach, navigate, showModal, hideModal]);
 
     return (
         <CoachReusableStyle.ContainerColumn>
