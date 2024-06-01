@@ -8,6 +8,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import TickedModal from '../../../../platform/modal/TickedModal';
+import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import useSignup from '../hook/useSignup';
@@ -68,6 +70,7 @@ export default function Signup() {
 
     const navigate = useNavigate();
     const { signup } = useSignup();
+    const { showModal } = useModal();
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -95,6 +98,15 @@ export default function Signup() {
             };
 
             await signup(user);
+            showModal({
+                modal: (
+                    <TickedModal
+                        title="Sign up successfully"
+                        description="Please login now using your credentials that you've just signed in"
+                    />
+                ),
+            });
+
             navigate('../login');
         } else {
             setErrors(formErrors);
