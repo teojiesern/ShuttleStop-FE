@@ -76,13 +76,17 @@ export default class CustomerRepositoryImpl {
 
         const prices = data.variants.map((variant) => variant.price);
         const minPrice = Math.min(...prices);
+        const productImages = [
+            `http://localhost:3000/${data.thumbnailImage}`,
+            ...data.productImages.map((img) => `http://localhost:3000/${img}`),
+        ];
         const mappedData = {
             productId: data.productId,
             name: data.name,
             category: data.category,
             brand: data.brand,
             thumbnailImage: `http://localhost:3000/${data.thumbnailImage}`,
-            productImages: data.productImages.map((img) => `http://localhost:3000/${img}`),
+            productImages,
             productDescription: data.productDescription,
             variants: data.variants,
             rate: data.rate,
