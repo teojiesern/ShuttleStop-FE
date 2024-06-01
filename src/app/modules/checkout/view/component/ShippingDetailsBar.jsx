@@ -53,7 +53,7 @@ const HintText = styled.span`
 
 export default function ShippingDetailsBar({ shippingOption, availableShippingOption }) {
     const [cusPhoneNo, setCusPhoneNo] = useState(null);
-    const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
+    const customer = useContext(CustomerInfoContext);
     const { showModal, hideModal } = useModal();
 
     const handleEditAddressClick = useCallback(() => {
@@ -61,16 +61,16 @@ export default function ShippingDetailsBar({ shippingOption, availableShippingOp
             modal: (
                 <EditAddressModal
                     hideModal={hideModal}
-                    customerInfo={customerInfo}
-                    setCustomerInfo={setCustomerInfo}
+                    customerInfo={customer?.customerInfo}
+                    setCustomerInfo={customer?.setCustomerInfo}
                 />
             ),
         });
-    }, [showModal, hideModal]);
+    }, [showModal, hideModal, customer?.customerInfo, customer?.setCustomerInfo]);
 
     useEffect(() => {
-        if (customerInfo) {
-            const cleanPhoneNo = (customerInfo && customerInfo.phoneNo).replace(/\D/g, '');
+        if (customer?.customerInfo) {
+            const cleanPhoneNo = (customer && customer.customerInfo.phoneNo).replace(/\D/g, '');
             if (cleanPhoneNo.length === 10) {
                 setCusPhoneNo(`(+60) ${cleanPhoneNo.slice(1, 3)} ${cleanPhoneNo.slice(3, 6)} ${cleanPhoneNo.slice(6)}`);
             } else {
@@ -79,17 +79,17 @@ export default function ShippingDetailsBar({ shippingOption, availableShippingOp
                 );
             }
         }
-    }, [cusPhoneNo, customerInfo]);
+    }, [cusPhoneNo, customer?.customerInfo]);
 
     const getAddress = () => {
         if (shippingOption === 'standardDelivery') {
-            return customerInfo && customerInfo.address.street !== '' ? (
+            return customer?.customerInfo && customer?.customerInfo.address.street !== '' ? (
                 <COReusableStyles.Text>
                     {`${[
-                        customerInfo.address.street,
-                        `${customerInfo.address.postcode} ${customerInfo.address.city}`,
-                        customerInfo.address.state,
-                        customerInfo.address.country,
+                        customer?.customerInfo.address.street,
+                        `${customer?.customerInfo.address.postcode} ${customer?.customerInfo.address.city}`,
+                        customer?.customerInfo.address.state,
+                        customer?.customerInfo.address.country,
                     ]
                         .filter(Boolean)
                         .join(', ')}`}
@@ -121,7 +121,7 @@ export default function ShippingDetailsBar({ shippingOption, availableShippingOp
             </AddressHead>
             <CustomerDetailsContainer>
                 <CustomerNameContainer>
-                    {customerInfo && customerInfo.username} {cusPhoneNo}
+                    {customer?.customerInfo && customer?.customerInfo.username} {cusPhoneNo}
                 </CustomerNameContainer>
                 {getAddress()}
                 {shippingOption === 'standardDelivery' && (

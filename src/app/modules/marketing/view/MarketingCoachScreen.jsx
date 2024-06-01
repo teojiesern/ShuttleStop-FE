@@ -33,14 +33,12 @@ const NavContainer = styled.div`
     flex-direction: row;
     gap: 4rem;
     width: 100%;
-    align-item: center;
     justify-content: center;
 `;
 const LinkContainer = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
-    align-item: flex-end;
     justify-content: flex-end;
 `;
 const CoachesLayout = styled.div`
@@ -60,7 +58,6 @@ const UpdateProfileLink = styled.div`
 export default function MarketingCoachScreen() {
     const { getCoachDetails } = useCoachDetail();
     const customer = useContext(CustomerInfoContext);
-    console.log(customer);
     const [coaches, setCoach] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const navigate = useNavigate();

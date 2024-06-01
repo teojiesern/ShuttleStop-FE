@@ -9,6 +9,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import CustomerStatusContext from '../../../../platform/app/data/CustomerStatusContext';
+import CrossedModal from '../../../../platform/modal/CrossedModal';
+import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
 import useLogin from '../hook/useLogin';
@@ -65,6 +67,7 @@ export default function Login() {
     const { setCustomerStatus, isLogin } = useContext(CustomerStatusContext);
 
     const { login } = useLogin();
+    const { showModal } = useModal();
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -103,7 +106,18 @@ export default function Login() {
                 // force a page reload while navigating
                 window.location.href = '/';
             } catch (error) {
-                console.log(error);
+                if (error.response.status === 401) {
+                    showModal({ modal: <CrossedModal title="Invalid email and password combination" /> });
+                    return;
+                }
+                showModal({
+                    modal: (
+                        <CrossedModal
+                            title="Something went wrong"
+                            description="We are aware of the problem, please try again later"
+                        />
+                    ),
+                });
             }
         } else {
             setErrors(formErrors);

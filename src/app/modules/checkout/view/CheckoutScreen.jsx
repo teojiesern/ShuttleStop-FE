@@ -313,7 +313,7 @@ export default function CheckoutScreen() {
                 <COReusableStyles.Divider />
                 <Container>
                     <OrderTotalLayout>
-                        {checkedProducts.length > 1 ? (
+                        {checkedProducts?.length > 1 ? (
                             <COReusableStyles.Text style={{ textAlign: 'right' }}>
                                 Order Total ({checkedProducts.length} items):
                             </COReusableStyles.Text>
