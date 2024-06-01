@@ -60,7 +60,6 @@ const UpdateProfileLink = styled.div`
 export default function MarketingTestScreenTwo() {
     const { getCoachDetails } = useCoachDetail();
     const { customerInfo } = useContext(CustomerInfoContext);
-    // const customerID = {req.cookies['shuttle-token']}
     const [coaches, setCoach] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const navigate = useNavigate();
@@ -92,7 +91,6 @@ export default function MarketingTestScreenTwo() {
 
     const handleRegister = () => {
         const isCustomerIdUndefined = customerInfo.customerID === undefined;
-        console.log('HELLOOOOOOOOOO IDDDDD', customerInfo.customerID);
         if (isCustomerIdUndefined) {
             return showModal({
                 modal: (
