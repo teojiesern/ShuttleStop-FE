@@ -12,13 +12,12 @@ import TextField from '@mui/material/TextField';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
+import CrossedModal from '../../../platform/modal/CrossedModal';
 import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
 import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyles';
 import FilterContext from '../context/FilterContext';
-import WarnModal1 from './modal/WarnModal1';
-import WarnModal2 from './modal/WarnModal2';
 
 const NavBar = styled.div`
     float: left;
@@ -89,7 +88,7 @@ export default function SideNav() {
     const displayedBrands = showAllBrands ? brands : brands.slice(0, 5);
     const { filter, setFilter } = useContext(FilterContext);
 
-    const { showModal, hideModal } = useModal();
+    const { showModal } = useModal();
 
     return (
         <NavBar>
@@ -209,12 +208,8 @@ export default function SideNav() {
                             }));
 
                             showModal({
-                                modal: <WarnModal1 />,
-                                disableBackdropDismiss: false,
+                                modal: <CrossedModal title="Minimum and Maximum Price cannot be empty" />,
                             });
-                            setTimeout(() => {
-                                hideModal();
-                            }, 2000);
                         } else if (filter.tempMinPrice >= filter.tempMaxPrice) {
                             setFilter((prevFilter) => ({
                                 ...prevFilter,
@@ -224,12 +219,8 @@ export default function SideNav() {
                                 tempMaxPrice: '',
                             }));
                             showModal({
-                                modal: <WarnModal2 />,
-                                disableBackdropDismiss: false,
+                                modal: <CrossedModal title="Maximum Price must be greater than Minimum Price" />,
                             });
-                            setTimeout(() => {
-                                hideModal();
-                            }, 2000);
                         } else {
                             setFilter((prevFilter) => ({
                                 ...prevFilter,
