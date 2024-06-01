@@ -57,7 +57,7 @@ const UpdateProfileLink = styled.div`
     padding-bottom: 2rem;
 `;
 
-export default function MarketingTestScreenTwo() {
+export default function MarketingCoachScreen() {
     const { getCoachDetails } = useCoachDetail();
     const { customerInfo } = useContext(CustomerInfoContext);
     const [coaches, setCoach] = useState([]);

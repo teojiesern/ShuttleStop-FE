@@ -41,17 +41,6 @@ const CenteredDiv = styled.div`
 `;
 
 export default function CompetitionLinkModal({ hideModal, onSave }) {
-    // const [setSelectedDate] = useState(null);
-
-    // Inside handleChange function
-    // const handleDateChange = (date) => {
-    //     setSelectedDate(date);
-    // };
-    // function generateUniqueId() {
-    //     return `_${Math.random().toString(36).substr(2, 9)}`; // Generates a random string
-    // }
-
-
     const [formData, setFormData] = useState({
         name: '',
         date: null,
@@ -62,7 +51,6 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
         url: '',
     });
     const [link, setLink] = useState(false);
-    // const uniqueID = generateUniqueId();
 
     const handleChange = useCallback((e) => {
         const { name, value } = e.target;
@@ -70,11 +58,7 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
             ...prevData,
             [name]: value,
         }));
-        // Pass formData to CompetitionLayout
-        // CompetitionLayout({ formData: { ...formData, [name]: value } });
     }, []);
-
-
 
     const handleDateChange = useCallback((name, date) => {
         setFormData((prevData) => ({
@@ -87,24 +71,8 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
         hideModal();
     }, [hideModal]);
 
-
-
     const saveCompetition = useCallback(async () => {
         try {
-            // const formatDate = (date) => {
-            //     if (!date) return null;
-            //     const day = date.getDate().toString().padStart(2, '0');
-            //     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
-            //     const year = date.getFullYear();
-            //     return `${day}-${month}-${year}`;
-            // };
-
-            // const formattedData = {
-            //     ...formData,
-            //     date: formData.date ? formatDate(new Date(formData.date)) : null,
-            //     deadline: formData.deadline ? formatDate(new Date(formData.deadline)) : null,
-            // };
-
             const response = await fetch('http://localhost:3000/marketing-service/competitions', {
                 method: 'POST',
                 headers: {
@@ -130,7 +98,6 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
         }
     }, [formData, hideModal, onSave]);
 
-
     const getContent = useCallback(() => {
         if (!link) {
             return (
@@ -138,11 +105,9 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
                     <Container>
                         <Title>Promote Competition</Title>
                         <TextField
-
                             name="name"
                             label="Name"
                             value={formData.name}
-
                             onChange={handleChange}
                         />
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -184,9 +149,7 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
                         />
                         <TextField
                             name="url"
-
                             label="Registration Link"
-
                             value={formData.url}
                             onChange={handleChange}
                         />
@@ -215,7 +178,20 @@ export default function CompetitionLinkModal({ hideModal, onSave }) {
                 description="You can now review your competition details in the website"
             />
         );
-    }, [formData, handleChange, handleCancel, saveCompetition, link]);
+    }, [
+        link,
+        formData.name,
+        formData.date,
+        formData.state,
+        formData.fee,
+        formData.deadline,
+        formData.prize,
+        formData.url,
+        handleChange,
+        handleCancel,
+        saveCompetition,
+        handleDateChange,
+    ]);
 
     return getContent();
 }
