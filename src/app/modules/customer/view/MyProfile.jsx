@@ -74,6 +74,7 @@ export default function MyProfile() {
     const { customerInfo, setCustomerInfo } = useContext(CustomerInfoContext);
     const [gender, setGender] = useState('');
     const { getCustomer, updateCustomer } = useCustomer();
+    console.log('HIIII', customerInfo.customerID, customerInfo.email, customerInfo.gender, customerInfo.birthday);
 
     useEffect(() => {
         if (customerInfo && customerInfo.gender) {

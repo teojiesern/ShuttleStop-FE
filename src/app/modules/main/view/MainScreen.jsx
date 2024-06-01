@@ -149,7 +149,10 @@ export default function MainScreen() {
     }, [getCoachDetails]);
 
     const coachCards = coaches.map((coach) => (
-        <DisplayCard key={coach.coachId}>
+        <DisplayCard
+            key={coach.coachId}
+            onClick={() => navigate(`/marketing/coach-profile/${coach.coachId}`)}
+        >
             <CoachProfile>
                 <CoachAvatar src={coach.file} />
                 <TextMdSemiBold>{coach.coachName}</TextMdSemiBold>
@@ -206,7 +209,7 @@ export default function MainScreen() {
 
                 <DisplayContainer>
                     <DisplayHeader>Find your Coach</DisplayHeader>
-                    <DisplayList>{coachCards}</DisplayList>
+                    <DisplayList>{coaches.length === 0 ? <p>No coaches available</p> : coachCards}</DisplayList>
                 </DisplayContainer>
 
                 <EmblaCarousel banners={homeBanner2} />
