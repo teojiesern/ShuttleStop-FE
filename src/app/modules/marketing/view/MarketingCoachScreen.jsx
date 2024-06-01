@@ -131,7 +131,7 @@ export default function MarketingCoachScreen() {
                     onClick={handleRegister}
                     style={{ cursor: 'pointer' }}
                 >
-                    <CoachReusableStyle.Text>Coach Registeration</CoachReusableStyle.Text>
+                    <CoachReusableStyle.Text>Coach Registration</CoachReusableStyle.Text>
                 </UpdateProfileLink>
                 <img
                     src={arrowRight}
