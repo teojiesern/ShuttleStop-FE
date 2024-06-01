@@ -59,7 +59,8 @@ const UpdateProfileLink = styled.div`
 
 export default function MarketingCoachScreen() {
     const { getCoachDetails } = useCoachDetail();
-    const { customerInfo } = useContext(CustomerInfoContext);
+    const customer = useContext(CustomerInfoContext);
+    console.log(customer);
     const [coaches, setCoach] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const navigate = useNavigate();
@@ -90,7 +91,7 @@ export default function MarketingCoachScreen() {
     };
 
     const handleRegister = () => {
-        const isCustomerIdUndefined = customerInfo.customerID === undefined;
+        const isCustomerIdUndefined = customer === null;
         if (isCustomerIdUndefined) {
             return showModal({
                 modal: (
@@ -102,7 +103,9 @@ export default function MarketingCoachScreen() {
             });
         }
 
-        const isRegisteredForOneCoach = coaches.some((coach) => coach.customerID === customerInfo.customerID);
+        const isRegisteredForOneCoach = coaches.some(
+            (coach) => coach.customerID === customer?.customerInfo?.customerID,
+        );
 
         if (isRegisteredForOneCoach) {
             return showModal({
