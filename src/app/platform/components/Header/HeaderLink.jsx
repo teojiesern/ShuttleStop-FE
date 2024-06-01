@@ -9,6 +9,7 @@ import FONTWEIGHT from '../../style/FontWeight';
 const Container = styled.div`
     display: flex;
     justify-content: ${(props) => props.align};
+    align-items: center;
     gap: 1rem;
 `;
 

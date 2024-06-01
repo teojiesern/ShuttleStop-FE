@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import Logo from '../../icons/logo.svg';
 import HeaderLink from './HeaderLink';
 import HeaderNavLink from './HeaderNavLink';
-import SearchField from './SearchField';
 
 // region styles
 const RootContainer = styled.div`
@@ -31,7 +30,6 @@ export default function Header() {
 
     return (
         <RootContainer>
-            <HeaderLink />
             <HeaderContainer>
                 <Link to="/">
                     <img
@@ -40,7 +38,7 @@ export default function Header() {
                     />
                 </Link>
                 <ElementContainer>
-                    <SearchField />
+                    <HeaderLink />
                     <IconButton onClick={() => navigate('/checkout')}>
                         <ShoppingCartOutlinedIcon />
                     </IconButton>

@@ -7,7 +7,6 @@ import Logo from '../../icons/logo.svg';
 import FONTSIZE from '../../style/FontSize';
 import FONTWEIGHT from '../../style/FontWeight';
 import HeaderLink from './HeaderLink';
-import SearchField from './SearchField';
 
 const RootContainer = styled.div`
     display: flex;
@@ -43,7 +42,6 @@ export default function CheckoutModuleHeader() {
 
     return (
         <RootContainer>
-            <HeaderLink />
             <HeaderContainer>
                 <Link to="/">
                     <img
@@ -52,7 +50,7 @@ export default function CheckoutModuleHeader() {
                     />
                 </Link>
                 <ElementContainer>
-                    <SearchField />
+                    <HeaderLink />
                     <IconButton onClick={() => navigate('/checkout')}>
                         <ShoppingCartOutlinedIcon />
                     </IconButton>
