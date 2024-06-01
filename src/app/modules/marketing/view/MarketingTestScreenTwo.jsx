@@ -59,7 +59,7 @@ const UpdateProfileLink = styled.div`
 
 export default function MarketingTestScreenTwo() {
     const { getCoachDetails } = useCoachDetail();
-    const { customerInfo } = useContext(CustomerInfoContext) || {};
+    const { customerInfo } = useContext(CustomerInfoContext);
     const [coaches, setCoach] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const navigate = useNavigate();
@@ -90,8 +90,7 @@ export default function MarketingTestScreenTwo() {
     };
 
     const handleRegister = () => {
-        const isCustomerIdUndefined = !customerInfo || customerInfo.customerID === undefined;
-
+        const isCustomerIdUndefined = customerInfo.customerID === undefined;
         if (isCustomerIdUndefined) {
             return showModal({
                 modal: (
