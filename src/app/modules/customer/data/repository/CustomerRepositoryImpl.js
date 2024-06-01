@@ -21,7 +21,7 @@ export default class CustomerRepositoryImpl {
         const { status, data } = await Network.getInstance().get(this.#ROUTES.CUSTOMER);
 
         const mappedData = {
-            customerID: data.customerId,
+            customerId: data.customerId,
             username: data.username,
             email: data.email,
             phoneNo: data.phoneNo,
