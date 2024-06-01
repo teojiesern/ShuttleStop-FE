@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
+import EmptyState from '../../sellerCenter/view/assets/emptyState.svg';
 import FilterContext from '../context/FilterContext';
 import Product from './Product';
 import useCustomer from './hooks/useCustomer';
@@ -23,6 +24,16 @@ const Sort = styled.div`
     font-size: ${FONTSIZE.small};
     font-weight: ${FONTWEIGHT.REGULAR};
     margin-bottom: 15px;
+`;
+
+const EmptyStateContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+    max-height: 50%;
+    gap: 2rem;
 `;
 
 export default function ProductBrowsing() {
@@ -129,9 +140,34 @@ export default function ProductBrowsing() {
                     <MenuItem value="name-desc">Name: Z to A</MenuItem>
                 </Select>
             </Sort>
-            <ProductGrid>
+            <ProductGrid
+                style={
+                    productsForCurrentPage.length === 0
+                        ? {
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              height: '60vh',
+                          }
+                        : {}
+                }
+            >
                 {productsForCurrentPage.length === 0 ? (
-                    <p>No product available</p>
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <EmptyStateContainer>
+                            <img
+                                src={EmptyState}
+                                height="200px"
+                            />
+                            <p>No products uploaded so far, please come back later</p>
+                        </EmptyStateContainer>
+                    </div>
                 ) : (
                     productsForCurrentPage.map((product) => (
                         <Product
@@ -145,17 +181,19 @@ export default function ProductBrowsing() {
                     ))
                 )}
             </ProductGrid>
-            <Pagination
-                count={Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)}
-                page={page}
-                onChange={handlePageChange}
-                shape="rounded"
-                style={{
-                    marginTop: '20px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                }}
-            />
+            {productsForCurrentPage.length !== 0 && (
+                <Pagination
+                    count={Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)}
+                    page={page}
+                    onChange={handlePageChange}
+                    shape="rounded"
+                    style={{
+                        marginTop: '20px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                    }}
+                />
+            )}
         </div>
     );
 }
