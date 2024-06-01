@@ -349,7 +349,7 @@ export default function MarketingCoachEditScreen() {
                         </StyledButton>
                     </InnerContainer>
                 </HorizontalContainer>
-                <div style={{ alignSelf: 'flex-end' }}>
+                <div style={{ alignSelf: 'flex-end', padding: '2rem' }}>
                     <Button
                         style={PlatformReusableStyles.PrimaryButtonStyles}
                         onClick={handleSubmit}
