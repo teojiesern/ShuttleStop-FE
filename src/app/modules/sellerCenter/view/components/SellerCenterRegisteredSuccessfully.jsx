@@ -1,6 +1,5 @@
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import { Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
@@ -38,7 +37,6 @@ const ContentDescription = styled.p`
 
 export default function SellerCenterRegisteredSuccessfully({ registrationData }) {
     const { registerSeller } = useSellerCenterRegistration(registrationData);
-    const navigate = useNavigate();
 
     return (
         <Container>
@@ -60,7 +58,7 @@ export default function SellerCenterRegisteredSuccessfully({ registrationData })
                 style={{ ...PlatformReusableStyles.PrimaryButtonStyles, padding: '1rem' }}
                 onClick={async () => {
                     await registerSeller();
-                    navigate('/seller-center', { replace: true });
+                    window.location.href = '/seller-center';
                 }}
             >
                 Start Adding Products Now

@@ -7,6 +7,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../../platform/Colors';
 import CustomerInfoContext from '../../../platform/app/data/CustomerInfoContext';
+import TickedModal from '../../../platform/modal/TickedModal';
 import useModal from '../../../platform/modal/useModal';
 import FONTSIZE from '../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../platform/style/FontWeight';
@@ -14,7 +15,6 @@ import PlatformReusableStyles from '../../../platform/style/PlatformReusableStyl
 import FormValidation from '../../ciam/view/utils/FormValidation';
 import UploadImage from './assets/upload-image.svg';
 import useCustomer from './hooks/useCustomer';
-import SavedModal from './modal/SavedModal';
 
 const OuterContainer = styled.div`
     display: flex;
@@ -154,8 +154,7 @@ export default function MyProfile() {
             setTimeout(fetchData, 1000);
             setUpdatedValue({});
             showModal({
-                modal: <SavedModal />,
-                disableBackdropDismiss: false,
+                modal: <TickedModal title="Profile Saved" />,
                 cmaxWidth: 'sm',
             });
             setErrors({});
