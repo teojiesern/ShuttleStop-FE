@@ -1,12 +1,14 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import useLoadingModal from '../../../../platform/modal/useLoadingModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import useForgotPassword from '../hook/useForgotPassword';
 import FormValidation from '../utils/FormValidation';
 
 const ContainerBox = styled(Box)`
@@ -38,12 +40,13 @@ export default function ForgotPassword() {
     const navigate = useNavigate();
 
     const [submitted, setSubmitted] = useState(false);
-
     const [values, setValues] = useState({
         emailTel: '',
     });
-
     const [errors, setErrors] = useState({});
+
+    const { sendOTP } = useForgotPassword();
+    const { showLoadingModal, hideLoadingModal } = useLoadingModal();
 
     const handleInput = (e) => {
         const { name, value } = e.target;
@@ -54,16 +57,22 @@ export default function ForgotPassword() {
         }
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        setSubmitted(true);
-        const formErrors = FormValidation(values);
-        if (Object.keys(formErrors).length === 0) {
-            navigate('../login/forgot-password/verification');
-        } else {
-            setErrors(formErrors);
-        }
-    };
+    const handleSubmit = useCallback(
+        async (event) => {
+            event.preventDefault();
+            setSubmitted(true);
+            const formErrors = FormValidation(values);
+            if (Object.keys(formErrors).length === 0) {
+                showLoadingModal();
+                const validOTP = await sendOTP({ email: values.emailTel });
+                hideLoadingModal();
+                navigate('../login/forgot-password/verification', { state: { validOTP } });
+            } else {
+                setErrors(formErrors);
+            }
+        },
+        [hideLoadingModal, navigate, sendOTP, showLoadingModal, values],
+    );
 
     return (
         <Container
