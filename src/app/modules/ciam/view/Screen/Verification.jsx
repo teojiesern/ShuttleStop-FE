@@ -45,7 +45,7 @@ export default function Verification() {
     const [otp, setOtp] = useState('');
     const [isValidOtp, setIsValidOtp] = useState(true);
     const navigate = useNavigate();
-    const { state: { validOTP } = {} } = useLocation();
+    const { state: { validOTP, email } = {} } = useLocation();
     const handleChange = useCallback((newValue) => {
         const onlyNumbers = newValue
             .split('')
@@ -59,7 +59,7 @@ export default function Verification() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (otp === validOTP.toString()) {
-            navigate('../login/forgot-password/verification/reset-password', { replace: true });
+            navigate('../login/forgot-password/verification/reset-password', { replace: true, state: { email } });
             return;
         }
         setIsValidOtp(false);

@@ -4,12 +4,15 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import TickedModal from '../../../../platform/modal/TickedModal';
+import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
+import useChangePassword from '../hook/useChangePassword';
 import FormValidation from '../utils/FormValidation';
 
 const ContainerBox = styled(Box)`
@@ -39,20 +42,21 @@ const StyledButton = styled.button`
 
 export default function ResetPassword() {
     const navigate = useNavigate();
+    const { state: { email } = {} } = useLocation();
 
     const [submitted, setSubmitted] = useState(false);
-
     const [values, setValues] = useState({
         password: '',
     });
-
     const [showPassword, setShowPassword] = useState(false);
+    const [errors, setErrors] = useState({});
+
+    const { changePassword } = useChangePassword();
+    const { showModal } = useModal();
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
-
-    const [errors, setErrors] = useState({});
 
     const handleInput = (e) => {
         const { name, value } = e.target;
@@ -63,16 +67,28 @@ export default function ResetPassword() {
         }
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        setSubmitted(true);
-        const formErrors = FormValidation(values);
-        if (Object.keys(formErrors).length === 0) {
-            navigate('../Login');
-        } else {
-            setErrors(formErrors);
-        }
-    };
+    const handleSubmit = useCallback(
+        async (event) => {
+            event.preventDefault();
+            setSubmitted(true);
+            const formErrors = FormValidation(values);
+            if (Object.keys(formErrors).length === 0) {
+                await changePassword({ email, newPassword: values.password });
+                showModal({
+                    modal: (
+                        <TickedModal
+                            title="Your password has been changed successfully"
+                            description="Please login again with your newly set password."
+                        />
+                    ),
+                });
+                navigate('../Login');
+            } else {
+                setErrors(formErrors);
+            }
+        },
+        [changePassword, email, navigate, showModal, values],
+    );
 
     return (
         <Container

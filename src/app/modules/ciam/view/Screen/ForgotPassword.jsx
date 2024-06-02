@@ -66,7 +66,7 @@ export default function ForgotPassword() {
                 showLoadingModal();
                 const validOTP = await sendOTP({ email: values.emailTel });
                 hideLoadingModal();
-                navigate('../login/forgot-password/verification', { state: { validOTP } });
+                navigate('../login/forgot-password/verification', { state: { validOTP, email: values.emailTel } });
             } else {
                 setErrors(formErrors);
             }
