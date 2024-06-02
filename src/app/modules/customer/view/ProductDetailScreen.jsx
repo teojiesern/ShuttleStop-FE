@@ -252,7 +252,7 @@ export default function ProductDetailScreen() {
     };
 
     const handleNextClick = () => {
-        if (imageListStart < product.imgAll.length - 4) {
+        if (imageListStart < product.productImages.length - 4) {
             setImageListStart(imageListStart + 1);
         }
     };
@@ -264,9 +264,9 @@ export default function ProductDetailScreen() {
     };
 
     const handleNextClickBigImage = () => {
-        if (selectedImageIndex < product.imgAll.length - 1) {
+        if (selectedImageIndex < product.productImages.length - 1) {
             setSelectedImageIndex(selectedImageIndex + 1);
-            if (selectedImageIndex === imageListStart + 2 && imageListStart < product.imgAll.length - 4) {
+            if (selectedImageIndex === imageListStart + 2 && imageListStart < product.productImages.length - 4) {
                 setImageListStart(imageListStart + 1);
             }
         }
