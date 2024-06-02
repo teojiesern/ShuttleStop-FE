@@ -144,7 +144,7 @@ export default function Login() {
                         required
                         fullWidth
                         id="email"
-                        label="Email Address/Mobile Number"
+                        label="Email Address"
                         name="email"
                         autoComplete="email tel"
                         autoFocus

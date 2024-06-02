@@ -88,7 +88,7 @@ export default function ForgotPassword() {
                         required
                         fullWidth
                         id="emailTel"
-                        label="Email Address/Mobile Number"
+                        label="Email Address"
                         name="emailTel"
                         autoComplete="email tel"
                         autofocus

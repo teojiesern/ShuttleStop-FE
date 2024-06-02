@@ -18,9 +18,9 @@ export default function Validation(values) {
             /^(?:[\p{L}\p{M}\p{N}\p{P}\p{S}@._%+-]{1,256}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}|(?:\+?\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4})$/u;
 
         if (values.emailTel === '') {
-            errors.emailTel = 'Email address / Mobile Number is required';
+            errors.emailTel = 'Email address is required';
         } else if (!emailTelPattern.test(values.emailTel)) {
-            errors.emailTel = 'Please enter a valid email address or mobile number.';
+            errors.emailTel = 'Please enter a valid email address.';
         }
     }
 

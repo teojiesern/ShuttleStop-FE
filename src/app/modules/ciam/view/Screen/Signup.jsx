@@ -140,7 +140,7 @@ export default function Signup() {
                         required
                         fullWidth
                         id="emailTel"
-                        label="Email Address/Mobile Number"
+                        label="Email Address"
                         name="emailTel"
                         autoComplete="email tel"
                         onChange={handleInput}
