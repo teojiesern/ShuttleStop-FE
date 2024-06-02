@@ -122,7 +122,7 @@ export default function MarketingCoachScreen() {
         <ContentContainer>
             <HeadContainer
                 imageUrl={CoachHeadImage}
-                top="43%"
+                top="40%"
                 title="Coaches"
             />
             <LinkContainer>
