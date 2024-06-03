@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import COLORS from '../../../../platform/Colors';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import useCustomer from '../hooks/useCustomer';
 import RatingBar from './RatingBar';
@@ -17,7 +16,7 @@ const CenteredDiv = styled.div`
 
 const AlignLeft = styled.div`
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
     width: 90%;
 `;
@@ -31,11 +30,6 @@ const VerticalContainer = styled.div`
 
 const TextMedium = styled.p`
     font-size: ${FONTSIZE.medium};
-`;
-
-const TextMediumGrey = styled.p`
-    font-size: ${FONTSIZE.large};
-    color: ${COLORS.darkGrey};
 `;
 
 export default function RateEachProduct({ product, rating, setRating, ratings, setRatings, index }) {
@@ -61,7 +55,6 @@ export default function RateEachProduct({ product, rating, setRating, ratings, s
                 />
                 <VerticalContainer>
                     <TextMedium>{productInfo ? productInfo.name : 'product'}</TextMedium>
-                    <TextMediumGrey>{product.selectedVariant}</TextMediumGrey>
                 </VerticalContainer>
             </AlignLeft>
             <RatingBar

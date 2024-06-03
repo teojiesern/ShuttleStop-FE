@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import TickedModal from '../../../../platform/modal/TickedModal';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
 import FONTWEIGHT from '../../../../platform/style/FontWeight';
@@ -130,6 +131,10 @@ export default function PurchaseShop({ shop, shippedDate, deliveredDate, purchas
         const trackingNumbers = shop.products.flatMap((product) => product.trackingNumber);
         await completeOrder(trackingNumbers);
         setStatusChange(true);
+        showModal({
+            modal: <TickedModal title="Order Received" />,
+            cmaxWidth: 'sm',
+        });
         navigate('/customer/my-purchase/completed', { replace: true });
     };
 
