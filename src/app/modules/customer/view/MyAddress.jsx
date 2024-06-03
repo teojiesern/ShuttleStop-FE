@@ -60,7 +60,7 @@ export default function MyAddress() {
     if (customerInfo.address.street !== '') {
         fullAddress = `${[customerInfo.address.street, customerInfo.address.city, customerInfo.address.postcode]
             .filter(Boolean)
-            .join(', ')} ${[customerInfo.address.country, customerInfo.address.state].filter(Boolean).join(', ')}`;
+            .join(', ')} ${[customerInfo.address.state, customerInfo.address.country].filter(Boolean).join(', ')}`;
     }
 
     const handleEditAddress = useCallback(() => {

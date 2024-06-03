@@ -158,17 +158,6 @@ export default function EditAddressModal({ hideModal, customerInfo, setCustomerI
                 <TextField
                     fullWidth
                     required
-                    name="country"
-                    label={<span>Country</span>}
-                    size="small"
-                    onChange={handleInput}
-                    defaultValue={customerInfo.address.country}
-                    error={Boolean(errors.address?.country)}
-                    helperText={errors.address?.country || ''}
-                />
-                <TextField
-                    fullWidth
-                    required
                     name="state"
                     label={<span>State</span>}
                     size="small"
@@ -176,6 +165,17 @@ export default function EditAddressModal({ hideModal, customerInfo, setCustomerI
                     defaultValue={customerInfo.address.state}
                     error={Boolean(errors.address?.state)}
                     helperText={errors.address?.state || ''}
+                />
+                <TextField
+                    fullWidth
+                    required
+                    name="country"
+                    label={<span>Country</span>}
+                    size="small"
+                    onChange={handleInput}
+                    defaultValue={customerInfo.address.country}
+                    error={Boolean(errors.address?.country)}
+                    helperText={errors.address?.country || ''}
                 />
             </HrContainer>
             <ButtonContainer>
