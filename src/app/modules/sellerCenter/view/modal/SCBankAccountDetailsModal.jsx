@@ -17,6 +17,7 @@ const CenteredDiv = styled.div`
     gap: 2rem;
     min-height: 50vh;
     padding: 0 4rem;
+    margin: 2rem;
 `;
 
 const Title = styled.h1`
