@@ -13,6 +13,7 @@ import PlatformReusableStyles from '../../../../platform/style/PlatformReusableS
 import BankLists from '../../data/BankLists';
 import EmptyState from '../assets/emptyState.svg';
 import useSCMyIncome from '../hooks/useSCMyIncome';
+import useSeller from '../hooks/useSeller';
 import SCBankAccountDetailsModal from '../modal/SCBankAccountDetailsModal';
 import SCWithdrawMoneyModal from '../modal/SCWithdrawMoneyModal';
 import SCReusableStyles from '../styles/SCReusableStyles';
@@ -82,11 +83,17 @@ const OrderImage = styled.img`
 `;
 
 export default function SCMyIncomeScreen() {
-    const { sellerId, sellerBankAccount, sellerBankAccountNumber, sellerNameInBankAccount, sellerTotalIncome } =
-        useContext(SellerInfoContext);
+    const {
+        sellerId,
+        sellerBankAccount,
+        sellerBankAccountNumber,
+        sellerNameInBankAccount,
+        sellerTotalIncome,
+        setSellerInfo,
+    } = useContext(SellerInfoContext);
 
     const [orders, setOrders] = useState(null);
-    const [totalIncome, setTotalAmount] = useState(sellerTotalIncome.toFixed(2));
+    const [totalIncome, setTotalIncome] = useState(sellerTotalIncome.toFixed(2));
     const [bankInformation, setBankInformation] = useState(
         sellerBankAccount !== '' && sellerBankAccountNumber !== '' && sellerNameInBankAccount !== ''
             ? {
@@ -100,6 +107,7 @@ export default function SCMyIncomeScreen() {
 
     const { getPreviousOrders, updateSellerBankInformation, withdrawIncome } = useSCMyIncome();
     const { showModal, hideModal } = useModal();
+    const { getSellerInformation } = useSeller();
 
     const updateBankInformation = useCallback(
         async (newBankInformation) => {
@@ -134,7 +142,7 @@ export default function SCMyIncomeScreen() {
                 };
                 const updatedIncome = await withdrawIncome(payload);
 
-                setTotalAmount(updatedIncome.toFixed(2));
+                setTotalIncome(updatedIncome.toFixed(2));
                 showModal({
                     modal: (
                         <TickedModal
@@ -187,7 +195,14 @@ export default function SCMyIncomeScreen() {
         getPreviousOrders().then((data) => {
             setOrders(data);
         });
-    }, [getPreviousOrders]);
+        getSellerInformation().then((seller) => {
+            setSellerInfo({
+                ...seller,
+                setSellerInfo,
+            });
+            setTotalIncome(seller.sellerTotalIncome.toFixed(2));
+        });
+    }, [getPreviousOrders, getSellerInformation, setSellerInfo]);
 
     if (orders === null) {
         return (
