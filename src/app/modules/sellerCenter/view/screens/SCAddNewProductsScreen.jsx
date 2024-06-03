@@ -167,6 +167,17 @@ export default function SCAddNewProductsScreen({
             });
             return;
         }
+        if (!productImage1.length && !productImage2.length && !productImage3.length && !productImage4.length) {
+            showInternalModal({
+                modal: (
+                    <CrossedModal
+                        title="Please provide at least one product image"
+                        description="Having a product image will increase the visibility of your product"
+                    />
+                ),
+            });
+            return;
+        }
 
         // Entry point is through modal
         if (hideModal) {
