@@ -478,12 +478,14 @@ export default function SCAddNewProductsScreen({
                                 </TableCell>
                                 <TableCell align="center">
                                     <TextField
-                                        value={totalStock[i] - variant.totalSales}
+                                        defaultValue={totalStock[i] - variant.totalSales}
                                         type="number"
                                         onChange={(e) => {
-                                            const newTotalStock = [...totalStock];
-                                            newTotalStock[i] = e.target.value;
-                                            setTotalStock(newTotalStock);
+                                            setTotalStock((prevTotalStock) => {
+                                                const newTotalStock = [...prevTotalStock];
+                                                newTotalStock[i] = Number(e.target.value);
+                                                return newTotalStock;
+                                            });
                                         }}
                                         size="small"
                                     />
