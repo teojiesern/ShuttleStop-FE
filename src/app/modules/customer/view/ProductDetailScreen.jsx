@@ -508,7 +508,7 @@ export default function ProductDetailScreen() {
             <hr />
             <ProductDescription>
                 <TextXLarge>Description</TextXLarge>
-                <p>{product.productDescription}</p>
+                <p style={{ whiteSpace: 'pre-wrap' }}>{product.productDescription}</p>
             </ProductDescription>
             <br />
         </div>
