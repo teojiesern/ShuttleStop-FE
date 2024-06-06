@@ -106,7 +106,7 @@ export default function Login() {
                 // force a page reload while navigating
                 window.location.href = '/';
             } catch (error) {
-                if (error.response.status === 401) {
+                if (error.response.status === 404) {
                     showModal({ modal: <CrossedModal title="Invalid email and password combination" /> });
                     return;
                 }
