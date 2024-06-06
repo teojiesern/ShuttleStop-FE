@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../../../platform/Colors';
+import CrossedModal from '../../../../platform/modal/CrossedModal';
 import TickedModal from '../../../../platform/modal/TickedModal';
 import useModal from '../../../../platform/modal/useModal';
 import FONTSIZE from '../../../../platform/style/FontSize';
@@ -91,23 +92,45 @@ export default function Signup() {
         setSubmitted(true);
         const formErrors = FormValidation(values);
         if (Object.keys(formErrors).length === 0) {
-            const user = {
-                username: values.username,
-                email: values.emailTel,
-                password: values.password,
-            };
+            try {
+                const user = {
+                    username: values.username,
+                    email: values.emailTel,
+                    password: values.password,
+                };
 
-            await signup(user);
-            showModal({
-                modal: (
-                    <TickedModal
-                        title="Sign up successfully"
-                        description="Please login now using your credentials that you've just signed in"
-                    />
-                ),
-            });
+                await signup(user);
+                showModal({
+                    modal: (
+                        <TickedModal
+                            title="Sign up successfully"
+                            description="Please login now using your credentials that you've just signed in"
+                        />
+                    ),
+                });
 
-            navigate('../login');
+                navigate('../login');
+            } catch (error) {
+                if (error.response.data.type === 'duplicate-email') {
+                    showModal({
+                        modal: (
+                            <CrossedModal
+                                title="This email has already been registered before"
+                                description="Please try again with another email"
+                            />
+                        ),
+                    });
+                } else {
+                    showModal({
+                        modal: (
+                            <CrossedModal
+                                title="Something went wrong"
+                                description="Please try again later"
+                            />
+                        ),
+                    });
+                }
+            }
         } else {
             setErrors(formErrors);
         }
