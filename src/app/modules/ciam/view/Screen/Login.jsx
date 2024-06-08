@@ -107,6 +107,11 @@ export default function Login() {
                 window.location.href = '/';
             } catch (error) {
                 if (error.response.status === 404) {
+                    showModal({ modal: <CrossedModal title="User not found" /> });
+                    return;
+                }
+
+                if (error.response.status === 401) {
                     showModal({ modal: <CrossedModal title="Invalid email and password combination" /> });
                     return;
                 }
