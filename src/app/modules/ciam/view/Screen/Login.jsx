@@ -74,7 +74,7 @@ export default function Login() {
     };
 
     const [values, setValues] = useState({
-        email: '',
+        emailTel: '',
         password: '',
     });
 
@@ -96,7 +96,7 @@ export default function Login() {
 
         if (Object.keys(formErrors).length === 0) {
             try {
-                const data = await login({ email: values.email, password: values.password });
+                const data = await login({ email: values.emailTel, password: values.password });
                 setCustomerStatus((prevStatus) => ({
                     ...prevStatus,
                     isLogin: true,
